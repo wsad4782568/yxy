@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>hbar-block helper</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+  
+</head>
+<body>
+<div id="ct"></div>
+<div id="et"></div>
+ 
+
+
+
+
+</body>
+<script src="/i/dist/js/jq.js"></script>
+
+<script src="/i/dist/js/handlebars.js"></script>
+ <script id="st" type="text/x-handlebars-template">
+<div class="entry">
+  <h1>{{title}}</h1>
+  <div class="body">
+    {{#bold}}{{body}}{{/bold}}
+  </div>
+</div>
+{{#if isActive}}
+  <p> yes</p>
+{{else}}
+  <p> no</p>
+{{/if}}
+    
+ </script>
+
+ <script type="text/javascript">
+Handlebars.registerHelper('bold', function(options) {
+  return new Handlebars.SafeString(
+      '<div class="mybold">'
+      + options.fn(this)
+      + '</div>');
+});
+$(document).ready(function() {
+	var t = Handlebars.compile($("#st").html())
+	$("#ct").html(t({body:"this is my body :(",isActive:false}))
+		
+		
+})
+</script>
+</html>

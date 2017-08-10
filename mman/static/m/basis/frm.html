@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>基本信息管理</title>
+    <link rel="shortcut icon" href="/i/css/img/favicon.png"/>
+    <link rel="stylesheet" href="/i/css/manage/pure.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+
+</head>
+
+<body>
+<!——————————S中间——————————>
+<div class="default-main">
+    <div class="main-wrapper">
+        <div class="layout-bd em-left">
+            <div class="container">
+                <section class="em-container">
+                    <div class="em_">
+                        <input id="em-1" name="accordion" type="checkbox" />
+                        <label for="em-1" class="iformation" id="user_info">用户信息管理</label>
+                        <article class="em-small" id="user_info_1">
+                        	<ul>
+	                           <li> <a href="#" id="userinfo" class="anchorPage"><p onclick="anchorPage(this)">基本信息</p></a></li>
+	                           <li> <a href="#" id="address" class="anchorPage"><p onclick="anchorPage(this)">送货信息</p></a></li>
+	                         <li> <a href="#" id="member" class="anchorPage"><p onclick="anchorPage(this)">会员设置</p></a></li>
+                        	</ul>
+                        </article>
+                    </div>
+                    <div class="em_">
+                        <input id="em-2" name="accordion" type="checkbox" />
+                        <label for="em-2" class="iformation" >部门信息管理</label>
+                        <article class="em-small">
+                        	<ul>
+	                            <li><a href="#" id="department" class="anchorPage"><p onclick="anchorPage(this)">部门信息</p></a></li>
+	                            <li><a href="#" id="staff" class="anchorPage"><p onclick="anchorPage(this)">员工信息</p></a></li>
+                              <li><a href="#" id="deliveryTime" class="anchorPage"><p onclick="anchorPage(this)">配送时间</p ></a ></li>
+                        	</ul>
+                        </article>
+                    </div>
+                    <div class="em_">
+                        <input id="em-3" name="accordion" type="checkbox" />
+                        <label for="em-3" class="iformation" >权限管理</label>
+                        <article class="em-small">
+                            <ul>
+                                <li><a href="#" id="roleRange" class="anchorPage"><p onclick="anchorPage(this)">设置权限范围</p ></a ></li>
+                                <!-- <li><a href="#" id="staffRole" class="anchorPage"><p onclick="anchorPage(this)">设置员工权限</p ></a ></li> -->
+                            </ul>
+                        </article>
+                    </div>
+                    <div class="em_">
+                        <input id="em-4" name="accordion" type="checkbox" />
+                        <label for="em-4" class="iformation" >小区管理</label>
+                        <article class="em-small">
+                        	<ul>
+                            <li><a href="#" id="setdistrictArea" class="anchorPage"><p onclick="anchorPage(this)">地图区域配置</p></a></li>
+                                <li><a href="#" id="district" class="anchorPage"><p onclick="anchorPage(this)">区域管理</p></a></li>
+                                <li><a href="#" id="subdistrict" class="anchorPage"><p onclick="anchorPage(this)">小区管理</p></a></li>
+                                <li><a href="#" id="deliverytype" class="anchorPage"><p onclick="anchorPage(this)">门店-小区</p></a></li>
+                        	</ul>
+                        </article>
+                    </div>
+
+                </section>
+            </div>
+        </div>
+
+        <div class="layout-bd middle">
+            <iframe id="frm" class="frm" src=""></iframe>
+        </div>
+    </div>
+</div>
+<!——————————E中间——————————>
+
+<!——————————S头部——————————>
+<div class="layout-hd">
+	<div class="header_log">
+            <a href="/m/index.html"><img src="/i/css/img/favicon.ico" /></a>
+    </div>
+	<div class="header_link">
+		<ul>
+			<li><a>基本信息管理</a></li>
+			<li><a href="/m/sc/frm.html">供应链管理</a></li>
+			<li><a href="/m/order/frm.html">订单管理</a></li>
+			<li><a href="/m/delivery/frm.html">数据统计</a></li>
+			<!-- <li><a href="/m/interface/frm.html">接口管理</a></li> -->
+		</ul>
+	</div>
+
+    <div class="header_info header_link" style="float: left;padding-right: 5%;height: 50px;width: 30%">
+        <ul>
+            <li><a href="#" id="staff_id" style="padding-left: 100px"></a></li>
+            <li><a href="#" id="staff_dept"></a></li>
+        </ul>
+    </div>
+</div>
+<!——————————E头部——————————>
+
+<!——————————S底部——————————>
+<div class="layout-ft minwidth"> </div>
+<!——————————E底部——————————>
+<script type="text/javascript" src="/i/js/frame.js"></script>
+</body>
+</html>

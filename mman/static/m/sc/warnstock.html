@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>预警库存管理</title>
+    <link rel="shortcut icon" href="/i/css/img/favicon.ico" />
+    <link rel="stylesheet" href="/i/css/manage/pure.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/tree.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/dialog.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/contextmenu.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/formdata.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/table.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/iconfont/iconfont.css" type="text/css"/>
+</head>
+
+<body>
+<div class="default-main default-top">
+    <div class="main-wrapper">
+        <div class="layout-bd em-left">
+            <div id="trees"></div>
+        </div>
+        <div class="layout-bd middle">
+            <div id="tbl"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/i/js/handlebars.js"></script>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/table.js"></script>
+<script type="text/javascript" src="/i/js/dialog.js"></script>
+<script type="text/javascript" src="/i/js/tree.js"></script>
+<script type="text/javascript" src="/i/js/contextmenu.js"></script>
+<script type="text/javascript" src="/i/js/form.js"></script>
+<script type="text/javascript" src="/i/js/imgup.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script>
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/sc/stock/getextend", true);
+    xhr.send();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            others = eval('('+xhr.responseText+');')
+            trs=[]
+            trs.push([0,"父节点"])
+            for(var i in others.tree) {
+                trs.push([others.tree[i][0],others.tree[i][2],others.tree[i][3],others.tree[i][4],["data-code",others.tree[i][1]]]);
+            }
+            loadtree(trs)
+            loadtbl()
+            t.funcs.loadData.call(t, {
+                qseq: -1, //id
+                qverb: 'g',// >
+                qpt: -1,  //-1
+                oseq: 20,
+                odir:"a"
+            })
+            addBarcodeSelect()
+            addOtherTree ()
+        }
+    }
+    function loadtree(treedata){
+        var trs=new _e["tree"]()
+        var event=[{e:"click",func:function () { //需要绑定的函数，绑定tbl
+            t.funcs.loadData.call(t,{
+                qseq:17, //数组中下标
+                qverb:'k',// = 条件
+                qpt:this.getAttribute("data-code"),//值
+                oseq: 20,
+                odir:"a"
+            })
+        }, is_leaf:1}]
+        trs.init("#trees",treedata,1,"TR",event)    //创建树
+    }
+
+    function loadtbl(){
+        coldefs = [ { seq:1,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){return "<b>"+item+"</b>"},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable:true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title:"品名", // 列标题
+            visible:true, //是否可见
+
+        },{ seq:0,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){ return item},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable:true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title:"序号", // 列标题
+            visible:true, //是否可见
+            checkall:false,// 是否可全选
+            name:"id",//和后端对应，FormData里面的key，后端解析时要一致
+            type:-1,
+            data:[]//为select时，这里为需要传入的数据,others里面  如商品，这里应该为商品种类对应的id和name   参考下面种类列
+
+        }, { seq:20,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){
+                if(item.length>3) return "<img src=' http://od35wia0b.bkt.clouddn.com/"+item+"?imageMogr2/thumbnail/80x80!' />"
+                return "<b>"+item+"</b>"
+            },// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            title:"图片", // 列标题
+            visible:true, //是否可见
+
+        },{ seq:17,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){return item},
+            title:"种类",
+            visible:true,
+        },{ seq:19,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){return "<b>"+item+"</b>"},
+            sortable:true,
+            retrievable: true,
+            title:"条码",
+            visible:true,
+        },{ seq:15,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){return "<b>"+item+"</b>"},// 这里render是function，它可以组合或变换当前数据行，然后进行显示},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            title:"规格", // 列标题
+            visible:true, //是否可见
+        }, { seq:14,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){return "<b>"+item+"</b>"},// 这里render是function，它可以组合或变换当前数据行，然后进行显示},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            title:"单位", // 列标题
+            visible:true, //是否可见
+        }, { seq:7,
+            render:function(item){return "<b>"+(item/100).toFixed(2)+"</b>"},
+            sortable:true,
+            title:"零售价",
+            visible:true,
+            name:"price",
+            type:0,
+            data:[]
+        }, { seq:2,
+            render:function(item){return "<b>"+item+"</b>"},
+            sortable:true,
+            retrievable: true,
+            title:"库存",
+            visible:true,
+        },{ seq:11,
+            render:function(item){return "<b>"+item+"</b>"},
+            sortable:true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title:"预警库存",
+            visible:true,
+        },{ seq:21,
+            render:function(item){
+                var data=item.split(" ")[0]
+                if(data=="2088-08-08")  return "<b></b>"
+                return "<b>"+data+"</b>"
+            },
+            title:"过期时间",
+            visible:true,
+        },{ seq:22,
+            render:function(item){return "<b>"+item+"天</b>"},
+            title:"提前预警",
+            visible:true,
+        }, { seq:3,
+            render:function(item){
+                if (item==1) return "<b>在售</b>"
+                return "<b></b>"},
+            title:"销售状态",
+            visible:true
+        }, { seq:9,
+            render:function(item){
+                if (item==1) return "<b>商城</b>"
+                return "<b></b>"},
+            title:"线上",
+            visible:true
+        }
+        ]
+
+        t = new _e["table"]()
+        row_actions =[{cls:"doerow",func:function(tbl,rows){
+            var dlg = _e.dialog({id:"dlgRel",width:"500px",
+                title:"配置"+tbl.data[rows][1]+"的过期预警",
+                mainBody:'<form class="pure-form pure-form-stacked"> ' +
+                '<fieldset> ' +
+                '<h5>过期时间:</h5><input type="date" id="expirationtime">' +
+                '<h5>提前预警天数:</h5><input type="text" placeholder="为0默认不提醒" id="warntime"> ' +
+                '<label for="remember"> ' +
+                '</label> ' +
+                '</fieldset> ' +
+                '</form>',
+                actions:[{id:"btn",title:"提交",func:function(){
+                    var expirationtime=_e.dateToInt(dlg.querySelector("#expirationtime").value)
+                    var warntime=Number(dlg.querySelector("#warntime").value)
+                    if(isNaN(warntime)){
+                        _e.msgBox({msg:"请填写正确的天数"})
+                        return
+                    }
+                    if(dlg.querySelector("#expirationtime").value==tody){
+                        if(!window.confirm('过期时间为当天,确定要提交吗？')) return
+                    }
+                    var fd1 = new FormData(),xhr1 = new XMLHttpRequest()
+                    fd1.append("id",tbl.data[rows][0])
+                    fd1.append("expirationtime",expirationtime)
+                    fd1.append("warntime",warntime*86400)
+                    xhr1.open("POST","/sc/warnstock/updatetime"+_e["jurisdiction"](),true)
+                    xhr1.send(fd1)
+                    xhr1.onreadystatechange = function(){
+                        if (xhr1.readyState==4 && xhr1.status==200){
+                            var ddd = eval('('+xhr1.responseText+');')
+                            _e["msgBox"]({
+                                msg: ddd.msg,
+                                className: ddd.res==-1 ? "error":"success",
+                                timeout:3000
+                            })
+                            if(ddd.res==0){
+                                t.funcs.loadData.call(t, {
+                                    qseq: -1, //id
+                                    qverb: 'g',// >
+                                    qpt: -1,  //-1
+                                    oseq: 20,
+                                    odir:"a"
+                                })
+                                dlg.parentNode.removeChild(dlg)
+                            }
+                        }
+                    }
+                }}]})
+            var myDate = new Date();
+            var tody=myDate.toLocaleDateString();
+            dlg.show()
+            var fd = new FormData(),xhr = new XMLHttpRequest()
+            fd.append("id",tbl.data[rows][0])
+            xhr.open("POST","/sc/warnstock/getbystock",true)
+            xhr.send(fd)
+            xhr.onreadystatechange = function(){
+                if (xhr.readyState==4 && xhr.status==200){
+                    var d = eval('('+xhr.responseText+');')
+                    if(d.res==-1) {
+                        _e["msgBox"]({msg: d.msg})
+                        return
+                    }
+
+                    if(d.warnstock[2]==0) {
+                        dlg.querySelector("#expirationtime").value=tody
+                    }
+                    else {
+                        dlg.querySelector("#warntime").value= d.warnstock[2]
+                        dlg.querySelector("#expirationtime").value= d.warnstock[1].split(" ")[0]
+                    }
+                }
+            }
+        },title:"过期预警配置"},
+            {cls:"doerow",func:function(tbl,rows){
+                var dlg = _e.dialog({id:"dlgRel",width:"500px",
+                    title:"配置"+tbl.data[rows][1]+"的库存商品",
+                    mainBody:'<h2>设置为-1默认取消提醒</h2>'+
+                    '<span>预警库存:</span><input type="number" placeholder="" id="warnstock"><span>'+tbl.data[rows][14]+'</span>' ,
+                    actions:[{id:"btn",title:"提交",func:function(){
+                        var warnstock=Number(dlg.querySelector("#warnstock").value)
+                        var fd1 = new FormData(),xhr1 = new XMLHttpRequest()
+                        fd1.append("id",tbl.data[rows][0])
+                        fd1.append("warnstock",warnstock)
+                        xhr1.open("POST","/sc/warnstock/updateamount"+_e["jurisdiction"](),true)
+                        xhr1.send(fd1)
+                        xhr1.onreadystatechange = function(){
+                            if (xhr1.readyState==4 && xhr1.status==200){
+                                var ddd = eval('('+xhr1.responseText+');')
+                                _e["msgBox"]({
+                                    msg: ddd.msg,
+                                    className: ddd.res==-1 ? "error":"success",
+                                    timeout:3000
+                                })
+                                if(ddd.res==0){
+                                    t.funcs.loadData.call(t, {
+                                        qseq: -1, //id
+                                        qverb: 'g',// >
+                                        qpt: -1,  //-1
+                                        oseq: 20,
+                                        odir:"a"
+                                    })
+                                    dlg.parentNode.removeChild(dlg)
+                                }
+                            }
+                        }
+                    }}]})
+                dlg.querySelector("#warnstock").value = tbl.data[rows][11]
+                dlg.show()
+              /*  var warnstock=Number(prompt("请输入预警库存?",tbl.data[rows][11]))
+                if(isNaN(warnstock)){
+                    _e.msgBox({msg:"请输入数字"})
+                    return
+                }
+                var fd1 = new FormData(),xhr1 = new XMLHttpRequest()
+                fd1.append("id",tbl.data[rows][0])
+                fd1.append("warnstock",warnstock)
+                xhr1.open("POST","/sc/stock/update"+_e["jurisdiction"](),true)
+                xhr1.send(fd1)
+                xhr1.onreadystatechange = function(){
+                    if (xhr1.readyState==4 && xhr1.status==200){
+                        var ddd = eval('('+xhr1.responseText+');')
+                        _e["msgBox"]({
+                            msg: ddd.msg,
+                            className: ddd.res==-1 ? "error":"success",
+                            timeout:3000
+                        })
+                        if(ddd.res==0){
+                            t.funcs.loadData.call(t, {
+                                qseq: -1, //id
+                                qverb: 'g',// >
+                                qpt: -1,  //-1
+                                oseq: 20,
+                                odir:"a"
+                            })
+                        }
+                    }
+                }*/
+            },title:"库存预警配置"}]
+        rows_actions = []
+        ext_row = function(rows,i){
+            return "this is row "+i
+        }
+        t.funcs.init.call(t,"tbl",
+                coldefs,row_actions,rows_actions,"table","__THE__TABLE__",ext_row,"/sc/stock/get"+_e["jurisdiction"]())
+        var tblDom=document.querySelector("#tbl")
+        var tbl_head = document.querySelector("#tbl").querySelector("thead")
+        tbl_head.querySelector("#trtime").parentNode.removeChild( tbl_head.querySelector("#trtime"))
+    }
+
+    function addBarcodeSelect (){
+      var thead_td=document.querySelector("#tbl").querySelector("#btnResetQc").parentNode
+      var inputs = document.createElement("input")
+      var buttons = document.createElement("button")
+      inputs.setAttribute("type","text")
+      inputs.setAttribute("id","SltBarcode")
+      inputs.setAttribute("placeholder","条形码")
+      buttons.innerHTML="查询"
+      buttons.id="btnBarcode"
+      thead_td.appendChild(inputs)
+      thead_td.appendChild(buttons)
+      _e.bind("#btnBarcode","click",loadBarcode,thead_td)
+      _e.bind("#SltBarcode","change",loadBarcode,thead_td)
+      function loadBarcode(){
+        var code = document.querySelector("#tbl").querySelector("#SltBarcode").value
+        var  xhr = new XMLHttpRequest()
+        var url = "/sc/stock/getStockIdByCode?code="+code
+        xhr.open("POST" , url, true)
+        xhr.send()
+        xhr.onreadystatechange=function()  {
+            if (xhr.readyState==4 && xhr.status==200){
+                var dat = eval('(' +xhr.responseText+ ');')
+                if(dat.res==-1){
+                  _e["msgBox"]({msg: dat.msg})
+                  return
+                }
+                t.funcs.loadData.call(t, {
+                    qseq: 16, //id
+                    qverb: 'e',// =
+                    qpt: dat.commodity,  //-1
+                    oseq: 16, //顺序的下标
+                    odir:"a" //升序降序
+                })
+
+            }
+        }
+
+      }
+    }
+
+    function addOtherTree (){
+      var tree=document.querySelector("#trees")
+      var ul = document.createElement("ul")
+      ul.setAttribute("id","other_tree")
+      ul.innerHTML='<li data-id="2" class="other task" onclick="taskAll(this)">团购</li>'+
+      '<li data-id="7" class="other task" onclick="taskAll(this)">预购</li>'+
+      '<li data-id="8" class="other task" onclick="taskAll(this)">代购</li>'+
+      '<li data-id="9" class="other task" onclick="taskAll(this)">特价</li>'+
+      '<li data-id="4" class="other task" onclick="taskAll(this)">组合商品</li>'
+      //tree.parentNode.insertBefore(div,tree)
+      tree.insertBefore(ul,tree.children[0])
+      _e.bindAll(".other","click",loadOther,tree.parentNode)
+      function loadOther(){
+            t.funcs.loadData.call(t, {
+                qseq: 22, //id
+                qverb: 'e',// =
+                qpt: this.getAttribute("data-id"),  //-1
+                oseq: 16, //顺序的下标
+                odir:"a" //升序降序
+            })
+        }
+    }
+
+
+</script>
+</body>
+</html>

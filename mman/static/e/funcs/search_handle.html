@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>search && handle</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="/i/dist/css/zui.min.css">
+    <link rel="shortcut icon" href="http://static-1.shopten.cn/images/favicon.ico" type="image/x-icon" />
+
+</head>
+<body>
+  <div id="searchbox">
+    <div class="">
+      <input type="text" name="pattern" id="pattern" value="">
+      <button type="button" id="btnSearch">查找</button>
+    </div>
+    <table>
+      <thead>
+        <th>
+          编码
+        </th>
+        <th>
+          品名
+        </th>
+        <th>
+          规格
+        </th>
+        <th>
+          数量
+        </th>
+
+      </thead>
+      <tbody id="tbResult">
+
+      </tbody>
+    </table>
+    <div class="">
+      <button type="button" id="btnSubmit">提交</button>
+
+    </div>
+
+
+  </div>
+
+
+
+
+
+</body>
+
+ <script type="text/javascript">
+ var searchbox = document.querySelector('#searchbox')
+ var data = [[1,"哈密瓜","个"],[2,"水蜜桃","斤"]]
+ var tbody = searchbox.querySelector('#tbResult')
+ var searchToAppend = function (){
+
+   for(var i=0; i<data.length;i++){
+     var tr = document.createElement("tr")
+     tr.innerHTML = '<td>'+data[i][0]+'</td>'+
+     '<td>'+data[i][1]+'</td>'+
+     '<td>'+data[i][2]+'</td>'+
+     '<td><input type="text" value="0" id="'+i+'"></td>'
+     tbody.appendChild(tr)
+   }
+
+ }
+ var submit = function(){
+   var cmds =tbody.querySelectorAll('input')
+   alert(cmds.length)
+   for(var i=0; i<cmds.length;i++){
+     alert(parseInt(cmds[i].value,10))
+
+     if(parseInt(cmds[i].value,10)>0){
+         alert(data[cmds[i].id][1])
+
+     }
+
+   }
+ }
+ searchbox.querySelector('#btnSearch').onclick = searchToAppend
+ searchbox.querySelector('#btnSubmit').onclick = submit
+
+
+
+
+</script>
+</html>

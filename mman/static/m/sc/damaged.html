@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>报损</title>
+    <link rel="stylesheet" href="/i/css/manage/pure.css" />
+    <link rel="stylesheet" href="/i/css/iconfont/iconfont.css" />
+    <link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" />
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/dialog.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/tree.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/table.css" type="text/css"/>
+    <style type="text/css">
+        /*.table{*/
+            /*height: 100%;*/
+        /*}*/
+        #dlgData th,#dlgData td,.plan th,.plan td{
+            text-align: center;
+        }
+        .head-wrapper{
+            width: 100%;
+            text-align: center;
+            height: 5%;
+            margin:auto;
+        }
+        .main-wrapper{
+            display: flex;
+            height: 92%;
+            background-color: #EEEEEE;
+        }
+        .main-tree{
+            width: 13%;
+            overflow-y: auto;
+        }
+        .main-tbl{
+            width: 47%;
+            overflow-y: auto;
+            border-right: 1px solid #FFFFFF;
+        }
+        .main-right{
+            width: 38%;
+        }
+        /*.main-right-head{*/
+            /*height:20%;*/
+            /*padding-left:10px;*/
+            /*border-bottom: 1px solid #FFFFFF;*/
+        /*}*/
+    </style>
+</head>
+
+<body>
+<div class="head-wrapper"><h3>报损</h3></div>
+<div class="main-wrapper">
+    <div class="main-tree">
+        <div id="trees"></div>
+    </div>
+    <div class="main-tbl">
+        <div id="tbl" class="tbl"></div>
+    </div>
+
+    <div class="main-right" style="padding-left: 5px;">
+        <div style="height:75%;">
+            <div style="height: 20%;">
+                <div style="text-align: center;"><h2>商品列表</h2></div>
+                <span>计划id:<i id="orderForm"></i></span><br/>
+                <span>报损原因:<input type="text" id="orderMemo" value=""/></span>
+            </div>
+            <div style="overflow-y: auto;height: 70%;width:100%;margin-top: 15px;">
+                <table class="plan" style="width:100%;" border="1">
+                    <thead>
+                    <tr>
+                        <th>商品名</th>
+                        <th>规格</th>
+                        <th>报损数量</th>
+                        <th>补进数量</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="commodityList"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div style="height: 5%;background-color: #EEEEEE;">
+            <button id="planCommodity" type="button" class="pure-button pure-button-primary" style="float: right;margin: 3px 40px 0 0 ;">提交</button>
+        </div>
+    </div>
+
+</div>
+
+</body>
+<script type="text/javascript" src="/i/js/handlebars.js"></script>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/table.js"></script>
+<script type="text/javascript" src="/i/js/dialog.js"></script>
+<script type="text/javascript" src="/i/js/tree.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script type="text/javascript" src="/i/js/xml.js"></script>
+<script type="text/javascript" src="/m/sc/js/damaged.js"></script>
+</html>

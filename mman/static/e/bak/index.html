@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Page title -->
+    <title>10号便利店 管理平台</title>
+
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!--<link rel="shortcut icon" type="image/ico" href="favicon.ico" />-->
+    <link rel="stylesheet" href="/include/dist/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/include/dist/css/metisMenu.css">
+    <link rel="stylesheet" href="/include/dist/css/animate.css">
+    <link rel="stylesheet" href="/include/dist/css/zui.min.css">
+
+    <!-- App styles -->
+
+    <link rel="stylesheet" href="/include/assets/css/style.css">
+
+</head>
+<body>
+
+
+<!--[if lt IE 9]>
+<p class="alert alert-danger">您的浏览器版本<strong>过低</strong>,后台管理平台不支持低版本浏览器。推荐使用<a
+        href="http://rj.baidu.com/soft/detail/14744.html">谷歌浏览器</a></p>
+<![endif]-->
+
+<!-- Header -->
+<div id="header">
+
+    <div id="logo" class="light-version">
+        <span>
+            10便利店
+        </span>
+    </div>
+    <nav role="navigation">
+        <div class="header-link hide-menu"><i class="fa fa-bars"></i></div>
+        <div class="small-logo">
+            <img src="/include/assets/images/logo.png"  width="30px" alt="logo">
+        </div>
+        <div class="mobile-menu">
+            <button type="button" class="navbar-toggle mobile-menu-toggle"   data-toggle="collapse" data-target="#mobile-collapse">
+                <i class="fa fa-chevron-down"></i>
+            </button>
+            <div class="collapse  mobile-navbar " id="mobile-collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a class="" href="/manage/signin.html">登录</a>
+                    </li>
+                    <li>
+                        <a class="" href="/manage/signin.html">退出</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="navbar-right">
+            <ul class="nav navbar-nav no-borders">
+                <li class="dropdown">
+                    <a href="/manage/signin.html">
+                        <i class="fa fa-sign-in"></i>退出
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<!-- Navigation -->
+<aside id="menu">
+    <div id="navigation">
+        <div class="profile-picture">
+            <a href="index.html">
+                <img src="/include/assets/images/c3.png" class="img-circle m-b" alt="logo">
+            </a>
+
+            <div class="stats-label text-color">
+                <span class="font-extra-bold font-uppercase">Admin</span>
+
+                <div class="dropdown">
+                    <a role="button" data-toggle="dropdown" data-target="#" >
+                        操作
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu animated fadeInRight" role="menu" aria-labelledby="dropdownMenu1">
+                        <li>
+                            <a href="#">编辑</a>
+                        </li>
+                        <li>
+                            <a href="#">删除</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">修改</a>
+                        </li>
+                    </ul>
+                </div>
+
+
+            </div>
+        </div>
+        <ul class="nav" id="side-menu">
+
+
+        </ul>
+    </div>
+</aside>
+
+<!-- Main Wrapper -->
+<div id="wrapper" style="min-height: 1018px;">
+
+    <div class="content animate-panel">
+        <div class="row">
+            <div class="col-lg-12 m-t-md">
+                <h2>
+                    10号店
+                </h2>
+
+                <p>
+                   <table>
+                   	<thead>
+                   		<tr><th>kd</th></tr>
+                   		
+                   	</thead>
+                   	<tbody>
+                   		
+                   	</tbody>
+                   	<tfoot><tr><td>sadkffoot</td></tr></tfoot>
+                   </table>
+                </p>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- Footer-->
+    <footer class="footer">
+        <span class="pull-right">
+            10号便利店
+        </span>
+        深圳大虾网络科技有限公司 2015-2020
+    </footer>
+
+</div>
+
+
+<script src="/include/dist/js/jq.js"></script>
+<script src="/include/dist/js/metisMenu.min.js"></script>
+<script src="/include/dist/js/zui.min.js"></script>
+<script src="/include/assets/js/manage/menu.js"></script>
+<script src="/include/assets/js/manage/homer.js"></script>
+<script type="text/javascript">
+var msg = new $.zui.Messager('消息内容', {placement: 'bottom'});
+// 使用window对象
+// var msg = new $.zui.Messager('消息内容', {placement: 'bottom'});
+
+// 显示消息
+msg.show();
+</script>
+
+
+
+</body>
+</html>

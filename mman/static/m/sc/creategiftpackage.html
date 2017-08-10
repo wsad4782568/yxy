@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>新增买送方式</title>
+        <link rel="shortcut icon" href="/i/css/img/favicon.ico" />
+        <link rel="stylesheet" href="/i/css/manage/pure.css" type="text/css"/>
+        <link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" type="text/css"/>
+        <link rel="stylesheet" href="/i/css/manage/dialog.css" type="text/css"/>
+        <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+        <link rel="stylesheet" href="/i/css/iconfont/iconfont.css" type="text/css"/>
+        <link rel="stylesheet" href="css/promotion.css" type="text/css"/>
+    </head>
+<body>
+<div class="default-main default-top">
+    <div class="main-wrapper">
+        <div class="layout-bd em-left creategiftpakageleft" style="width: 47%">
+            <h3 class="adddetails" data-id="1">买送查询：</h3>
+            <div class="middle-bottom">
+                <div id="tbl2"></div>
+            </div>
+        </div>
+
+        <div class="layout-bd middle creategiftpakageright" style="left: 47%">
+            <div class="middle-main" >
+                <h3 class="adddetails" data-id="1">买送编辑：</h3>
+                <div class="right-modile">
+                    <div class="right-modile-bottom">
+                        <div>
+                            <div  style="display: flex">
+                                <a>名称:</a>
+                                <input class="giftname" type="text">
+                            </div>
+                            <div  style="display: flex">
+                                <a>介绍:</a><input type="text" class="giftinfo">
+                            </div>
+                            <div style="display: flex">
+                                <div style="display: flex">
+                                    <a> 买：</a><input onkeyup="this.value=this.value.replace(/[^\d]/g,'') " placeholder="请输入数字" class="giftbuy" type="text">
+                                </div>
+                                <div style="display: flex;">
+                                    <a> 送：</a><input onkeyup="this.value=this.value.replace(/[^\d]/g,'') " placeholder="请输入数字" class="giftsale" type="text">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div id="tbl"></div>
+                        <div class="goodsidname">
+                        </div>
+                        <button type="submit" class="pure-button pure-button-primary submitgoods">应用</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/i/js/handlebars.js"></script>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/table.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script type="text/javascript" src="js/creategiftpackage.js"></script>
+</body>
+</html>

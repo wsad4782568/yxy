@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>单位转化查看</title>
+		<link rel="shortcut icon" href="/i/css/img/favicon.ico" />
+		<link rel="stylesheet" href="/i/css/manage/pure.css" type="text/css"/>
+		<link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" type="text/css"/>
+		<link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+		<link rel="stylesheet" href="/i/css/manage/tree.css" type="text/css"/>
+		<link rel="stylesheet" href="/i/css/manage/dialog.css" type="text/css"/>
+		<link rel="stylesheet" href="/i/css/manage/contextmenu.css" type="text/css"/>
+		<link rel="stylesheet" href="/i/css/manage/formdata.css" type="text/css"/>
+		<link rel="stylesheet" href="/i/css/manage/table.css" type="text/css"/>
+		<link rel="stylesheet" href="/i/css/iconfont/iconfont.css" type="text/css"/>
+	</head>
+	<body>
+	<div class="default-main default-top">
+		<div class="main-wrapper">
+			<div class="layout-bd em-left">
+				<div id="trees"></div>
+			</div>
+			<div class="layout-bd middle">
+				<div id="tbl"></div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="/i/js/handlebars.js"></script>
+	<script type="text/javascript" src="/i/js/_e.js"></script>
+	<script type="text/javascript" src="/i/js/table.js"></script>
+	<script type="text/javascript" src="/i/js/dialog.js"></script>
+	<script type="text/javascript" src="/i/js/tree.js"></script>
+	<script type="text/javascript" src="/i/js/contextmenu.js"></script>
+	<script type="text/javascript" src="/i/js/form.js"></script>
+	<script type="text/javascript" src="/i/js/imgup.js"></script>
+	<script type="text/javascript" src="/i/js/msgbox.js"></script>
+	<script>
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "/sc/stock/getextend", true);
+  xhr.send();
+  xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+          others = eval('('+xhr.responseText+');')
+          trs=[]
+          trs.push([0,"父节点"])
+          for(var i in others.tree) {
+              trs.push([others.tree[i][0],others.tree[i][2],others.tree[i][3],others.tree[i][4],["data-code",others.tree[i][1]]]);
+          }
+          loadtree(trs)
+          loadtbl()
+          t.funcs.loadData.call(t, {
+              qseq: 0, //id
+              qverb: 'g',// >
+              qpt: -1,  //-1
+              oseq: 12, //顺序的下标
+              odir:"d" //升序降序
+          })
+          addOtherTree()
+      }
+  }
+  function loadtree(treedata){
+      var trs=new _e["tree"]()
+      var event=[{e:"click",func:function () { //需要绑定的函数，绑定tbl
+          t.funcs.loadData.call(t,{
+              qseq:3, //数组中下标
+              qverb:'k',// = 条件
+              qpt:this.getAttribute("data-code") //值
+          })
+      }, is_leaf:1}]
+      trs.init("#trees",treedata,1,"TR",event)    //创建树
+  }
+
+  function loadtbl(){
+      coldefs = [ { seq:1,//在数据[[],[]]中的位置rows[i][seq] 返回值
+          render:function(item){return "<b>"+item+"</b>"},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+          sortable:true, // 可排序 function
+          retrievable: true, // 可检索 function
+          title:"品名", // 列标题
+          visible:true, //是否可见
+
+      },{ seq:2,//在数据[[],[]]中的位置rows[i][seq] 返回值
+          render:function(item){ return item},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+          sortable:true, // 可排序 function
+          retrievable: true, // 可检索 function
+          title:"流水号", // 列标题
+          visible:true, //是否可见
+          name:"id",//和后端对应，FormData里面的key，后端解析时要一致
+          type:-1,
+          data:[]//为select时，这里为需要传入的数据,others里面  如商品，这里应该为商品种类对应的id和name   参考下面种类列
+
+      },{ seq:3,
+          render:function(item){
+						for(var i =0;i<others.tree.length;i++){
+								if(others.tree[i][1]==item){
+										return "<b>" + others.tree[i][2] + "</b>"}
+						}
+					},
+          sortable:false,
+          retrievable: false,
+          title:"种类",
+          visible:true,
+      },{ seq:18,//在数据[[],[]]中的位置rows[i][seq] 返回值
+          render:function(item){
+            var codes=item.split(",")
+            var barcode = ''
+            for(var i = 0 ;i < codes.length-1;i++){
+                barcode+='<i>'+codes[i]+'</i><br>'
+            }
+            return "<b>"+barcode+"</b>"
+          },
+          title:"条码",
+          visible:true,
+      },{ seq:5,//在数据[[],[]]中的位置rows[i][seq] 返回值
+          render:function(item){return "<b>"+item+"</b>"},// 这里render是function，它可以组合或变换当前数据行，然后进行显示},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+          sortable:true, // 可排序 function
+          retrievable: true,
+          title:"规格", // 列标题
+          visible:true, //是否可见
+      }, { seq:4,//在数据[[],[]]中的位置rows[i][seq] 返回值
+          render:function(item){return "<b>"+item+"</b>"},// 这里render是function，它可以组合或变换当前数据行，然后进行显示},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+          sortable:true, // 可排序 function
+          retrievable: true, // 可检索 function
+          title:"单位", // 列标题
+          visible:true, //是否可见
+      }, { seq:10,
+          render:function(item){return "<b>"+(item/100).toFixed(2)+"</b>"},
+          sortable:true,
+          title:"进价",
+          visible:true,
+          name:"price",
+          type:0,
+          data:[]
+      }, { seq:11,
+          render:function(item){return "<b>"+(item/100).toFixed(2)+"</b>"},
+          sortable:true,
+          title:"零售价",
+          visible:true,
+          name:"price",
+          type:0,
+          data:[]
+      }, { seq:12,
+          render:function(item){return "<b>"+item+"</b>"},
+          title:"操作时间",
+          visible:true,
+      }, { seq:13,
+          render:function(item){
+						if(item == 11) return "<b>减少</b>"
+						if(item == 10) return "<b>增加</b>"
+						return "<b>未知</b>"
+					},
+          title:"类型",
+          visible:true,
+      }, { seq:14,
+          render:function(item){return "<b>"+item+"</b>"},
+          title:"说明",
+          visible:true,
+      }, { seq:15,
+          render:function(item){return "<b>"+item+"</b>"},
+          title:"操作人",
+          sortable:true,
+          retrievable: true,
+          visible:true,
+      },{ seq:16,
+          render:function(item){return "<b>"+item+"</b>"},
+          sortable:true,
+          retrievable: true,
+          title:"修改库存数",
+          visible:true,
+      },  { seq:17,
+          render:function(item){return "<b>"+item+"</b>"},
+          title:"审核人",
+          sortable:true,
+          retrievable: true,
+          visible:true,
+      }
+      ]
+      t = new _e["table"]()
+      row_actions =[]
+      rows_actions = []
+      ext_row = function(rows,i){
+          return "this is row "+i
+      }
+      t.funcs.init.call(t,"tbl",
+          coldefs,row_actions,rows_actions,"table","__THE__TABLE__",ext_row,"/sc/stock/getsplitstockchange")
+      var tblDom=document.querySelector("#tbl")
+      var tbl_head = document.querySelector("#tbl").querySelector("thead")
+			var trtime = tbl_head.querySelector("#trtime")
+			var trSearch = document.createElement("tr") //添加快捷键
+			trSearch.innerHTML = '<td><input type="button" value="今天" onclick="dateSearch(1)"/></td>'+
+				'<td><input type="button" value="近三天" onclick="dateSearch(3)"/></td>'+
+				'<td><input type="button" value="近一周" onclick="dateSearch(7)"/></td>'+
+				'<td><input type="button" value="近一个月" onclick="dateSearch(30)"/></td>'
+			trtime.parentNode.insertBefore(trSearch,trtime)
+  }
+  function addOtherTree (){
+    var tree=document.querySelector("#trees")
+    var ul = document.createElement("ul")
+    ul.setAttribute("id","other_tree")
+    ul.innerHTML='<li data-id="2" class="other task" onclick="taskAll(this)">团购</li>'+
+    '<li data-id="7" class="other task" onclick="taskAll(this)">预定</li>'+
+    '<li data-id="8" class="other task" onclick="taskAll(this)">代购</li>'+
+    '<li data-id="9" class="other task" onclick="taskAll(this)">特价</li>'+
+    '<li data-id="4" class="other task" onclick="taskAll(this)">组合套餐</li>'
+    //tree.parentNode.insertBefore(div,tree)
+    tree.insertBefore(ul,tree.children[0])
+    _e.bindAll(".other","click",loadOther,tree.parentNode)
+    function loadOther(){
+          t.funcs.loadData.call(t, {
+              qseq: 6, //id
+              qverb: 'e',// =
+              qpt: this.getAttribute("data-id"),  //-1
+              oseq: 12, //顺序的下标
+              odir:"d" //升序降序
+          })
+      }
+  }
+
+	function dateSearch(e){   //时间快捷键
+		var tody=_e["CurentTime"]()
+		tody=_e["addDate"](tody,1)
+		var times=document.querySelector("#tbl").querySelectorAll(".cqtime")
+			times[0].value=_e["addDate"](tody,0-e)
+			times[1].value=tody
+			t.funcs.reloadOption.call(t)
+			t.funcs.loadData.call(t, {
+					qseq: 0, //id
+					qverb: 'g',// >
+					qpt: -1,  //-1
+					oseq: 12, //顺序的下标
+					odir:"d" //升序降序
+			})
+	}
+  </script>
+</body>
+</html>

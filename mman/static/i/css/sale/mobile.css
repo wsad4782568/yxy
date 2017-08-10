@@ -1,0 +1,747 @@
+html {font-family: sans-serif; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; -webkit-touch-callout:none; -webkit-user-select:auto;}
+.wrap{width:100%;height:100%;}
+.header{position:fixed; box-shadow:0px 1px 0px rgba(0,0,0,0.08); width:100%; top:0; left:0; z-index:999;}
+.footer{position:fixed; box-shadow:0px -1px 10px rgba(0,0,0,0.2); width:100%; bottom:0; left:0; z-index:999;}
+.main{overflow:auto; -webkit-overflow-scrolling:touch; padding:48px 0;}
+/* ---------------------------------------------------
+   flex：定义布局为盒模型
+   flex-Y：盒模型垂直布局
+   flex-1：子元素占据剩余的空间
+   flex-align-center：子元素垂直居中
+   flex-pack-center：子元素水平居中
+   flex-pack-justify：子元素两端对齐
+   兼容性：ios 4+、android 2.3+、winphone8+
+   --------------------------------------------------- */
+.flex{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;}
+.flex-Y{-webkit-box-orient:vertical;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;}
+.flex-1{-webkit-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1;}
+.flex-align-center{-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center;}
+.flex-pack-center{-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;}
+.flex-pack-justify{-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;}
+
+body{background-color:#FFF; margin:0px; padding:0px; color:#333; overflow-x:hidden; font-family:Hiragino Sans GB,Microsoft YaHei,"微软雅黑",tahoma,arial,simhei,"宋体";}
+img{border:none;}
+li{list-style-type:none;}
+ul{padding:0; margin:0;}
+p{margin:0; padding:0;}
+h1, h2, h3, h4, h5, h6{margin:0; padding:0; font-weight:normal;}
+input,textarea,button{outline:none; color:#666; font-family:Hiragino Sans GB,Microsoft YaHei,"微软雅黑",tahoma,arial,simhei,"宋体"; -webkit-appearance:none; /*去除input默认样式*/ border-radius:0;}
+button{border:none;}
+a{text-decoration:none;}
+
+a,button,input,textarea,div,ul,li,p,span,img,h1,h2,h3,h4,h5,h6{-webkit-tap-highlight-color:rgba(0,0,0,0);}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:#CCC; font-size:14px;}
+input:focus::-webkit-input-placeholder {color:#DDD;}
+
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:#CCC; font-size:14px;}
+input:focus:-moz-placeholder {color:#DDD;}
+
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:#CCC; font-size:14px;}
+input:focus::-moz-placeholder {color:#DDD;}
+
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:#CCC; font-size:14px;}
+input:focus:-ms-input-placeholder {color:#DDD;}
+
+.ta-center{text-align:center;}
+.ta-left{text-align:left;}
+.ta-right{text-align:right;}
+
+.display-block{display:block;}
+.display-none{display:none;}
+
+.opacity-0{opacity:0;}
+
+.p-5-0-10-0{padding:5px 0 10px 0;}
+.p-15{padding:15px;}
+.p-20{padding:20px;}
+
+.fontcolor-FFFFFF{color:#FFF;}
+.fontcolor-333333{color:#333;}
+.fontcolor-666666{color:#666;}
+.fontcolor-AAAAAA{color:#AAA;}
+
+.bgc-FFF100{background-color:#FFF100;}
+.bgc-CCCCCC{background-color:#CCCCCC;}
+.bgc-EEEEEE{background-color:#EEEEEE;}
+.bgc-FAFAFA{background-color:#FAFAFA;}
+.bgc-FFFFFF{background-color:#FFFFFF;}
+
+.bgc-FF7A4D{background-color:#FF7A4D;}
+.bgc-15DD8D{background-color:#15DD8D;}
+.bgc-F04253{background-color:#F04253;}
+.bgc-12C994{background-color:#12C994;}
+.bgc-999999{background-color:#999999;}
+.bgc-666666{background-color:#666666;}
+
+.bgc-FFF100{background-color:#FFF100;}
+.bgc-17D7B0{background-color:#17D7B0;}
+.bgc-DDDDDD{background-color:#DDDDDD;}
+.bgc-6CB6FF{background-color:#6CB6FF;}
+.bgc-FFC11E{background-color:#FFC11E;}
+.bgc-F38681{background-color:#F38681;}
+.bgc-F06962{background-color:#F06962;}
+
+.b-shadow-010-08{box-shadow:0px 1px 0px rgba(0,0,0,0.08);}
+.b-shadow-0-10-08{box-shadow:0px -1px 0px rgba(0,0,0,0.08);}
+.b-shadow-010-08-inset{box-shadow:0px 1px 0px rgba(0,0,0,0.08) inset;}
+
+.border-r-1-s-EEEEEE{border-right:1px solid #EEE;}
+
+.max-w-100p{max-width:100%;}
+.max-w-1000{max-width:1000px;}
+.max-w-800{max-width:800px;}
+.max-w-600{max-width:600px;}
+.max-w-400{max-width:400px;}
+.max-w-300{max-width:300px;}
+.max-w-200{max-width:200px;}
+.max-w-100{max-width:100px;}
+
+.headerMenu{width:auto; height:48px; line-height:48px; color:#000;}
+.headerMenu li{width:16px; height:48px; line-height:48px; padding:0 15px;}
+.headerMenu h1{font-size:14px; text-align:center; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.headerMenu div{margin:0 6px 0 15px;}
+.headerMenu div i{font-size:25px;}
+.headerMenu input{height:20px; border:0; padding:14px 0; text-align:center; font-size:14px;}
+
+.footerMenu{width:auto; height:48px; overflow:hidden;}
+.footerMenu li{text-align:center; font-size:14px; color:#666; line-height:48px; overflow:hidden;}
+.footerMenu li.hover{background-color:#EEE; color:#000;}
+.footerMenu .menus{font-size:15px; color:#999;}
+.footerMenu .tips{font-size:15px; color:#F04253; position:absolute; margin:-5px 0 0 -3px;}
+
+.checkOut{width:100%; height:48px; overflow:hidden; position:fixed; bottom:48px; left:0; z-index:777;}
+.checkOut div{background-color:#666;}
+.checkOut div ul{color:#CCC; font-size:14px; line-height:48px; padding:0 15px;}
+.checkOut div ul span{font-size:18px; color:#FFF;}
+.checkOut div ul b{font-size:12px; color:#CCC; font-weight:normal; margin:0 0 0 5px;}
+.checkOut div li{width:110px;}
+.checkOut div li button{width:100%; height:48px; font-size:14px; color:#FFF;}
+
+.form{width:auto; height:auto;}
+.form li{width:auto; height:45px; border:0px solid #EEE; overflow:hidden; margin:0 0 10px 0; position:relative;}
+.form li input{width:100%; height:25px; line-height:25px; padding:10px 0; font-size:16px; border:0; box-shadow:1px 1px 3px rgba(0,0,0,0.1) inset;}
+.form li input:focus{box-shadow:1px 1px 6px rgba(0,0,0,0.15) inset;}
+.form li p{ width:auto; height:35px; line-height:36px; font-size:12px; color:#FFF; padding:0 10px; margin:5px; position:absolute; right:0; border-radius:1px;}
+.form button{width:100%; height:45px; line-height:45px; border:0; margin:5px 0 0 0; font-size:16px;}
+.form div span{font-size:14px;}
+
+.formTool{width:auto; height:auto;}
+.formTool li{width:100%; height:40px; line-height:40px; font-size:14px; color:#999;}
+.formTool li span{color:#CCC; margin:0 5px 0 10px;}
+.formTool li span i{font-size:14px;}
+
+.tips{width:auto; height:auto;}
+.tips div{margin:15px 0 20px 0;}
+.tips div h1{font-size:18px; text-align:center; margin:0 0 10px 0;}
+.tips div h1 i{font-size:48px;}
+.tips div h2{font-size:16px; color:#666; text-align:center; margin:0 0 5px 0;}
+.tips div h3{font-size:14px; color:#999; text-align:center;}
+
+.addTo{width:auto; height:auto; margin:-8px 0 0 0; padding:0 5px 4px 0;}
+.addTo i{font-size:20px; display:block; margin:10px 10px;}
+.addTo b{font-weight:normal; line-height:40px; font-size:14px; display:block;}
+.addTo .plus{color:#333;}
+.addTo .minus{color:#999;}
+
+.delC{width:auto; height:auto; margin:-10px 0 0 0; padding:0 5px 4px 0;}
+.delC i{font-size:20px; display:block; margin:10px 10px;}
+.delC b{font-weight:normal; line-height:40px; font-size:14px; display:block; color:#999;}
+
+.tipsC{width:auto; height:auto; margin:-10px 0 0 0; padding:0 5px 4px 0;}
+.tipsC i{font-size:20px; display:block; margin:10px 10px;}
+.tipsC b{font-weight:normal; line-height:40px; font-size:14px; display:block; color:#999;}
+
+.copyRight{width:auto; height:auto;}
+.copyRight div{padding:0 0 30px 0;}
+.copyRight h1{font-size:12px; color:#CCC; text-align:center; margin:0 0 2px 0;}
+.copyRight h2{font-size:12px; color:#CCC; text-align:center;}
+
+.topAd{width:auto; height:auto;}
+.topAd li img{width:100%; height:auto;}
+
+.location{width:auto; height:auto;}
+.location div{width:auto; height:30px; line-height:30px; padding:0 10px; background-color:#EEE;}
+.location div ul{margin:0 5px 0 0;}
+.location div ul i{font-size:14px; color:#999;}
+.location div li{font-size:12px; color:#999; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.location div p i{font-size:16px; color:#CCC;}
+
+.typeList{width:auto; height:auto;}
+.typeList div{border-bottom:1px solid #EEE; overflow:hidden;}
+.typeList div ul{width:50%; height:70px; float:left;}
+.typeList div ul p{width:50px; height:50px; line-height:50px; border-radius:100%; margin:10px 15px; text-align:center; color:#FFF;}
+.typeList div ul p i{font-size:26px;}
+.typeList div ul li{margin:10px 0; color:#999; overflow:hidden;}
+.typeList div ul li h1{font-size:16px; margin:5px 0 0 0; color:#333; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.typeList div ul li h2{font-size:12px; margin:-1px 0 0 1px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+
+.topicList{width:auto; height:auto; border-top:4px solid #EEE;}
+.topicList div{width:auto; height:100px; border-top:1px solid #EEE; padding:0 15px;}
+.topicList div ul{width:80px; height:80px; line-height:50px; margin:10px 0;}
+.topicList div ul img{width:80px; height:80px;}
+.topicList div li{margin:10px 15px; color:#999; overflow:hidden;}
+.topicList div li h1{font-size:16px; margin:5px 0 0 0; color:#333; position:relative; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.topicList div li h1 span{font-size:12px; color:#000; padding:0px 3px; margin:0 0 0 5px; position:absolute;}
+.topicList div li h2{font-size:14px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; margin:4px 0 5px 0;}
+.topicList div li h3{font-size:14px; margin:1px 0 0 1px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.topicList div li h3 b{color:#CCC; margin:0 0 0 5px; font-weight:normal; font-size:12px;}
+.topicList div li h3 strong{color:#F04253;}
+.topicList div p{line-height:100px; color:#CCC;}
+
+.goodsType{width:80px; height:auto; background-color:#E6E6E6; overflow:auto; padding:48px 0; -webkit-overflow-scrolling:touch; position:fixed; top:0; left:0; z-index:9;}
+.goodsType ul{width:auto; height:45px; line-height:45px; color:#888; text-align:center; font-size:14px; border-bottom:1px solid #D7D7D7;}
+.goodsType ul.hover{background-color:#F9F9F9; border-bottom:1px solid #EEE; color:#12C994;}
+.goodsType li{width:auto; height:40px; line-height:40px; color:#000; text-align:center; font-size:12px; border-bottom:1px solid #EEE; background-color:#F9F9F9;}
+.goodsType li.hover{background-color:#FFF; border-left:3px solid #12C994; border-right:3px solid #FFF;}
+
+.goodsList{width:auto; height:auto; overflow:auto; -webkit-overflow-scrolling:touch;position: relative;background: white;}
+.goodsList ul{width:auto; height:110px; background-color:#FFF; border-bottom:1px solid #EEE; padding:0 0 0 10px;}
+.goodsList ul img{width:90px; height:90px; margin:10px 0;}
+.goodsList li{width:auto; overflow:hidden; margin:10px 0 0 10px;}
+.goodsList li h1{font-size:14px; margin:3px 10px 0 0; height:40px; line-height:20px; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; text-overflow:ellipsis;}
+.goodsList li h1 span{margin:0 0 0 -6px;}
+.goodsList li h2{font-size:14px; margin:4px 0 0 0; color:#EFA50A; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.goodsList li h2 span{color:#999; margin:0 0 0 5px; font-size:12px;}
+.goodsList li h3{overflow:hidden;}
+.goodsList li h3 p{font-size:12px; color:#CCC; line-height:27px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+
+.goodsListCart{width:auto; height:auto; overflow:auto; -webkit-overflow-scrolling:touch;}
+.goodsListCart ul{width:auto; height:100px; border-bottom:1px solid #EEE; padding:0 0 0 10px;}
+.goodsListCart ul img{width:80px; height:80px; margin:10px 0;}
+.goodsListCart li{width:auto; overflow:hidden; margin:10px 0 0 10px;}
+.goodsListCart li h1{font-size:14px; margin:5px 0 0 0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.goodsListCart li h2{font-size:16px; margin:3px 0 0 0 ; color:#EFA50A; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.goodsListCart li h2 s{color:#CCC; margin:0 0 0 10px;}
+.goodsListCart li h3{overflow:hidden;}
+.goodsListCart li h3 p{font-size:14px; color:#999; line-height:27px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+
+.goodsInfo{width:auto; height:auto;}
+.goodsInfo ul{width:auto; height:auto; margin:5px 5px 15px 5px;}
+.goodsInfo ul img{width:60px; height:60px;}
+.goodsInfo ul li{margin:1px 0 0 15px; overflow:hidden;}
+.goodsInfo ul li h1{font-size:14px; margin:0 0 4px 0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; position:relative;}
+.goodsInfo ul li h2{height:14px; line-height:14px; font-size:14px; color:#EFA50A; margin:2px 0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; position:relative;}
+.goodsInfo ul li h2 i{font-size:12px; margin:0 3px 0 0;}
+.goodsInfo ul li h3{font-size:14px; color:#CCC;}
+.goodsInfo ul li h3 i{font-size:12px; margin:0 3px 0 0;}
+.goodsInfo ul li h3 b{font-weight:normal; color:#FFC926;}
+.goodsInfo ul li h3 strong{font-weight:normal; color:#999;}
+.goodsInfo ul li h4{font-size:12px; color:#CCC; position:relative;}
+.goodsInfo ul li h4 span{color:#999; margin:0 0 0 5px;}
+.goodsInfo ul li h4 div{margin:-23px -10px 0 0; padding:0;}
+
+.goodsSpec{width:auto; height:auto;}
+.goodsSpec li{width:auto; height:40px; line-height:40px; border:1px solid #EEE; text-align:center; font-size:14px; color:#999; margin:0 5px 10px 5px; position:relative;}
+.goodsSpec li i{display:none; position:absolute; left:15px;}
+.goodsSpec li.hover{border:1px solid #F06962; color:#F06962;}
+.goodsSpec li.hover i{display:block;}
+
+.goodsDetail{width:auto; height:auto; padding:0 0 40px 0;}
+.goodsDetail .info{width:auto; height:auto;}
+.goodsDetail .info div img{width:100%; height:auto;}
+.goodsDetail .info ul{width:auto; height:auto; margin:0 15px; padding:15px 0; border-bottom:1px solid #EEE;}
+.goodsDetail .info ul h1{font-size:18px; margin:0 0 10px 0;}
+.goodsDetail .info ul h2{font-size:18px; color:#EFA50A; margin:0 0 3px 0;}
+.goodsDetail .info ul h2 s{color:#999; font-size:14px;}
+.goodsDetail .info ul h2 b{color:#999; font-size:12px; font-weight:normal; margin:0 0 0 10px;}
+.goodsDetail .info ul h3{font-size:13px; color:#999;}
+.goodsDetail .info ul h3 span{text-align:right; float:right;}
+
+.goodsDetail .service{width:auto; height:auto;}
+.goodsDetail .service div{width:auto; height:50px; margin:0 15px; padding:10px 0; border-bottom:1px solid #EEE;}
+.goodsDetail .service p{width:50px; height:50px;}
+.goodsDetail .service p img{width:100%; height:auto;}
+.goodsDetail .service div ul{margin:0 0 0 15px; overflow:hidden;}
+.goodsDetail .service div ul h1{font-size:14px; margin:-1px 0 0 0;}
+.goodsDetail .service div ul h2{font-size:12px; margin:0 0 0 0; color:#CCC; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.goodsDetail .service div ul h2 b{font-weight:normal;}
+.goodsDetail .service div ul h2 strong{font-weight:normal; color:#999;}
+.goodsDetail .service div ul h3{font-size:12px; margin:-2px 0 0 0; color:#CCC;}
+.goodsDetail .service div ul h3 span{color:#999;}
+.goodsDetail .service div li{color:#DDD; font-size:14px; padding:0 0 0 15px;}
+.goodsDetail .service div li i{font-size:24px; margin:0 3px 0 0;}
+
+.goodsDetail .remark{width:auto; height:auto;}
+.goodsDetail .remark div{width:auto; line-height:180%; padding:15px; color:#666; font-size:14px;}
+
+.goodsDetail .viewDetail{width:auto; height:auto;}
+.goodsDetail .viewDetail div{width:auto; height:40px; line-height:40px; text-align:center; margin:0 15px; font-size:14px; background-color:#EEE; border:#EEE; border-radius:2px;}
+
+.goodsDetail .detail{width:auto; height:auto;}
+.goodsDetail .detail div{width:auto; line-height:180%; margin:0 15px 15px 15px; padding:15px 0 0 0; color:#666; font-size:14px; border-top:#FFF100 5px solid;}
+.goodsDetail .detail div img{width:100%; height:auto;}
+
+.buyer{width:auto; height:58px; overflow:hidden; background:rgba(255,255,255,1); box-shadow:0px -1px 10px rgba(0,0,0,0.2); position:fixed; width:100%; bottom:0; left:0; z-index:999;}
+.buyer div{padding:10px 0;}
+.buyer div ul{height:38px; line-height:38px; margin:0 5px; font-size:14px;}
+.buyer div ul p{width:46px; text-align:center; color:#666;}
+.buyer div ul p .tips{font-size:15px; color:#F04253; position:absolute; margin:-5px 0 0 -3px;}
+.buyer div li{color:#FFF; height:38px; line-height:38px; text-align:center; margin:0 15px;}
+
+.goodsActivity{width:auto; height:auto; background-color:#FAFAFA; border-top:1px solid #EEE; font-size:14px; line-height:180%;}
+.goodsActivity h1{height:23px; line-height:23px; font-size:12px; background-color:#F04253; color:#FFF; padding:0 15px;}
+.goodsActivity h1 b{margin:0 3px;}
+.goodsActivity h1 i{font-size:12px; margin:0 5px 0 0;}
+.goodsActivity div{width:auto; height:auto;}
+.goodsActivity div ul{padding:10px 15px; border-top:1px solid #EEE;}
+.goodsActivity div ul img{width:40px; height:40px; border-radius:100%;}
+.goodsActivity div ul li{height:40px; margin:0 0 0 10px;}
+.goodsActivity div ul li h2{font-size:14px; margin:-2px 0 0 0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.goodsActivity div ul li h3{font-size:12px; color:#999; margin:-5px 0 0 0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.goodsActivity div ul p{color:#999; line-height:40px;}
+.goodsActivity div ul p i{font-size:20px;}
+.goodsActivity div ul p.hover{color:#17D7B0;}
+
+.goodsDetailData{width:auto; height:auto; border-top:1px solid #EEE;  padding:15px; font-size:14px; line-height:180%;}
+.goodsDetailData img{width:100%; margin:auto auto;}
+
+.groupList{width:100%; height:auto;}
+.groupList ul{width:auto; margin:15px 15px 0 15px; background-color:#FFF; box-shadow:1px 1px 5px rgba(0,0,0,0.15);}
+.groupList ul li{width:auto; height:21px; padding:110px 0 0 0; background-color:#EEE; background-size:cover; background-position:center center;}
+.groupList ul li p{width:auto; height:21px; line-height:22px; padding:0 10px ; color:#FFF; font-size:12px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; display:inline-block;}
+.groupList ul h1{font-size:16px; margin:15px 0 3px 0; padding:0 15px;}
+.groupList ul h2{font-size:20px; padding:0 15px;}
+.groupList ul h2 span{color:#EFA50A;}
+.groupList ul h2 s{color:#CCC; font-size:14px;}
+.groupList ul h3{margin:-3px 0 0 0; padding:0 0 0 15px;}
+.groupList ul h3 p{font-size:14px; color:#999; line-height:26px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+
+.cartList{width:auto; height:auto; margin:0 0 50px 0;}
+.cartList .address{width:auto; height:auto;}
+.cartList .address div{width:auto; height:40px; padding:15px; border-bottom:5px solid #EEE;}
+.cartList .address div ul{width:auto; line-height:40px; color:#CCC;}
+.cartList .address div ul i{font-size:20px; color:#EFA50A; margin:0 0 0 1px;}
+.cartList .address div li{width:auto; margin:0 15px; overflow:hidden;}
+.cartList .address div li h1{width:auto; font-size:16px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.cartList .address div li h1 span{margin:0 15px;}
+.cartList .address div li h2{width:auto; font-size:12px; color:#999; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.cartList .address div p{width:auto; text-align:right; line-height:40px; font-size:16px; color:#ccc;}
+.cartList .payType{width:auto; height:auto;}
+.cartList .payType div{width:auto; height:20px; padding:15px; border-bottom:5px solid #EEE;}
+.cartList .payType div ul{width:auto; line-height:20px; color:#CCC;}
+.cartList .payType div ul i{font-size:20px; color:#17D7B0; margin:0 0 0 1px;}
+.cartList .payType div li{width:auto; margin:0 15px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.cartList .payType div li span{font-size:12px; color:#999; margin:0 0 0 10px;}
+.cartList .payType div p{width:auto; text-align:right; line-height:20px; font-size:16px; color:#ccc;}
+.cartList .deliveryTime{width:auto; height:auto; border-bottom:1px dashed #DDD;}
+.cartList .goodsTypeTitle{width:auto; height:auto;}
+.cartList .goodsTypeTitle div{width:auto;  height:20px; line-height:20px; padding:0 10px; background-color:#999; color:#FFF;}
+.cartList .goodsTypeTitle div h1{font-size:12px;}
+.cartList .goodsTypeTitle div h2{font-size:12px;}
+.cartList .shipment{width:auto; height:auto; margin:0 0 10px 0;}
+.cartList .shipment div{padding:0 15px;}
+.cartList .shipment div li{width:auto; height:40px; padding:10px 0;}
+.cartList .shipment div li h1{font-size:16px;}
+.cartList .shipment div li h2{font-size:12px; color:#999;}
+.cartList .shipment div p{height:40px; line-height:40px; padding:10px 0; color:#F04253;}
+
+.orderList{width:auto; height:auto;}
+.orderList div{width:auto; height:auto; border-top:1px solid #EEE; padding:0 0 5px 15px;}
+.orderList div ul{width:25px; height:25px; line-height:25px; border-radius:100%; margin:15px 0; text-align:center; background-color:#DDD; color:#FFF;}
+.orderList div ul i{font-size:14px;}
+.orderList div li{margin:15px 0 10px 10px; color:#999; overflow:hidden;}
+.orderList div li h1{font-size:14px; margin:0 0 0 0; color:#666; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.orderList div li h2{font-size:12px; margin:2px 0 0 0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.orderList div li h2 span{color:#CCC; margin:0 10px;}
+.orderList div li h2 b{font-weight:normal; color:#000; padding:1px 10px 0px 3px; float:right;}
+.orderList div li h3{font-size:12px; margin:-1px 0 0 1px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; color:#EFA50A;}
+.orderList div p{width:auto; height:20px; line-height:20px; color:#000; font-size:12px; padding:0 15px 0 5px; margin:15px 0 0 10px;}
+
+.shopInfo{width:auto; height:auto;}
+.shopInfo div{width:auto; height:30px; line-height:30px; background-color:#EEE; padding:0 10px; font-size:12px; color:#999;}
+.shopInfo div i{font-size:14px;}
+.shopInfo div li{padding:0 10px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+
+.orderDetail{width:auto; height:auto; margin:45px 0 0 0;}
+.orderDetail button{width:100%; height:45px; border-radius:2px; margin:10px 0 0 0; color:#FFF; font-size:14px;}
+.orderDetail .order{margin:15px; padding:15px; background-color:#FFF; box-shadow:1px 1px 5px rgba(0,0,0,0.2);}
+
+.orderDetail .orderNumber{width:auto; height:auto;}
+.orderDetail .orderNumber div{font-size:14px;}
+.orderDetail .orderNumber div ul{font-weight:bold;}
+.orderDetail .orderNumber div li{color:#999; text-align:right; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.orderDetail .orderStatus{width:auto; height:auto; padding:15px 0; margin:15px 0; border-top:1px dashed #DDD; border-bottom:1px dashed #DDD;}
+.orderDetail .orderStatus ul{width:auto;}
+.orderDetail .orderStatus ul div{width:auto; overflow:hidden;}
+.orderDetail .orderStatus ul div.hover p{background-color:#FF9900;}
+.orderDetail .orderStatus ul div.hover h1{color:#FF9900;}
+.orderDetail .orderStatus ul div p{width:30px; height:30px; border-radius:100%; line-height:30px; text-align:center; background-color:#CCC; color:#FFF; margin:0 10px 0 0;}
+.orderDetail .orderStatus ul div h1{font-size:12px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.orderDetail .orderStatus ul div h1 span{font-size:12px; color:#999; display:block;}
+.orderDetail .orderStatus ul div h2{font-size:12px; line-height:30px;}
+.orderDetail .orderStatus li{width:100px; position:relative;}
+.orderDetail .orderStatus li div{width:auto; overflow:hidden; position:absolute; top:50%; margin:-15px 0 0 0;}
+.orderDetail .orderStatus li div p{width:30px; height:30px; border-radius:100%; line-height:30px; text-align:center; background-color:#12C994; color:#FFF; margin:0 0 0 10px;}
+.orderDetail .orderStatus li div h1{font-size:12px; text-align:right; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.orderDetail .orderStatus li div h1 span{font-size:12px; text-align:right; color:#999; display:block;}
+.orderDetail .orderStatus h6{width:30px; color:#CCC; font-size:12px; text-align:center; margin:-2px 0 1px 0;}
+.orderDetail .orderStatus h6.hover{color:#FF9900;}
+.orderDetail .orderGoods{width:auto; height:auto;}
+.orderDetail .orderGoods div{color:#999; border-bottom:1px solid #EEE; padding:10px 0;}
+.orderDetail .orderGoods div ul{width:100%; font-size:14px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.orderDetail .orderGoods div li{margin:5px 0 0 0;}
+.orderDetail .orderGoods div li h1{font-size:12px;}
+.orderDetail .orderGoods div li h2{font-size:12px; text-align:center;}
+.orderDetail .orderGoods div li h3{font-size:12px; text-align:right;}
+.orderDetail .orderTotal{width:auto; height:auto; margin:10px 0 0 0;}
+.orderDetail .orderTotal li{font-size:14px; line-height:24px;}
+.orderDetail .orderTotal li span{color:#FF9900;}
+.orderDetail .orderInfo{margin:15px; padding:15px; background-color:#FFF; box-shadow:1px 1px 5px rgba(0,0,0,0.2);}
+.orderDetail .orderInfo li{font-size:14px; line-height:24px;}
+
+.helpList{width:auto; height:auto;}
+.helpList div{width:auto; height:50px; line-height:50px; padding:0 15px; border-top:1px solid #EEE;}
+.helpList div h1{width:auto; height:auto; font-size:16px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.helpList div p{color:#CCC;}
+
+.article{width:auto; height:auto; padding:15px;}
+.article h1{font-size:18px; text-align:center; line-height:180%; border-bottom:1px solid #EEE; padding:0 0 15px 0; margin:0 0 15px 0;}
+.article div{font-size:14px; line-height:180%; color:#666;}
+.article h6{font-size:12px; background-color:#CCC; color:#FFF; display:inline-block; padding:1px 3px 0px 3px; margin:20px 0 0 0;}
+
+.userCenter{width:auto; height:auto; margin:0 0 50px 0;}
+.userCenter .userInfo{width:auto; height:90px; background-color:#FFF100;}
+.userCenter .userInfo div{width:auto; height:auto;}
+.userCenter .userInfo div ul{width:90px; height:90px;}
+.userCenter .userInfo div ul img{width:60px; height:60px; border-radius:100%; margin:15px;}
+.userCenter .userInfo div li{width:auto; height:60px; margin:15px 0;}
+.userCenter .userInfo div li h1{font-size:18px; color:#333; margin:9px 0 0 0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.userCenter .userInfo div li h2{font-size:14px; color:#333; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.userCenter .userInfo div p{width:auto; height:60px; line-height:60px; color:#333; margin:15px 15px 15px 0;}
+.userCenter .userList{width:auto; height:auto;}
+.userCenter .userList h6{width:auto; height:5px; background-color:#EEE;}
+.userCenter .userList ul{width:auto; height:50px; padding:0 15px; border-top:1px solid #EEE; color:#999;}
+.userCenter .userList ul h1{color:#333; margin:0 10px 0 0; line-height:38px;}
+.userCenter .userList ul h2{color:#666; font-size:14px; line-height:50px;}
+.userCenter .userList ul h3{font-size:12px; margin:0 10px; line-height:50px;}
+.userCenter .userList ul h3 span{color:#F06962;}
+.userCenter .userList ul p{color:#CCC; line-height:50px;}
+
+.addList{width:auto; height:auto; margin:0 0 25px 0;}
+.addList div{width:auto; height:40px; padding:15px; border-top:1px solid #EEE;}
+.addList div ul{width:auto; line-height:40px; color:#CCC;}
+.addList div ul i{font-size:20px;}
+.addList div ul.hover{color:#17D7B0;}
+.addList div ul i{margin:0 0 0 1px;}
+.addList div li{width:auto; margin:0 15px;}
+.addList div li h1{width:auto; font-size:16px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.addList div li h1 span{margin:0 15px;}
+.addList div li h2{width:auto; font-size:12px; color:#999; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.addList div p{width:auto; text-align:right; line-height:40px; font-size:16px; color:#ccc;}
+
+.addEdit{width:auto; height:auto;}
+.addEdit li{width:auto; height:45px; border-bottom:1px solid #EEE; padding:0 15px;}
+.addEdit li h1{width:80px; line-height:45px; font-size:16px;}
+.addEdit li h2{width:auto; line-height:45px; font-size:16px;}
+.addEdit li h2 input{width:100%; height:25px; padding:10px 0; border:0; font-size:16px; color:#333;}
+.addEdit li h2 b{font-size:14px; color:#ccc; font-weight:normal; float:left;}
+.addEdit li h2 span{margin:0 30px 0 0;}
+.addEdit li h2 span i{margin:0 10px 0 0; color:#ccc; font-size:20px;}
+.addEdit li h2 span.hover i{color:#17D7B0;}
+.addEdit li p{line-height:45px; color:#CCC;}
+.addEdit ul{width:auto; height:70px; border-bottom:1px solid #EEE; padding:0 15px;}
+.addEdit ul h3{width:auto; font-size:16px; float:right;}
+.addEdit ul h3 textarea{width:100%; height:46px; padding:11px 0; border:0; font-size:16px; color:#333; resize:none; overflow:hidden;}
+.addEdit div{padding:15px;}
+.addEdit div button{width:100%; height:45px; color:#fff; font-size:14px; border-radius:2px;}
+
+.favoriteList{width:auto; height:auto; padding:0 0 15px 0; -webkit-overflow-scrolling:touch;}
+.favoriteList ul{width:auto; height:100px; border-bottom:1px solid #EEE; padding:0 0 0 10px;}
+.favoriteList ul img{width:80px; height:80px; margin:10px 0;}
+.favoriteList li{width:auto; overflow:hidden; margin:10px 0 0 10px;}
+.favoriteList li h1{font-size:16px; margin:5px 0 0 0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.favoriteList li h2{font-size:14px; margin:3px 0; color:#EFA50A; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.favoriteList li h2 s{color:#CCC; margin:0 0 0 10px;}
+.favoriteList li h3{overflow:hidden;}
+.favoriteList li h3 p{font-size:14px; color:#999; line-height:27px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+
+.freebackList{width:auto; height:auto;}
+.freebackList ul{width:auto; height:50px; line-height:50px; padding:0 15px; border-top:1px solid #EEE;}
+.freebackList ul h1{width:auto; height:auto; font-size:14px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+.freebackList ul h2{width:auto; height:auto; font-size:12px; color:#999; padding:0 10px;}
+.freebackList ul p{color:#CCC;}
+.freebackList ul li{font-size:12px; color:#F04253; padding:0 0 0 10px;}
+
+.freebackDetail{width:auto; height:auto; padding:15px;}
+.freebackDetail h1{font-size:18px; text-align:center; line-height:180%; border-bottom:1px solid #EEE; padding:0 0 15px 0; margin:0 0 15px 0;}
+.freebackDetail div{font-size:14px; line-height:180%; color:#666;}
+.freebackDetail p{font-size:12px; color:#999; margin:10px 0 0 0;}
+
+.freebackReply{width:auto; height:auto; padding:0 15px 25px 15px;}
+.freebackReply ul{background-color:#EFFAF8; font-size:14px; color:#36AD98; padding:10px 15px; margin:0 0 10px 0; line-height:180%; border-radius:2px;}
+.freebackReply ul p{font-size:12px;}
+.freebackReply li{background-color:#EFEFEF; font-size:14px; color:#666; padding:10px 15px; margin:0 0 10px 0; line-height:180%; border-radius:2px;}
+.freebackReply li p{font-size:12px;}
+.freebackReply div{border:1px solid #DDD; padding:10px 15px 0 15px; margin:0 0 15px 0;}
+.freebackReply div textarea{width:100%; height:46px; border:0; font-size:16px; color:#333; resize:none;}
+.freebackReply button{width:100%; height:45px; color:#fff; font-size:14px; border-radius:2px;}
+
+.freebackAdd{width:auto; height:auto; padding:15px 15px 25px 15px;}
+.freebackAdd ul{border:1px solid #DDD; margin:0 0 15px 0;}
+.freebackAdd li{border:1px solid #DDD; padding:10px 15px 0 15px; margin:0 0 15px 0;}
+.freebackAdd li textarea{width:100%; height:106px; border:0; font-size:16px; color:#333; resize:none;}
+.freebackAdd button{width:100%; height:45px; color:#fff; font-size:14px; border-radius:2px;}
+
+.infoTips{width:auto; height:auto; padding:30px; position:relative;}
+.infoTips div{width:auto; height:auto; background:rgba(0,0,0,0.8); text-align:center; padding:30px; color:#FFF;}
+.infoTips div ul{margin:0 0 10px 0;}
+.infoTips div ul i{font-size:32px;}
+.infoTips div li{letter-spacing:1px;}
+.infoTips div li h1{font-size:16px; margin:0 0 1px 0;}
+.infoTips div li h2{font-size:14px;}
+.infoTips div p button{width:auto; height:35px; font-size:14px; color:#666; padding:0 20px; margin:15px 5px 0 5px;}
+.closeInfoTips{width:auto; height:auto; margin:-30px 0 0 0;}
+.closeInfoTips li{background:rgba(255,255,255,0.6); width:1px; height:30px; margin:0 auto;}
+.closeInfoTips p{width:50px; height:50px; border-radius:100%; background:rgba(255,255,255,0.6); text-align:center; line-height:50px; color:#999; margin:0 auto;}
+
+.winbg{width:100%; height:100%; top:0; left:0; position:fixed; background:rgba(0,0,0,.3); overflow:auto; -webkit-overflow-scrolling:touch; z-index:8888; display:none;}
+
+.bottomWin{width:100%; margin:0 auto; display:none; position:relative; z-index:9999;}
+.bottomWin .mainDiv{background-color:#fff; box-shadow:0px -1px 10px rgba(0,0,0,0.2); padding:10px;}
+.bottomWin .winButton li{width:auto; height:40px; margin:0 5px;}
+.bottomWin .winButton button{width:100%; height:40px; font-size:14px; color:#FFF; padding:0;}
+.bottomWin .winButton p{width:auto; height:40px; line-height:40px; margin:0 5px; text-align:center; font-size:14px; color:#FFF; padding:0;}
+
+.tipsWin{width:100%; height:100%; margin:0 auto; display:none; position:relative; overflow:auto; -webkit-overflow-scrolling:touch;}
+.tipsWin .mainDiv{padding:10px;}
+
+.toggleOff{width:48px; height:26px; border-radius:26px; background-color:#ddd; margin:12px 0; float:right; text-align:left;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+  /* Firefox 4 */
+  -moz-transition-property: background-color;
+  -moz-transition-duration: 0.3s;
+  -moz-transition-timing-function: ease;
+  /* Safari 和 Chrome */
+  -webkit-transition-property: background-color;
+  -webkit-transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease;
+  /* Opera */
+  -o-transition-property: background-color;
+  -o-transition-duration: 0.3s;
+  -o-transition-timing-function: ease;
+  }
+.toggleOff div{width:22px; height:22px; border-radius:22px; background-color:#fff; margin:2px; position:relative; left:0;
+  transition-property: left;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+  /* Firefox 4 */
+  -moz-transition-property: left;
+  -moz-transition-duration: 0.3s;
+  -moz-transition-timing-function: ease;
+  /* Safari 和 Chrome */
+  -webkit-transition-property: left;
+  -webkit-transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease;
+  /* Opera */
+  -o-transition-property: left;
+  -o-transition-duration: 0.3s;
+  -o-transition-timing-function: ease;
+  }
+.toggleOn{width:48px; height:26px; border-radius:26px; background-color:#17D7B0; margin:12px 0; float:right; text-align:left;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+  /* Firefox 4 */
+  -moz-transition-property: background-color;
+  -moz-transition-duration: 0.3s;
+  -moz-transition-timing-function: ease;
+  /* Safari 和 Chrome */
+  -webkit-transition-property: background-color;
+  -webkit-transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease;
+  /* Opera */
+  -o-transition-property: background-color;
+  -o-transition-duration: 0.3s;
+  -o-transition-timing-function: ease;
+  }
+.toggleOn div{width:22px; height:22px; border-radius:22px; background-color:#fff; margin:2px; position:relative; left:22px;
+  transition-property: left;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+  /* Firefox 4 */
+  -moz-transition-property: left;
+  -moz-transition-duration: 0.3s;
+  -moz-transition-timing-function: ease;
+  /* Safari 和 Chrome */
+  -webkit-transition-property: left;
+  -webkit-transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease;
+  /* Opera */
+  -o-transition-property: left;
+  -o-transition-duration: 0.3s;
+  -o-transition-timing-function: ease;
+  }
+  
+  .select {
+  height: 50px;
+  padding: 0 20px;
+  line-height: 50px;
+  background: url(../img/select.png) no-repeat right top;
+  background-size: 50px 100px;
+  font-size: 14px;
+  position: relative;
+  _filter: alpha(opacity=0);
+  ) inset;
+}
+.select:hover {
+  background: url(../img/select.png) no-repeat right bottom;
+  background-size: 50px 100px;
+}
+.select label {
+  font-size: 14px;
+  z-index: 5;
+  line-height: 50px;
+  height: 50px;
+  display: block;
+  color: #999;
+}
+.select .select {
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  z-index: 4;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  *margin-top: 12px;
+  filter: alpha(opacity=0);
+  font-size: 14px;
+}
+
+.favoriteAnimation{
+  -webkit-animation: favorite 0.5s 1 forwards ease;
+  animation: favorite 0.5s 1 forwards ease;
+}
+
+@keyframes favorite
+{
+0% {font-size: 16px;}
+50% {font-size: 24px;}
+100% {font-size: 16px;}
+}
+
+@-moz-keyframes favorite /* Firefox */
+{
+0% {font-size: 16px;}
+50% {font-size: 24px;}
+100% {font-size: 16px;}
+}
+
+@-webkit-keyframes favorite /* Safari 和 Chrome */
+{
+0% {font-size: 16px;}
+50% {font-size: 24px;}
+100% {font-size: 16px;}
+}
+
+@-o-keyframes favorite /* Opera */
+{
+0% {font-size: 16px;}
+50% {font-size: 24px;}
+100% {font-size: 16px;}
+}
+
+/*
+ * 消息提示框css
+ * _e.msgBox
+ * */
+.e-msg-bar{
+    background-color:#12C994;
+    position:fixed;
+    z-index:1000000;
+    top:0;
+    width:100%;
+    height:auto;
+    line-height:1.8;
+    padding:13px 0px;
+    color:#fff;
+    font-size:15px;
+    text-align:center;
+    transition: all ease-in-out 2s;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+
+}
+.alert-error{
+    background-color: #F06962 !important;
+}
+.alert-info{
+    background-color: #00c0ef !important;
+}
+.alert-warning{
+    background-color: #f39c12 !important;
+}
+.alert-success{
+    background-color: #12C994 !important;
+}
+@-webkit-keyframes fadeInDown {
+    from {
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+    }
+    to {
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+@keyframes fadeInDown {
+    from {
+
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+    }
+
+    to {
+
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+.fadeInDown {
+    -webkit-animation-name: fadeInDown;
+    animation-name: fadeInDown;
+}
+@-webkit-keyframes fadeOutUp {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+    }
+}
+@keyframes fadeOutUp {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+    }
+}
+.fadeOutUp {
+    -webkit-animation-name: fadeOutUp;
+    animation-name: fadeOutUp;
+}
+.animated {
+    -webkit-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}

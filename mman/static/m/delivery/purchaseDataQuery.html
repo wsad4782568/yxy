@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>进货数据统计</title>
+    <style type="text/css">
+        #operatingAll{
+            display: flex;
+            height: 10%;
+        }
+        #operatingClass{
+            margin-left: 20px;
+        }
+        #operatingDept{
+            margin-left: 20px;
+        }
+        #dataAll table{
+            width: 90%;
+            overflow-y: auto;
+        }
+        #dataAll table td{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <!--上面所有的操作-->
+    <div id="operatingAll">
+        <div id="operatingDate">
+            开始时间:<input id="operatingDateStart" onchange="operatingDateSubmit()" type="date"/>结束时间:<input id="operatingDateEnd" onchange="operatingDateSubmit()" type="date"/><br/>
+            <input type="button" value="今天" onclick="dateSearch(1)"/>
+            <input type="button" value="近三天" onclick="dateSearch(3)"/>
+            <input type="button" value="近一周" onclick="dateSearch(7)"/>
+            <input type="button" value="近一个月" onclick="dateSearch(30)"/>
+            <input type="button" value="导出" onclick="printAll()"/>
+            <div><input type="text" placeholder="输入商品名" id="commodityNo" commodityNo onkeyup="commodityAll(this)"><ul style="width:240px;background-color: #EEEEEE;margin: 0;padding: 0;position: fixed;overflow-y: auto;"></ul></div>
+        </div>
+        <div id="operatingClass">
+            <select id="classSelect" onchange="operatingDateSubmit()">
+                <option>--请选择分类--</option>
+            </select>
+        </div>
+        <div id="operatingDept">
+            <select id="operatingSelect" onchange="operatingDateSubmit()">
+                <option>--请选择部门--</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="dataAll">
+        <table border="1">
+            <thead>
+            <tr>
+                <th>品类</th>
+                <th>种类</th>
+                <th>类别编码</th>
+                <th>编号</th>
+                <th>品名</th>
+                <th>规格</th>
+                <th>单位</th>
+                <th>进价</th>
+                <th>数量</th>
+                <th>合计</th>
+            </tr>
+            </thead>
+            <tbody id="dataAllTbody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/m/delivery/js/purchaseDataQuery.js"></script>
+</body>
+</html>

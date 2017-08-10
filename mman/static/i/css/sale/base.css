@@ -1,0 +1,167 @@
+/*所有的css都整合在一起，注释区域标出了各自的模块*/
+/*这几个模块需要*/
+html { height: 100%; overflow: hidden; _padding: 45px 0 76px; }
+body {
+    height: 100%; max-height: 100%;
+    border: 0;
+    font: 12px/20px Arial, Helvetica, sans-serif;
+    -moz-user-select: -moz-none;
+}
+caption,th { text-align: left; }
+/*中间左边的菜单布局*/
+.minwidth { min-width: 600px; }
+.clearfix { _zoom: 1; }
+.clearfix:after { content: "."; display: block; visibility: hidden; clear: both; height: 0px; }
+.em-container {
+    width: auto;
+    margin: 2px 1px 30px -16px;
+    text-align: center;
+}
+
+.em-container label:hover {
+    background: #fff;
+}
+
+
+.em-container label:hover:after,
+.em-container input:checked + label:hover:after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    right: 13px;
+    top: 7px;
+    /*background: transparent url(/s/img/arrow_down.png) no-repeat center center;*/
+}
+
+.em-container input:checked + label:hover:after {
+    /*background-image: url(/s/img/arrow_up.png);*/
+}
+
+.em-container article {
+    line-height: 26px;
+    background: rgba(255, 255, 255, 0.5);
+    margin-top: -1px;
+    height: 0px;
+    position: relative;
+    z-index: 10;
+    -webkit-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+    -moz-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+    -o-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+    -ms-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+    transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+}
+
+.em-container article p {
+    font-style: italic;
+    color: #777;
+    line-height: 23px;
+    font-size: 14px;
+    padding: 20px;
+    text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
+}
+
+.em-container input:checked ~ article {
+    -webkit-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+    -moz-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+    -o-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+    -ms-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+    transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+    box-shadow: 0px 0px 0px 1px rgba(155,155,155,0.3);
+}
+
+.em-container input:checked ~ article.em-small {
+    height: auto;
+}
+
+.em-container input:checked ~ article.em-medium {
+    height: auto;
+}
+
+.em-container input:checked ~ article.em-large {
+    height: auto;
+}
+
+
+
+.em-container label {
+    font-family: 'BebasNeueRegular', 'Arial Narrow', Arial, sans-serif;
+    padding: 5px 20px;
+    position: relative;
+    z-index: 20;
+    display: block;
+    height: 30px;
+    cursor: pointer;
+    color: #777;
+    text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
+    line-height: 33px;
+    font-size: 15px;
+    background: #ffffff;
+    box-shadow: 0px 0px 0px 1px rgba(155,155,155,0.3),
+    1px 0px 0px 0px rgba(255,255,255,0.9) inset,
+    0px 2px 2px rgba(0,0,0,0.1);
+}
+
+
+
+.em-container input:checked + label,
+.em-container input:checked + label:hover {
+    background: #c6e1ec;
+    color: #3d7489;
+    text-shadow: 0px 1px 1px rgba(255,255,255, 0.6);
+    box-shadow: 0px 0px 0px 1px rgba(155,155,155,0.3),
+    0px 2px 2px rgba(0,0,0,0.1);
+}
+
+.em-container input {
+    display: none;
+}
+
+/*中间左边的菜单布局*/
+
+/*圣杯布局*/
+
+.default-main {
+    height: 90%;
+    position: absolute;
+    _position: relative;
+    top: 44px;
+    _top: auto;
+    bottom: 75px;
+    _bottom: auto;
+    width: 8%;
+    _height: 100%;
+    overflow: hidden;
+}
+
+.main-wrapper {
+    _margin: 0 252px 0 172px;
+    height: 100%;
+}
+
+.layout-hd, .layout-ft {
+    background: #EEEEEE;
+
+    z-index: 40;
+}
+
+.layout-bd {
+    position: absolute;
+    height: 100%;
+}
+
+.em-left {
+    height: 90%;
+    width: 94px;
+    overflow: auto;
+    position: fixed;
+}
+
+.em_1 {
+    font-size: 15px;
+    color: black;
+    text-decoration: none;
+}
+
+
+/*圣杯布局*/

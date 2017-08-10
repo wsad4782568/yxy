@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>商品调度计划</title>
+    <link rel="stylesheet" href="/i/css/manage/pure.css" />
+    <link rel="stylesheet" href="/i/css/iconfont/iconfont.css" />
+    <link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" />
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/dialog.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/tree.css" type="text/css"/>
+    <!--<link rel="stylesheet" href="/i/css/manage/table.css" type="text/css"/>-->
+    <style type="text/css">
+        .table{
+        height: 100%;
+        }
+        #dlgData th,#dlgData td,.plan th,.plan td{
+            text-align: center;
+        }
+        .table tbody tr{
+            line-height: 20px;
+        }
+        .head-wrapper{
+            width: 100%;
+            text-align: center;
+            height: 5%;
+            margin:auto;
+        }
+        .main-wrapper{
+            display: flex;
+            height: 92%;
+            background-color: #EEEEEE;
+        }
+        .main-tree{
+            width: 13%;
+            overflow-y: auto;
+        }
+        .main-tbl{
+            width: 42%;
+            padding-left: 20px;
+            overflow-y: auto;
+            border-right: 1px solid #FFFFFF;
+        }
+		#InputName{
+			width:126px;
+		}
+    </style>
+</head>
+
+<body>
+<div class="head-wrapper"><h3>商品优惠卷</h3></div>
+<div class="main-wrapper">
+    <div class="main-tree">
+        <div id="trees"></div>
+    </div>
+    <div class="main-tbl">
+        <div id="tbl"  style="height: 100%;"></div>
+    </div>
+
+    <div style="width: 41%;">
+        <div style="height:85%;">
+            <div style="height: 24%;">
+                <div id="cdept"><span>所有</span><input type="checkbox" class="deptAll"/></div>
+                <div>生效时间:<input type="date" id="startTime"/> 面值:<input type="number" id="faceValue" style="width: 100px;"/></div>
+                <div>过期时间:<input type="date" id="endTime"/>  满额:<input type="number" id="fullValue" style="width: 100px;"/> 余量:<input type="number" id="margin" style="width: 100px;"/></div>
+                <div>优惠卷名:<input type="text" id="InputName"/> 说明:<input type="text" id="InputMemo" /></div>
+                <div style="margin-bottom: 10px;">id:<span id="couponId"></span></div>
+            </div>
+            <div style="overflow-y: auto;height: 85%;width:100%;">
+                <table class="plan" style="width:100%;" border="1">
+                    <thead>
+                    <tr>
+                        <th>商品名</th>
+                        <th>规格</th>
+                        <th>单位</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="commodityList"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div style="margin-top: 17px;background-color: #EEEEEE;">
+            <button id="planCommodity" type="button" class="pure-button pure-button-primary" style="float: right;margin: 3px 40px 0 0 ;">提交</button>
+        </div>
+    </div>
+
+</div>
+
+</body>
+<script type="text/javascript" src="/i/js/handlebars.js"></script>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/table.js"></script>
+<script type="text/javascript" src="/i/js/dialog.js"></script>
+<script type="text/javascript" src="/i/js/tree.js"></script>
+<script type="text/javascript" src="/i/js/xml.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script type="text/javascript" src="/m/sc/js/saleStrategy.js"></script>
+</html>

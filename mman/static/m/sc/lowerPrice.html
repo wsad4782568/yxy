@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>特价处理</title>
+
+    <link rel="stylesheet" href="/i/css/manage/pure.css" />
+    <link rel="stylesheet" href="/i/css/iconfont/iconfont.css" />
+    <link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" />
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/dialog.css" type="text/css"/>
+    <style type="text/css">
+        .table {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+        }
+        #tbl {
+            padding-top: 20px;
+            /*width: auto;*/
+            overflow-y: auto;
+        }
+        .plan th,.plan td{
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+  <div class="default-main default-top">
+		<div class="main-wrapper">
+			<div class="layout-bd em-left">
+				<div id="trees"></div>
+			</div>
+			<div class="layout-bd middle">
+				<div id="tbl"></div>
+			</div>
+		</div>
+	</div>
+<!-- <div style="display: flex;height: 95%;background-color: #EEEEEE;">
+    <div style="width: 60%;padding-left: 20px;overflow-y: auto;border-right: 1px solid #FFFFFF;">
+        <div id="trees" style=" width: 12%;position: absolute;"></div>
+        <div id="tbl" style="  width: 80%;padding-left: 20%;"></div>
+    </div>
+
+    <div style="width: 35%;">
+        <div style="height:30%;text-align: center;border-bottom: 1px solid #FFFFFF;">
+            <h2>特价处理</h2>
+            <h3>姓名:<span id="LName"></span></h3>
+            <h3>所属部门:<span id="LDepartment"></span></h3>
+            <span style="float: left;">申请说明:<input type="text" id="OutMemo" value="" style="width: 300px"/></span>
+        </div>
+
+        <div style="height:55%;text-align: center;">
+            <div  style="overflow-y: auto;height: 80%;width:100%;">
+
+                <h2>特价调度计划中的商品</h2>
+                <table class="lower" style="width:100%;" border="1">
+                    <thead>
+                    <tr>
+                        <th>库存id</th>
+                        <th>商品名</th>
+                        <th>规格</th>
+                        <th>进价</th>
+                        <th>零售价</th>
+                        <th>新增数量</th>
+                        <th>单位</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="lowerprice_comlist"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div style="height: 5%;background-color: #EEEEEE;">
+            <button id="sublowerprice" type="button" class="pure-button pure-button-primary" style="float: right;margin: 3px 40px 0 0 ;">提交</button>
+        </div>
+    </div>
+</div> -->
+
+</body>
+<script type="text/javascript" src="/i/js/handlebars.js"></script>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/table.js"></script>
+<script type="text/javascript" src="/i/js/dialog.js"></script>
+<script type="text/javascript" src="/i/js/tree.js"></script>
+<script type="text/javascript" src="/i/js/contextmenu.js"></script>
+<script type="text/javascript" src="/i/js/form.js"></script>
+<script type="text/javascript" src="/i/js/imgup.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script type="text/javascript">
+
+    var xmlEmployee = new XMLHttpRequest()
+    xmlEmployee.open("POST","/staff/getstaffinfo",true)//获取登录用户信息
+    xmlEmployee.send()
+    xmlEmployee.onreadystatechange = function(){
+        if (xmlEmployee.readyState==4 && xmlEmployee.status==200){
+            staffinfo = eval('('+xmlEmployee.responseText+');')
+        }
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/sc/commodity/getext", true);//获取该部门下其他员工的信息  名字与id对应
+    xhr.send();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            others = eval('('+xhr.responseText+');')
+            trs=[]
+            trs.push([0,"父节点"])
+            for(var i in others.tree) {
+                trs.push([others.tree[i][0],others.tree[i][2],others.tree[i][7],others.tree[i][8],["data-code",others.tree[i][1]]]);
+            }
+            loadtree(trs)
+            loadtbl()
+            t.funcs.loadData.call(t, {
+                qseq: -1, //id
+                qverb: 'g',// >
+                qpt: -1,  //-1
+                oseq: 9, //顺序的下标
+                odir:"a" //升序降序
+            })        }
+    }
+    if(window.location.search.length>10){//状态是新增还是再编辑
+        var stranfer_id=_e["getQueryString"]("transferid")
+        var status=_e["getQueryString"]("status")
+        var outmemo=_e["getQueryString"]("outmemo")
+        document.querySelector("#OutMemo").value=outmemo
+        var xhrx2 = new XMLHttpRequest()
+        var url="/sc/expressstock/getitem?id="+_e["stripscript"](stranfer_id)  //获取原先的商品信息
+        xhrx2.open("POST" ,url , true)
+        xhrx2.send()
+        xhrx2.onreadystatechange=function()  {
+            if (xhrx2.readyState==4 && xhrx2.status==200) {
+                var items = eval('(' + xhrx2.responseText + ');')
+                if (items.iteminfo.length < 1) {
+                    _e["msgBox"]({msg: "找不到特价商品"})
+                    return
+                }
+                console.log(items)
+                var new_tbody=document.querySelector("#lowerprice_comlist")
+                for(var i=0;i<items.iteminfo.length;i++){
+                    var tr=document.createElement("tr")
+                    tr.innerHTML='<td class="lower_id">'+ items.iteminfo[i][8]+'</td>' +
+                            '<td>'+items.iteminfo[i][1]+'</td>' +
+                            '<td class="lower_amount">'+items.iteminfo[i][4]+'</td>'+
+                            '<td><i class="icon iconfont edit delete" onclick="deleteCom(this)">&#xe617;</i></td>'
+                    new_tbody.appendChild(tr)
+                }
+            }
+        }
+    }
+
+    function loadtree(treedata){
+        var trs=new _e["tree"]()
+        var event=[{e:"click",func:function () { //需要绑定的函数，绑定tbl
+            t.funcs.loadData.call(t,{    //在table.js中的204行显示
+                qseq:10, //数组中下标
+                qverb:'k',// like '% %' 条件
+                qpt:this.getAttribute("data-code") //值
+            })
+        }, is_leaf:1}]
+        trs.init("#trees",treedata,1,"TR",event)    //创建树
+    }
+    function loadtbl(){
+        coldefs = [{
+            seq: 1, //在数据[[],[]]中的位置rows[i][seq] 返回值
+            render: function(item) {
+                return "<b>" + item + "</b>"
+            }, // 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable: true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title: "品名", // 列标题
+            visible: true, //是否可见
+            name: "name", //和后端对应，FormData里面的key，后端解析时要一致
+        },{
+            seq: 9, //在数据[[],[]]中的位置rows[i][seq] 返回值
+            render: function(item) {
+                return "<b>" + item + "</b>"
+            }, // 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable: true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title: "流水号", // 列标题
+            visible: true, //是否可见
+        },{
+            render: function(item) {
+                for(var i =0;i<others.tree.length;i++){
+                    if(others.tree[i][1]==item){
+                        return "<b>" + others.tree[i][2] + "</b>"}
+                }
+
+            },
+            seq: 10,
+            retrievable: true, // 可检索 function
+            title: "商品种类", // 列标题
+            visible: true, //是否可见
+        },{
+            seq: 8, //在数据[[],[]]中的位置rows[i][seq] 返回值
+            render: function(item) {return "<b>" + item + "</b>"}, // 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable: true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title: "商品规格", // 列标题
+            visible: true, //是否可见
+        },{
+            seq: 7, //在数据[[],[]]中的位置rows[i][seq] 返回值
+            render: function(item) {return "<b>" + item + "</b>"}, // 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable: true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title: "商品单位", // 列标题
+            visible: true, //是否可见
+        },{
+            seq: 3, //在数据[[],[]]中的位置rows[i][seq] 返回值
+            render: function(item) {   return "<b>" + (item/100).toFixed(2) + "</b>" }, // 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable: true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title: "进价", // 列标题
+            visible: true, //是否可见
+            name: "offshelf", //和后端对应，FormData里面的key，后端解析时要一致
+        },{
+            seq: 4, //在数据[[],[]]中的位置rows[i][seq] 返回值
+            render: function(item) {   return "<b>" + (item/100).toFixed(2) + "</b>" }, // 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable: true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title: "零售价", // 列标题
+            visible: true, //是否可见
+            name: "offshelf", //和后端对应，FormData里面的key，后端解析时要一致
+        },{
+            seq: 2, //在数据[[],[]]中的位置rows[i][seq] 返回值
+            render: function(item) {
+                return "<b>" + item + "</b>"
+            }, // 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable: true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title: "库存", // 列标题
+            visible: true, //是否可见
+            name: "amount", //和后端对应，FormData里面的key，后端解析时要一致
+        },{
+            seq: 9, //在数据[[],[]]中的位置rows[i][seq] 返回值
+            title: "商品id", // 列标题
+        }, { seq:13,
+            title:"条形码",
+            render:function(item){
+                var codes=item.split(",")
+                var barcode = ''
+                for(var i = 0 ;i < codes.length-1;i++){
+                    barcode+='<i>'+codes[i]+'</i><br>'
+                }
+
+                return "<b>"+barcode+"</b>"
+            },
+            sortable:true,
+            retrievable: true,
+            visible:true,
+        }]
+
+        t = new _e["table"]()
+        row_actions =[{cls:"doerow",func:function(tbl,rows){
+            var is_click = false
+            if (document.querySelector("#dlgData")) document.querySelector("#dlgData").parentNode.removeChild(document.querySelector("#dlgData"));
+            var dlg = _e.dialog({id:"dlgData",width:"500px",
+                title:tbl.data[rows][1]+" "+ " 特价商品",
+                mainBody:' <table class="plan" style="width:100%;" border="1"><thead><tr>'+
+                        '<th>流水号</th>'+
+                        '<th>商品名</th>'+
+                        '<th>规格</th>'+
+                        '<th>进价</th>'+
+                        '<th>零售价</th>'+
+                        '<th>剩余数量</th>'+
+                        '<th>单位</th>'+
+                        '<th>操作</th>'+
+                        '</tr></thead>'+
+                        '<tbody id="commodityList"></tbody>',
+                  actions:[{id:"btn",title:"新增特价商品",func:function(){
+                            var dlg = _e.dialog({id:"dlgData",width:"500px",
+                            title:"新增"+tbl.data[rows][1]+"特价商品",
+                            mainBody:'<div><i>条形码：</i><input type="text" id="newCode" value=""></div>'+
+                            '<div><i>处理价格：</i><input type="text" id="newPrice" value=""></div>',
+                            actions:[{id:"btn",title:"新增",func:function(){
+                              if (is_click) {
+                                _e["msgBox"]({msg: "请不要重复提交"})
+                                  return
+                              }
+                              is_click=true
+                            var fd = new FormData(), xhr = new XMLHttpRequest()
+                            var code =dlg.querySelector("#newCode").value
+                            var price = Number(dlg.querySelector("#newPrice").value)*100
+                            if(code.length<1) {
+                                _e["msgBox"]({msg: "条形码长度太短"})
+                                return
+                            }
+                            if(price > tbl.data[rows][4]) {
+                                _e["msgBox"]({msg: "处理价格不能大于原价"})
+                                return
+                            }
+                            fd.append("stockid",tbl.data[rows][0])
+                            fd.append("code",_e["stripscript"](code))
+                            fd.append("price",_e["stripscript"](price))
+                            xhr.open("POST" ,"/sc/lowerprice/makenew"+_e["jurisdiction"]() , true)
+                            xhr.send(fd)
+                            xhr.onreadystatechange=function()  {
+                                if (xhr.readyState==4 && xhr.status==200){
+                                var d = eval('('+xhr.responseText+');')
+                                    _e["msgBox"]({
+                                        msg: d.msg,
+                                       className: d.res==-1 ? "error":"success",
+                                       timeout:3000
+                                    })
+                                }
+                            }
+                          }},{id:"btn",title:"关闭",func:function(){
+                              dlg.parentNode.removeChild(dlg)
+                          }}]})
+                    dlg.show()
+                }},
+                {id:"btn",title:"关闭",func:function(){
+                    dlg.parentNode.removeChild(dlg)
+                }}]})
+            dlg.show()
+            getLowerPriceStock(tbl.data[rows][0],tbl.data[rows][1])
+            function getLowerPriceStock(stockid,name){  //查询原有的特价
+                var fd = new FormData(), xhr = new XMLHttpRequest()
+                fd.append("stockid",_e["stripscript"](stockid))
+                xhr.open("POST" ,"/sc/lowerprice/getbylowerprice" +_e["jurisdiction"](), true)
+                xhr.send(fd)
+                xhr.onreadystatechange=function()  {
+                    if (xhr.readyState==4 && xhr.status==200){
+                        var d = eval('('+xhr.responseText+');')
+                        var tbody=dlg.querySelector("#commodityList")
+                        tbody.innerHTML=""
+                        if(d.res==-1) {
+                            //_e["msgBox"]({msg: name+"暂时还没有特价商品"})
+                            return
+                        }
+                        for(var i=0;i< d.stock.length;i++){
+                          var tr = document.createElement("tr")
+                          tr.id=d.stock[i][0]
+                          tr.innerHTML='<td class="stockids">'+ d.stock[i][6]+'</td>' +
+                                    '<td>'+d.stock[i][1]+'</td>' +
+                                    '<td>'+d.stock[i][4]+'</td>' +
+                                    '<td>'+(d.stock[i][7]/100).toFixed(2)+'</td>' +
+                                    '<td>'+(d.stock[i][3]/100).toFixed(2)+'</td>' +
+                                    '<td>'+d.stock[i][2]+'</td>' +
+                                    '<td>'+d.stock[i][5]+'</td>' +
+                                  //  '<td><input type="button" value="增加" class="pluscircle" />' +
+                                    '<td><input type="button" value="修改" class="editrel" /></td>'
+                            tbody.appendChild(tr)
+                            //_e.bind(".pluscircle","click",addlowerprice,tr)
+                            _e.bind(".editrel","click",updatelowerprice,tr)
+                        }
+                        // function addlowerprice(){ //将当前商品的特价商品添加至计划中
+                        //   var this_tr=this.parentNode.parentNode
+                        //   var new_tbody=document.querySelector("#lowerprice_comlist")
+                        //   var has_tr=new_tbody.children
+                        //   for(var i1=0;i1<has_tr.length;i1++){
+                        //       if(this_tr.children[0].innerHTML==has_tr[i1].children[0].innerHTML){
+                        //           _e["msgBox"]({msg: "该特价商品已存在"})
+                        //           return
+                        //       }
+                        //   }
+                        //   var tr=document.createElement("tr")
+                        //   tr.setAttribute("data-id",this_tr.id)
+                        //   tr.innerHTML='<td class="lower_id">'+ this_tr.children[0].innerHTML+'</td>' +
+                        //           '<td>'+this_tr.children[1].innerHTML+'</td>' +
+                        //           '<td>'+this_tr.children[2].innerHTML+'</td>' +
+                        //           '<td><input type="number"class="lower_price" style="width:60px" value="'+ this_tr.children[3].innerHTML +'"/></td>'+
+                        //           '<td>'+this_tr.children[4].innerHTML+'</td>' +
+                        //           '<td><input type="number"class="lower_amount" data-amount="'+ tbl.data[rows][2] +'" style="width:60px"/></td>'+
+                        //           '<td>'+this_tr.children[6].innerHTML+'</td>' +
+                        //           '<td><i class="icon iconfont edit delete" onclick="deleteCom(this)">&#xe617;</i></td>'
+                        //   new_tbody.appendChild(tr)
+                        //
+                        // }
+
+                        function updatelowerprice(){//修改特价商品的条形码和价格
+                            var this_tr=this.parentNode.parentNode
+                            if (document.querySelector("#dlgChange")) document.querySelector("#dlgChange").parentNode.removeChild(document.querySelector("#dlgChange"));
+                            var dlg = _e.dialog({id:"dlgChange",width:"500px",
+                                title:"修改"+this_tr.children[0].innerHTML+""+this_tr.children[1].innerHTML+" 的价格和条码",
+                                mainBody:'<div><i>条形码：</i><input type="text" id="newCode" value=""></div>'+
+                                '<div><i>处理价格：</i><input type="text" id="newPrice" value=""></div>',
+                                actions:[{id:"btn",title:"提交修改",func:function(){
+                                    var fd = new FormData(), xhr = new XMLHttpRequest()
+                                    var code =dlg.querySelector("#newCode").value
+                                    var price = Number(dlg.querySelector("#newPrice").value)*100
+                                    if(code.length<1) {
+                                        _e["msgBox"]({msg: "条形码长度太短"})
+                                        return
+                                    }
+                                    if(price > tbl.data[rows][4]) {
+                                        _e["msgBox"]({msg: "处理价格不能大于原价"})
+                                        return
+                                    }
+                                    fd.append("stockid", this_tr.id)
+                                    fd.append("code",_e["stripscript"](code))
+                                    fd.append("price",price)
+                                    xhr.open("POST" ,"/sc/lowerprice/updatelowerprice"+_e["jurisdiction"]() , true)
+                                    xhr.send(fd)
+                                    xhr.onreadystatechange=function()  {
+                                        if (xhr.readyState==4 && xhr.status==200){
+                                            var d = eval('('+xhr.responseText+');')
+                                            _e["msgBox"]({
+                                                msg: d.msg,
+                                                className: d.res==-1 ? "error":"success",
+                                                timeout:3000
+                                            })
+                                            if (d.res==0) {
+                                              getLowerPriceStock(tbl.data[rows][0],tbl.data[rows][1])
+                                            }
+                                        }
+                                    }
+                                }},
+                                {id:"btn",title:"关闭",func:function(){
+                                    dlg.parentNode.removeChild(dlg)
+                                }}]})
+                            dlg.show()
+                            var fd2 = new FormData(), xhr2 = new XMLHttpRequest()
+                            fd2.append("stockid", this_tr.id)
+                            xhr2.open("POST" ,"/sc/lowerprice/getbarcode" , true)
+                            xhr2.send(fd2)
+                            xhr2.onreadystatechange=function()  {
+                                if (xhr2.readyState==4 && xhr2.status==200){
+                                    var dd = eval('('+xhr2.responseText+');')
+                                    if(!dd.barcode) _e["msgBox"]({msg:"获取信息失败"})
+                                    dlg.querySelector("#newCode").value=dd.barcode[1]
+                                    dlg.querySelector("#newPrice").value=(dd.barcode[0]/100).toFixed(2)
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        },title:"查看特价"}]
+
+        rows_actions = []
+
+
+        ext_row = function(rows,i){
+            return "this is row "+i
+        }
+        after_Load = function(tbl,tblDom){}
+        t.funcs.init.call(t,"tbl",
+                coldefs,row_actions,rows_actions,"table","__THE__TABLE__",ext_row,"/sc/lowerprice/getstock",after_Load)
+    }
+
+
+
+
+    function deleteCom(e){//删除计划中特价商品
+        e.parentNode.parentNode.parentNode.removeChild(e.parentNode.parentNode)
+    }
+
+    // document.querySelector("#sublowerprice").addEventListener("click",function(){//提交
+    //     var comList = document.querySelector("#lowerprice_comlist")
+    //     if(comList.children.length == 0){
+    //         alert("订单不能为空！")
+    //         return
+    //     }
+    //     var fd = new FormData(),xhr = new XMLHttpRequest()
+    //
+    //     for(var i = 0;i <comList.children.length;i++){
+    //         var LAmount = Number(comList.children[i].querySelector(".lower_amount").value)
+    //         var LPrice = Number(comList.children[i].querySelector(".lower_price").value)*100
+    //         if (LAmount < 0){
+    //           _e.msgBox({msg:"数量不能小于0"})
+    //           return
+    //         }
+    //         console.log("LAmount ： "+LAmount)
+    //         console.log("old ： "+Number(comList.children[i].querySelector(".lower_amount").getAttribute("data-amount")))
+    //         console.log(LAmount < Number(comList.children[i].querySelector(".lower_amount").getAttribute("data-amount")))
+    //         if (LAmount > Number(comList.children[i].querySelector(".lower_amount").getAttribute("data-amount"))){
+    //           _e.msgBox({msg: comList.children[i].children[1].innerHTML+"  的原价商品库存不足"})
+    //           return
+    //         }
+    //         if (LPrice < 0){
+    //           _e.msgBox({msg:"进价必须大于0"})
+    //           return
+    //         }
+    //         fd.append("stockid",comList.children[i].getAttribute("data-id"))
+    //         fd.append("amount",LAmount)
+    //         fd.append("price",LPrice) //进价
+    //     }
+    //     if (stranfer_id ) {//状态是新增还是再编辑
+    //         fd.append("id",stranfer_id)
+    //         fd.append("status",status)
+    //     }
+    //     fd.append("outmemo",document.querySelector("#OutMemo").value)
+    //     var url="/sc/lowerprice/newpaln"+_e["jurisdiction"]()
+    //     xhr.open("POST",url,true)
+    //     xhr.send(fd)
+    //     xhr.onreadystatechange = function(){
+    //         if (xhr.readyState==4 && xhr.status==200){
+    //             var d = eval('('+xhr.responseText+');')
+    //             _e["msgBox"]({
+    //                 msg: d.msg,
+    //                 className: d.res==-1 ? "error":"success",
+    //                 timeout:3000
+    //             })
+    //         }
+    //     }
+    // },true)
+
+</script>
+</html>

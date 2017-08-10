@@ -1,0 +1,497 @@
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>指定销售类型</title>
+    <link rel="shortcut icon" href="/i/css/img/favicon.ico" />
+    <link rel="stylesheet" href="/i/css/iconfont/iconfont.css" />
+    <link rel="stylesheet" href="/i/css/manage/pure.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/tree.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/table.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/dialog.css" type="text/css"/>
+    <link rel="stylesheet" href="css/promotion.css" type="text/css"/>
+
+</head>
+<body>
+
+<div class="layout-bd em-left main-left">
+    <div id="trees"></div>
+</div>
+<div class="layout-bd middle main-middle"  >
+    <div id="tbl" class="tbl1-css"  ></div>
+</div>
+<div class="layout-bd em-right main-right" id="right_div" style="height:100%">
+  <div id="tbl2" class="tbl2-right" style="height:50%"></div>
+  <div >
+    <div>
+      <h2>序号 ： </h2><p id="proder_id"></p>
+      <h2>名称 ： </h2><p id="proder_name"></p>
+      <div>
+    <table class="pure-table" style="weight:100%"><thead>
+        <tr>
+            <th>流水号</th>
+            <th>品名</th>
+            <th>规格</th>
+            <th>单位</th>
+            <th>零售价</th>
+            <th>预定价格</th>
+            <th>删除</th>
+        </tr>
+    </thead> <tbody id="comsList"> </tbody></table><div>
+  <button type="submit" class="pure-button pure-button-primary goodspromotionId">提交</button>
+</div>
+
+<script type="text/javascript" src="/i/js/handlebars.js"></script>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/table.js"></script>
+<script type="text/javascript" src="/i/js/tree.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script type="text/javascript" src="/i/js/dialog.js"></script>
+
+<script>
+
+	function deletGroup(delet){
+        var fd=new FormData(), xhr=new XMLHttpRequest()
+        var fd = new FormData(), xhr = new XMLHttpRequest()
+        console.log(delet.parentNode.parentNode.children[0].innerHTML)
+        fd.append("stockId",delet.parentNode.parentNode.children[0].innerHTML)
+        xhr.open("POST" ,"/sc/groupOrder/deletGroupCom",true)
+        xhr.send(fd)
+        xhr.onreadystatechange=function(){
+            if (xhr.readyState==4 && xhr.status==200){
+                var dat = eval('(' +xhr.responseText+ ');')
+                console.log(dat)
+                _e["msgBox"]({
+                    msg: dat.msg,
+                    className: dat.res==-1 ? "error":"success",
+                    timeout:3000
+                })
+            }
+        }
+        delet.parentNode.parentNode.parentNode.removeChild(delet.parentNode.parentNode);
+    }
+
+    var promotionId=0
+    var goodsId=[]
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/sc/commodity/getext", true);
+    xhr.send();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            others = eval('('+xhr.responseText+');')
+            others.comclass = []// id 和 姓名  对比  商品tbl里面对应的
+            for(var i in others.tree) {
+                if (others.tree[i][8]==1){//只需要叶子节点的,商品只在这个种类下面
+                    others.comclass.push([others.tree[i][1],others.tree[i][2]]);
+                }
+            }
+            trs=[]
+            trs.push([0,"父节点"])
+            for(var i in others.tree) {
+                trs.push([others.tree[i][0],others.tree[i][2],others.tree[i][7],others.tree[i][8],["data-code",others.tree[i][1]]]);
+            }
+            loadtree(trs)
+            loadtbl()
+            t.funcs.loadData.call(t, {
+                qseq: 0, //id
+                qverb: 'g',// >
+                qpt: -1,  //-1
+                oseq: 20, //顺序的下标
+                odir:"a" //升序降序
+            })
+            loadproders()
+            addOtherTree ()
+        }
+    }
+
+    function loadtree(treedata){
+        var trs=new _e["tree"]()
+        var event=[{e:"click",func:function () { //需要绑定的函数，绑定tbl
+            t.funcs.loadData.call(t,{    //在table.js中的204行显示
+                qseq:17, //数组中下标
+                qverb:'e',// = 条件
+                qpt:this.getAttribute("data-code"), //值
+                oseq: 0, //顺序的下标
+                odir:"a" //升序降序
+            })
+        }, is_leaf:1}]
+        trs.init("#trees",treedata,1,"TR",event)    //创建树
+    }
+
+    function loadtbl(){
+        coldefs = [{ seq:1,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){return "<b>"+item+"</b>"},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable:true, // 可排序 function
+            retrievable: true,
+            visible:true, //是否可见
+             title:"品名",
+        },{ seq:16,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){ return item},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable:true,
+            retrievable: true,
+            title:"流水号",
+            visible:true,
+            checkall:false,
+
+        }, { seq:17,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){return item},
+            title:"种类",
+            visible:true,
+        }, { seq:19,
+            title:"条形码",
+            render:function(item){
+                var codes=item.split(",")
+                var barcode = ''
+                for(var i = 0 ;i < codes.length-1;i++){
+                    barcode+='<i>'+codes[i]+'</i><br>'
+                }
+
+                return "<b>"+barcode+"</b>"
+            },
+            visible:true,
+        },{ seq:15,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){return "<b>"+item+"</b>"},// 这里render是function，它可以组合或变换当前数据行，然后进行显示},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable:true, // 可排序 function
+            retrievable: true,
+            title:"规格", // 列标题
+            visible:true, //是否可见
+        }, { seq:14,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){return "<b>"+item+"</b>"},// 这里render是function，它可以组合或变换当前数据行，然后进行显示},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable:true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title:"单位", // 列标题
+            visible:true, //是否可见
+        }, { seq:7,
+            render:function(item){return "<b>"+(item/100).toFixed(2)+"</b>"},
+            sortable:true,
+            title:"零售价",
+            visible:true,
+        }, { seq:4,
+            render:function(item){return "<b>"+(item/100).toFixed(2)+"</b>"},
+            sortable:true,
+            title:"预定价",
+            visible:true,
+        }, { seq:2,
+            render:function(item){return "<b>"+item+"</b>"},
+            sortable:true,
+            retrievable: true,
+            title:"库存",
+            visible:true,
+        }, { seq:3,
+            render:function(item){
+                if (item==1) return "<b>在售</b>"
+                return "<b></b>"},
+            title:"销售状态",
+            visible:true,
+        }, { seq:9,
+            render:function(item){
+                if (item==1) return "<b>商城</b>"
+                return "<b></b>"},
+            title:"线上",
+            visible:true,
+        }, { seq:20,
+            render:function(item){
+                if (item==2) return "<b>团购</b>"
+                if (item==8) return "<b>代购</b>"
+                if (item==7) return "<b>预定</b>"
+                if (item==4) return "<b>组合商品</b>"
+                if (item==9) return "<b>特价</b>"
+                return "<b></b>"},
+            title:"类型",
+            visible:true,
+        }
+        ]
+
+        t = new _e["table"]()
+        row_actions =[	{cls:"does",func:function(tbl,rows){
+          var comsList = document.querySelector("#comsList")
+          var trs = comsList.children
+          for(var i=0;i<trs.length;i++){
+            if(Number(trs[i].children[0].innerHTML) == tbl.data[rows][16]){
+              _e.msgBox({msg:"已添加过该商品"})
+              return
+            }
+          }
+          var tr =document.createElement("tr")
+          tr.innerHTML='<td data-id="'+tbl.data[rows][0]+'">'+tbl.data[rows][16]+'</td>'+
+            '<td>'+tbl.data[rows][1]+'</td>'+
+            '<td>'+tbl.data[rows][15]+'</td>'+
+            '<td>'+tbl.data[rows][14]+'</td>'+
+            '<td>'+(tbl.data[rows][7]/100).toFixed(2)+'</td>'+
+            '<td><input class="preOrderPrice" type="number" value="'+(tbl.data[rows][4]/100).toFixed(2)+'"/></td>'+
+            '<td><a href="#" style="color: #0a0a0a"><i class="icon iconfont icon-delete" onclick="deleteCom(this)"></i></a></td>'
+          comsList.appendChild(tr)
+            },title:"添加"}
+
+        ]
+
+        rows_actions = [
+        ]
+
+        var ext_row = function(rows,i){
+            return "this is row "+i
+        }
+        var afterLoad = function(tbl,tblDom){}
+
+        t.funcs.init.call(t,"tbl", coldefs,row_actions,rows_actions,"table","1__THE__TABLE__",ext_row, "/sc/preorder/getprecoms", afterLoad)
+        var tbl_head = document.querySelector("#tbl").querySelector("thead")
+        tbl_head.querySelector("#trtime").parentNode.removeChild( tbl_head.querySelector("#trtime"))
+        tbl_head.querySelector("#cqdept").addEventListener("change",function(){
+           document.querySelector("#comsList").innerHTML=""
+        })
+    }
+
+    function loadproders (){
+         getPromotion()
+         function getPromotion(){
+             coldefs2 = [{ seq:0,
+                 render:function(v){
+                     return "<span class='check'>"+v+"</span>"
+                 },
+                 sortable:true,
+                 retrievable: true,
+                 title:"序号",
+                 visible:true,
+                 isID:1
+             },
+                 { seq:1,
+                     render:function(item){return "<b>"+item+"</b>"},
+                     sortable:true,
+                     retrievable: true,
+                     title:"名称",
+                     visible:true,
+                 }, { seq:3,
+                     render:function(item){return "<b>"+item+":00</b>"},
+                     sortable:true,
+                     retrievable: true,
+                     title:"开始配送时间",
+                     visible:true,
+
+                 },
+                 { seq:4,
+                     render:function(item){return "<b>"+item+":00</b>"},
+                     sortable:true,
+                     retrievable: true,
+                     title:"结束配送时间",
+                     visible:true,
+                 },
+                 { seq:5,
+                     render:function(item){return "<b>"+item+" 天</b>"},
+                     sortable:true,
+                     retrievable: true,
+                     title:"下单后配送日期",
+                     visible:true,
+                 },
+                 { seq:6,
+                     render:function(item){return "<b>"+item+"</b>"},
+                     title:"备注",
+                     visible:true,
+                 }
+             ]
+
+             var t2 = new _e["table"]()
+             var row_actions2 =[	{cls:"does",func:function(tbl,rows){
+                 document.querySelector("#proder_id").innerHTML=tbl.data[rows][0]
+                 document.querySelector("#proder_name").innerHTML=tbl.data[rows][1]
+               },title:"选中"}]
+             var rows_actions2 = [{
+                 func:function(tbl,rows){
+                      if (document.querySelector("#dlgData")) document.querySelector("#dlgData").parentNode.removeChild(document.querySelector("#dlgData"));
+                     var dlg = _e.dialog({id:"dlgData",width:"500px",
+                         title:"添加预订计划",
+                         mainBody:'<div  style="display: flex"> <a>名称：</a> <input type="text" name="name"> </div> ' +
+                         '<div  style="display: flex">' +
+                         '<a>开始配送时间：</a><input placeholder="请输入数字6-23" type="text" name="delivery_start" >:00 ' +
+                         '</div> <div  style="display: flex"> ' +
+                         '<a>结束配送时间：</a> ' +
+                         '<input type="text" placeholder="请输入数字6-23"　 name="delivery_end" >:00' +
+                         '</div> ' +
+                         '<div  style="display: flex"> ' +
+                         '<span>下单后配送日期：</span><input type="text"  placeholder="请输入数字" name="delivery_interval" > 天' +
+                         '</div> ' +
+                         '<div> ' +
+                         '<p> 备注：</p> ' +
+                         '<textarea type="text" placeholder="请输入配送说明（50字以内...）" name="delivery_hint"  id="delivery_hint" maxlength="100" style="width: 70%;height: 121px;"></textarea> ' +
+                         '</div></div></div>',
+                         actions:[{id:"btn",title:"确定",func:function(){
+                             var fd = new FormData(), xhr = new XMLHttpRequest()
+                             var data=dlg.querySelectorAll("input")
+                             for(var i=0;i<data.length;i++){
+                                 if(i==1||i==2||i==3){
+                                     if(!isInteger(data[i].value)) {
+                                         _e.msgBox({msg:"请输入整数!"})
+                                         return
+                                     }
+                                     if(0>Number(data[i].value)||Number(data[i].value)>23) {
+                                         _e.msgBox({msg:"数字范围再0~23之内"})
+                                         return
+                                     }
+                                 }
+                                 fd.append(data[i].name,data[i].value)
+                             }
+                             fd.append("delivery_hint",dlg.querySelector("#delivery_hint").value)
+                             xhr.open("POST" ,"/sc/preorder/insert"+_e["jurisdiction"](),true)
+                             xhr.send(fd)
+                             xhr.onreadystatechange=function(){
+                                 if (xhr.readyState==4 && xhr.status==200){
+                                     var dat = eval('(' +xhr.responseText+ ');')
+                                     if(dat.res==0){
+                                         dlg.parentNode.removeChild(dlg)
+                                         t2.funcs.loadData.call(t2)
+                                     }
+                                     _e["msgBox"]({
+                                         msg: dat.msg,
+                                         className: dat.res==-1 ? "error":"success",
+                                         timeout:3000
+                                     })
+                                 }
+                             }
+                         }}]})
+                     dlg.show()
+     },title:"添加预订类型"}]
+             var ext_row = function(rows,i){
+                 return "this is row "+i
+             }
+             var afterLoad2 = function(tbl,tblDom){//单绑tbl的checkbox
+                 _e.bindAll(".check","click",function(e){
+                     for(var i=0;i<tblDom.querySelectorAll(".check").length;i++){
+                         tblDom.querySelectorAll(".check")[i].checked=false
+                         this.checked =true
+                     }
+                     promotionId=this.parentNode.childNodes[1].innerText
+                 },tblDom)}
+             t2.funcs.init.call(t2,"tbl2",
+                     coldefs2,row_actions2,rows_actions2,"table","2__THE__TABLE__",ext_row, "/sc/preorder/getpreorder",
+                     afterLoad2)
+             t2.funcs.loadData.call(t2)
+
+             var tbl_head = document.querySelector("#tbl2").querySelector("thead")
+             tbl_head.querySelector("#trtime").parentNode.removeChild(tbl_head.querySelector("#trtime"))
+             tbl_head.querySelector("#trunit").parentNode.removeChild(tbl_head.querySelector("#trunit"))
+             tbl_head.querySelector("#cqdept").addEventListener("change",function(){
+                document.querySelector("#proder_id").innerHTML=""
+                document.querySelector("#proder_name").innerHTML=""
+             })
+         }
+
+    }
+
+    _e.bind(".goodspromotionId","click",submitId)
+    function submitId() {
+      var cdept1 = document.querySelector("#tbl").querySelector("#cqdept").value
+      var cdept2 = document.querySelector("#tbl2").querySelector("#cqdept").value
+      if(cdept1 != cdept2){
+        _e.msgBox({msg:"预订方式和预定商品不在同一部门"})
+      }
+        var promotionId = Number(document.querySelector("#proder_id").innerHTML)
+        if(promotionId <= 0 || isNaN(promotionId)){
+            _e.msgBox({msg:"请选择预订方式！"})
+            return
+        }
+        var comsList = document.querySelector("#comsList")
+        var trs=comsList.children
+        if(trs.length<1){
+          _e.msgBox({msg:"请选择商品"})
+          return
+        }
+
+        var fd=new FormData(), xhr=new XMLHttpRequest()
+        fd.append("pre_order",promotionId)
+        var dlg = _e.dialog({id:"dlgData",width:"700px",
+            title:"确认提交",
+            mainBody:'<h2>预定方式序号：</h2><h2 id="iidd"></h2>'+
+            '<h2>预定方式名称：</h2><h2 id="name"></h2>'+
+            '<table class="pure-table" style="weight:100%"><thead><tr>'+
+                    '<th>流水号</th>'+
+                    '<th>品名</th>'+
+                    '<th>规格</th>'+
+                    '<th>单位</th>'+
+                    '<th>零售价</th>'+
+                    '<th>预定价格</th>'+
+                '</tr>'+
+            '</thead> <tbody id="shouList"> </tbody></table>',
+            actions:[{id:"btn",title:"确定",func:function(){
+              xhr.open("POST","/sc/preorder/bindall"+_e["jurisdiction"](),true)
+              xhr.send(fd)
+              xhr.onreadystatechange = function() {
+                  if (xhr.readyState == 4 && xhr.status == 200) {
+                      var d = eval('(' + xhr.responseText + ');')
+                      _e["msgBox"]({
+                          msg: d.msg,
+                          className: d.res==-1 ? "error":"success"
+                      })
+                      if(d.res==0){
+                          t.funcs.loadData.call(t)
+                          dlg.parentNode.removeChild(dlg)
+                      }
+                  }
+              }
+            }},
+            {id:"btn",title:"关闭",func:function(){
+              dlg.parentNode.removeChild(dlg)
+            }}]})
+        dlg.querySelector("#iidd").innerHTML = document.querySelector("#proder_id").innerHTML
+        dlg.querySelector("#name").innerHTML = document.querySelector("#proder_name").innerHTML
+        for(var i=0;i<trs.length;i++){
+          var preorderprice = Number(trs[i].querySelector(".preOrderPrice").value)*100
+          if(isNaN(preorderprice) || preorderprice<0){
+              _e.msgBox({msg:"请输入正确的价格"})
+              return
+          }
+          fd.append("stock",trs[i].children[0].getAttribute("data-id"))
+          fd.append("pre_order_price",parseInt(preorderprice))
+          var cmsList = dlg.querySelector("#shouList")
+          var tr =document.createElement("tr")
+          tr.innerHTML='<td>'+trs[i].children[0].innerHTML+'</td>'+
+            '<td>'+trs[i].children[1].innerHTML+'</td>'+
+            '<td>'+trs[i].children[2].innerHTML+'</td>'+
+            '<td>'+trs[i].children[3].innerHTML+'</td>'+
+            '<td>'+trs[i].children[4].innerHTML+'</td>'+
+            '<td style="width:50px">'+trs[i].children[5].children[0].value+'</td>'
+          cmsList.appendChild(tr)
+
+        }
+
+
+          dlg.show()
+
+    }
+
+
+
+    function addOtherTree (){
+      var tree=document.querySelector("#trees")
+      var ul = document.createElement("ul")
+      ul.setAttribute("id","other_tree")
+      ul.innerHTML='<li data-id="2" class="other task" onclick="taskAll(this)">团购</li>'+
+      '<li data-id="7" class="other task" onclick="taskAll(this)">预定</li>'+
+      '<li data-id="8" class="other task" onclick="taskAll(this)">代购</li>'
+      //tree.parentNode.insertBefore(div,tree)
+      tree.insertBefore(ul,tree.children[0])
+      _e.bindAll(".other","click",loadOther,tree.parentNode)
+      function loadOther(){
+            t.funcs.loadData.call(t, {
+                qseq: 19, //id
+                qverb: 'e',// =
+                qpt: this.getAttribute("data-id"),  //-1
+                oseq: 16, //顺序的下标
+                odir:"a" //升序降序
+            })
+        }
+    }
+    function deleteCom(obj){
+      var tr=obj.parentNode.parentNode.parentNode
+      tr.parentNode.removeChild(tr)
+    }
+    function isInteger(obj) {
+        if(obj.length==0) return false
+        return obj%1 === 0
+    }
+</script>
+
+</body>
+
+</html>

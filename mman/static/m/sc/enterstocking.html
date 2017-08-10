@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>采购入库</title>
+	<link rel="shortcut icon" href="/i/css/img/favicon.ico" />
+	<link rel="stylesheet" href="/i/css/manage/pure.css" type="text/css"/>
+	<link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+	<link rel="stylesheet" href="/i/css/iconfont/iconfont.css" />
+	<link rel="stylesheet" href="/i/css/manage/dialog.css" type="text/css"/>
+	<link rel="stylesheet" href="/i/css/manage/formdata.css" type="text/css"/>
+	<link rel="stylesheet" href="/i/css/manage/table.css" type="text/css"/>
+	<style type="text/css">
+		 /*th,td{*/
+			/*!*text-align: center;*!*/
+			/*width: 80px;*/
+		/*}*/
+		.table tbody tr{
+			line-height: 16px;
+		}
+		 .table tbody th,.table tbody td{
+			 width: 80px;
+		 }
+		#comDetail{
+			margin-top: 10px;
+		}
+		#ListCart{
+			width: 100%;
+		}
+		#ListCart th,#ListCart td{
+			text-align: center;
+		}
+		#orderTable{
+			width: 95%;
+		}
+		#orderTable th,#orderTable td{
+			 text-align: center;
+		}
+		#storagePlan{
+				overflow-y: auto;
+				height: 92%;
+				border-right: 1px solid #FFFFFF;
+				background-color: #EEEEEE;
+				display: block;
+		}
+		#main{
+			 overflow-y: auto;
+			 display: flex;
+			 height: 92%;
+	 }
+		.mainTree{
+			 width: 10%;
+	 }
+	 .mainTree li{
+			 list-style-type:none;
+		}
+	 .mainTree li a{
+			 text-decoration:none;
+		}
+	 .mainTree li a:link{
+			 color:#000000;
+	  }
+	.mainTree li a:visited {
+			 color:#000000;
+	}
+	.main-wrapper{
+		   width: 90%;
+			 padding-left: 20px;
+			 overflow-y:auto;
+			 background-color: #EEEEEE;
+	}
+	</style>
+</head>
+
+<body>
+<div style="width: 100%;text-align: center;height: 5%;margin:auto;"><h3 id="features">采购入库</h3></div>
+
+<div id="storagePlan">
+	 	<div id="main">
+			<div class="mainTree">
+					<ul>
+							<!-- <li><a href="#" value="1" onclick="becomeTbl(this)">审核中</a></li> -->
+							<li><a href="#" value="2" onclick="becomeTbl(this)">待入库</a></li>
+							<li><a href="#" value="3" onclick="becomeTbl(this)">入库成功</a></li>
+							<!-- <li><a href="#" value="4" onclick="becomeTbl(this)">审核不通过</a></li> -->
+							<li><a href="#" value="5" onclick="becomeTbl(this)">无效单</a></li>
+							<li><a href="#" value="11" onclick="becomeTbl(this)">调转单</a></li>
+					</ul>
+			</div>
+			<div class="main-wrapper">
+				<div id="tbl"></div>
+			</div>
+		</div>
+</div>
+
+<div id="storageCom" style="display: none;height: 92%;background-color: #EEEEEE;">
+	<div class="main-wrapper" style="padding-left: 10px;height: 95%;display: flex;overflow-y:auto;">
+		<div style="width: 45%;overflow-y: auto;padding-right: 10px;border-right: 1px solid #FFFFFF;">
+			<div style="height: 92%;display: block;">
+				<div id="comDetail" style="margin-top: 10px;">
+					<table id="ListCart" border="1">
+						<thead>
+						<tr>
+							<th>商品名</th>
+							<th>规格</th>
+							<th>单位</th>
+							<th>数量</th>
+							<th>售价</th>
+							<th>进价</th>
+							<th>商品备忘</th>
+							<th>添加</th>
+						</tr>
+						</thead>
+						<tbody id="comDetailTbody"></tbody>
+					</table>
+					<div style="margin-top:2%;">
+						<input id="addCom" type="button" class="pure-button pure-button-primary" value="补进商品" />
+						<input id="addComListAll" type="button" class="pure-button pure-button-primary" value="全部添加" />
+					</div>
+				</div>
+				<!-- <div id="table" style="margin-top: 10px;"></div> -->
+			</div>
+		</div>
+		<div style="width: 55%;padding-left: 2px;padding-top: 5px;padding-left: 10px;overflow-y: auto;">
+			<div style="height: 100%;">
+				<div>
+					<span>计划id：</span><span id="orderId"></span> <span>;计划注释：</span><span id="orderMemo"></span>
+				</div>
+				<div>
+					<!--入库表单-->
+					<table id="orderTable" border="2">
+						<thead>
+						<tr>
+							<th>商品名</th>
+							<th>规格</th>
+							<th>采购价格</th>
+							<th>采购数量</th>
+							<th>商品备忘</th>
+							<th>供应商</th>
+							<th>操作</th>
+						</tr>
+						</thead>
+						<tbody id="orderTbody"></tbody>
+					</table>
+					<div style="margin-top:2%;">
+						<input type="button" class="pure-button pure-button-primary"  onclick="printAll()" value="导出" />
+						<input id="planCommodity" type="button" class="pure-button pure-button-primary" value="入库" />
+						<input id="purchaseAllPrice" type="button" class="pure-button pure-button-primary" style="margin-left: 40%;" value="统计进货价" />
+						<span><i>总进货价：</i><i id="purchasePrice"></i></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="/i/js/handlebars.js"></script>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/table.js"></script>
+<script type="text/javascript" src="/i/js/dialog.js"></script>
+<script type="text/javascript" src="/i/js/form.js"></script>
+<script type="text/javascript" src="/i/js/xml.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script type="text/javascript" src="/m/sc/js/enterstocking.js"></script>
+</body>
+</html>

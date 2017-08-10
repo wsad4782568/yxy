@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>供应链管理</title>
+    <link rel="shortcut icon" href="/i/css/img/favicon.ico" />
+    <link rel="stylesheet" href="/i/css/manage/pure.css" type="text/css" />
+    <link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css" />
+
+</head>
+
+<body>
+    <!——————————S中间——————————>
+    <div class="default-main">
+        <div class="main-wrapper">
+            <div class="layout-bd em-left">
+                <div class="container">
+                    <section class="em-container">
+                        <div class="em_">
+                            <input id="em-1" name="accordion" type="checkbox" />
+                            <label for="em-1">基础商品信息管理</label>
+                            <article class="em-small">
+                                <ul>
+                                    <li>
+                                        <a href="#" id="commodityClass" class="anchorPage">
+                                            <p onclick="anchorPage(this)">种类管理</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="commodity" class="anchorPage">
+                                            <p onclick="anchorPage(this)">商品基础信息</p>
+                                        </a>
+                                    </li>
+                                    <!-- <li><a href="#" id="commodityRel" class="anchorPage"><p>同类商品</p></a></li> -->
+                                    <li>
+                                        <a href="#" id="commodityImg" class="anchorPage">
+                                            <p onclick="anchorPage(this)">图片信息</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="chart" class="anchorPage">
+                                            <p onclick="anchorPage(this)">图标信息</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="supplier" class="anchorPage">
+                                            <p onclick="anchorPage(this)">供应商管理</p>
+                                        </a>
+                                    </li>
+
+                                    <!--<li><a href="#" id="classExt" class="anchorPage"><p>扩展类</p></a></li> -->
+                                </ul>
+                            </article>
+                        </div>
+                        <div class="em_">
+                            <input id="em-2" name="accordion" type="checkbox" />
+                            <label for="em-2">销售类型</label>
+                            <article class="em-small">
+                                <ul>
+                                  <li>
+                                      <a href="#" id="commodityType" class="anchorPage">
+                                          <p onclick="anchorPage(this)">配置商品类型</p>
+                                      </a>
+                                  </li>
+                                  <li>
+                                      <a href="#" id="proders" class="anchorPage">
+                                          <p onclick="anchorPage(this)">预购</p>
+                                      </a>
+                                  </li>
+                                    <!-- <li><a href="#" id="ddaadd" class="anchorPage"><p>统计商品类型</p></a></li> -->
+
+                                </ul>
+                            </article>
+                        </div>
+
+                        <div class="em_">
+                            <input id="em-3" name="accordion-1" type="checkbox" />
+                            <label for="em-3">售卖策略</label>
+                            <article class="em-small">
+                                <ul>
+                                    <!-- <li><a href="#" id="newFreeGift" class="anchorPage"><p>新增赠送商品</p></a></li>
+                                <li><a href="#" id="freeGift" class="anchorPage"><p>赠送商品管理</p></a></li> -->
+                                    <li>
+                                        <a href="#" id="newPackage" class="anchorPage">
+                                            <p onclick="anchorPage(this)">新增组合套餐</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="comPackage" class="anchorPage">
+                                            <p onclick="anchorPage(this)">组合套餐管理</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="lowerPrice" class="anchorPage">
+                                            <p onclick="anchorPage(this)">特价商品管理</p>
+                                        </a>
+                                    </li>
+                                    <!-- <li>
+                                        <a href="#" id="checkLowerPrice" class="anchorPage">
+                                            <p onclick="anchorPage(this)">特价库存管理</p>
+                                        </a>
+                                    </li> -->
+                                </ul>
+                            </article>
+                        </div>
+
+                        <div class="em_">
+                            <input id="em-4" name="accordion" type="checkbox" />
+                            <label for="em-4">促销配置</label>
+                            <article class="em-small">
+                                <ul>
+                                    <li>
+                                        <a href="#" id="createpromotion" class="anchorPage">
+                                            <p onclick="anchorPage(this)">促销方式配置</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="goodspromotion" class="anchorPage">
+                                            <p onclick="anchorPage(this)">指定促销方式</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="promotiondetailed" class="anchorPage">
+                                            <p onclick="anchorPage(this)">查看配置详情</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="promotionstatistics" class="anchorPage">
+                                            <p onclick="anchorPage(this)">配置统计</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="ComCoupon" class="anchorPage">
+                                            <p onclick="anchorPage(this)">优惠券</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="couponReview" class="anchorPage">
+                                            <p onclick="anchorPage(this)">优惠券审核</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </article>
+                        </div>
+
+                        <div class="em_">
+                            <input id="em-5" name="accordion" type="checkbox" />
+                            <label for="em-5">库存管理</label>
+                            <article class="em-small">
+                                <ul>
+                                    <li>
+                                        <a href="#" id="stock" class="anchorPage">
+                                            <p onclick="anchorPage(this)">商品管理</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="stockPackage" class="anchorPage">
+                                            <p onclick="anchorPage(this)">组合商品数量</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="stockLowerPrice" class="anchorPage">
+                                            <p onclick="anchorPage(this)">特价商品数量</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="damaged" class="anchorPage">
+                                            <p onclick="anchorPage(this)">报损</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="damagedreview" class="anchorPage">
+                                            <p onclick="anchorPage(this)">报损审核</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="warnstock" class="anchorPage">
+                                            <p onclick="anchorPage(this)">预警库存配置</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="warnstocklook" class="anchorPage">
+                                            <p onclick="anchorPage(this)">查看预警库存</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="checkStockChangeQuick" class="anchorPage">
+                                            <p onclick="anchorPage(this)">查看单位转换</p>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </article>
+                        </div>
+                        <div class="em_">
+                            <input id="em-6" name="accordion-1" type="checkbox" />
+                            <label for="em-6">采购管理</label>
+                            <article class="em-small">
+                                <ul>
+                                    <li>
+                                        <a href="#" id="stockingplan" class="anchorPage">
+                                            <p onclick="anchorPage(this)">新建采购单</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="stockingedit" class="anchorPage">
+                                            <p onclick="anchorPage(this)">编辑采购单</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="stockingcheck" class="anchorPage">
+                                            <p onclick="anchorPage(this)">审核采购单</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="statistics" class="anchorPage">
+                                            <p onclick="anchorPage(this)">统计采购单</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="statisticalReview" class="anchorPage">
+                                            <p onclick="anchorPage(this)">总采购单统计</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-name="stockingplan" class="drafts">
+                                            <p>采购单草稿箱</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-name="statistics" class="drafts">
+                                            <p>统计采购单草稿箱</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </article>
+                        </div>
+                        <div class="em_">
+                            <input id="em-7" name="accordion-1" type="checkbox" />
+                            <label for="em-7">入库管理</label>
+                            <article class="em-small">
+                                <ul>
+                                    <li>
+                                        <a href="#" id="enterstocking" class="anchorPage">
+                                            <p onclick="anchorPage(this)">采购入库管理</p>
+                                        </a>
+                                    </li>
+                                    <!-- <li>
+                                        <a href="#" id="Allenterstocking" class="anchorPage">
+                                            <p onclick="anchorPage(this)">总采购入库管理</p>
+                                        </a>
+                                    </li> -->
+                                    <li>
+                                        <a href="#" id="schedulingwarehouse" class="anchorPage">
+                                            <p onclick="anchorPage(this)">调度入库管理</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-name="enterstocking" class="drafts">
+                                            <p>采购入库草稿箱</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-name="schedulingwarehouse" class="drafts">
+                                            <p>调度入库草稿箱</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </article>
+                        </div>
+                        <div class="em_">
+                            <input id="em-8" name="accordion-1" type="checkbox" />
+                            <label for="em-8">调库管理</label>
+                            <article class="em-small">
+                                <ul>
+                                    <li>
+                                        <a href="#" id="stocktransferplan" class="anchorPage">
+                                            <p onclick="anchorPage(this)">新建调度计划</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="stocktransfer" class="anchorPage">
+                                            <p onclick="anchorPage(this)">调度出库管理</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-name="stocktransferplan" class="drafts">
+                                            <p onclick="anchorPage(this)">调度计划草稿箱</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </article>
+                        </div>
+                        <div class="em_">
+                            <input id="em-9" name="accordion-1" type="checkbox" />
+                            <label for="em-9">特权管理</label>
+                            <article class="em-small">
+                                <ul>
+                                    <li>
+                                        <a href="#" id="privilegedoperation" class="anchorPage">
+                                            <p onclick="anchorPage(this)">快捷出库</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-name="privilegedoperation" class="drafts">
+                                            <p onclick="anchorPage(this)">出库草稿箱</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="checktransferout" class="anchorPage">
+                                            <p onclick="anchorPage(this)">快捷计划管理</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="storageprivilege" class="anchorPage">
+                                            <p onclick="anchorPage(this)">快捷入库</p>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-name="storageprivilege" class="drafts">
+                                            <p onclick="anchorPage(this)">入库草稿箱</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </article>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <div class="layout-bd middle">
+                <iframe id="frm" class="frm" src=""></iframe>
+            </div>
+        </div>
+    </div>
+    <!——————————E中间——————————>
+    <!——————————S头部——————————>
+    <div class="layout-hd">
+        <div class="header_log">
+            <a href="/m/index.html"><img src="/i/css/img/favicon.ico" /></a>
+        </div>
+        <div class="header_link">
+            <ul>
+                <li><a href="/m/basis/frm.html">基本信息管理</a></li>
+                <li><a>供应链管理</a></li>
+                <li><a href="/m/order/frm.html">订单管理</a></li>
+                <li><a href="/m/delivery/frm.html">数据统计</a></li>
+                <!-- <li><a href="/m/interface/frm.html">接口管理</a></li> -->
+            </ul>
+        </div>
+        <div class="header_info header_link" style="float: left;padding-right: 5%;height: 50px;width: 30%">
+            <ul>
+                <li>
+                    <a href="#" id="staff_id" style="padding-left: 100px"></a>
+                </li>
+                <li>
+                    <a href="#" id="staff_dept"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!——————————E头部——————————>
+    <!——————————S底部——————————>
+    <div class="layout-ft minwidth"> </div>
+    <!——————————E底部——————————>
+</body>
+<script type="text/javascript" src="/i/js/frame.js"></script>
+
+</html>

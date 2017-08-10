@@ -1,0 +1,74 @@
+.modalDialog {
+    position: fixed;
+    font-family: Arial, Helvetica, sans-serif;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 99999;
+    opacity: 0;
+    transition: opacity 400ms ease-in;
+    pointer-events: none;
+}
+
+.modalDialog:target {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modalDialog > div {
+    width: 400px;
+    position: relative;
+    margin: 10% auto;
+    padding: 5px 20px 13px 20px;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.close {
+    color: white;
+    font-size: 26px;
+    position: absolute;
+    right: 12px;
+    text-align: center;
+    width: 24px;
+    text-decoration: none;
+    font-family: monospace;
+    top:10px;
+}
+
+.close:hover {
+    color: #000000;
+}
+
+.dlgData, .dlg {
+    border: 1px solid #C1C1C1;
+}
+.bottomBar{
+    margin: 10px 0px 10px 0px;
+    text-align: center;
+}
+.bottom{
+    padding: 8px 33px;
+    margin-left: 5px;
+}
+.titleBar{
+    background-color: #CBCBCB;
+    padding-left: 10px;
+}
+.dlg-top{
+    top: 15%;
+    left: 35%;
+}
+
+
+//弹出层(确定删除)
+.titleBar1{
+	background-color: #CBCBCB;
+}
+.bottom1{
+    margin-left: 5px;
+    height: 30px;
+    width: 54px;
+}

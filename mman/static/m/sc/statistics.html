@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>类别与商品</title>
+    <link rel="shortcut icon" href="/i/css/img/favicon.ico" />
+    <link rel="stylesheet" href="/i/css/manage/pure.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/iconfont/iconfont.css" />
+    <link rel="stylesheet" href="/i/css/manage/dialog.css" type="text/css" />
+    <style type="text/css">
+        .orderTable th, .orderTable td{
+            width: 80px;
+            text-align: center;
+        }
+        .mainALl{
+            overflow-y: auto;
+            height: 92%;
+            background-color: #EEEEEE;
+            display: flex;
+        }
+        .mainLeft{
+            padding-left: 20px;
+            padding-top: 20px;
+            width: 50%;
+            overflow-y:auto;
+        }
+        .mainLeft th,.mainLeft td{
+            text-align: center;
+        }
+        .mainRight{
+            width: 50%;
+            padding-left: 20px;
+            padding-top: 20px;
+            overflow-y:auto;
+        }
+        .mainRight th,.mainRight td{
+            text-align: center;
+        }
+        #timeAll{
+            padding-left: 20px;
+            padding-top: 20px;
+        }
+        #tbl{
+            margin-top: 10px;
+        }
+        #tbl table{
+            width: 480px;
+        }
+        #deptName{
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+<div style="width: 100%;text-align: center;height: 5%;margin:auto;"><h3>统计计划订单</h3></div>
+<div class="mainALl">
+    <div class="mainLeft">
+        <div id="timeSelect">
+            起始时间：<input type="date" onchange="timeTwo()" id="timeStart"/>
+            结束时间：<input type="date" onchange="timeTwo()" id="timeEnd"/>
+            <!-- <input type="button" id="timeTwo" value="确定"/> -->
+        </div>
+        <div id="timeAll">
+            <input type="button" class="toDay" dataValue="1" value="今天" onclick="toDay(this)"/>
+            <input type="button" class="toDay" dataValue="3" value="近三天"  onclick="toDay(this)"/>
+            <input type="button" class="toDay" dataValue="7" value="近一周"  onclick="toDay(this)"/>
+            <input type="button" class="toDay" dataValue="30" value="近一个月"  onclick="toDay(this)"/>
+        </div>
+        <div id="tbl">
+            <div id="deptName">
+                <input type='radio' name='dept' deptid="0" onclick='blockStaff(this)' checked="checked"/>全部<br/>
+            </div>
+            <div id="staffId"></div>
+            <table border="1">
+                <thead>
+                <tr>
+                    <th>流水号</th>
+                    <th>商品名</th>
+                    <th>编号</th>
+                    <th>规格</th>
+                    <th>单位</th>
+                    <th>总计</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody class="commodityTbody"></tbody>
+            </table>
+            <input id="addCom" type="button" class="pure-button pure-button-primary" value="补进商品" />
+            <input id="addComListAll" type="button" class="pure-button pure-button-primary" value="全部添加" />
+        </div>
+    </div>
+
+    <div class="mainRight">
+        <div>
+            统计计划备忘：<input class="bigMemo" bigMemoId="0" type="text" placeholder="统计计划备忘"/>
+            <table border="1" style="width:90%">
+                <thead>
+                <tr>
+                    <th>商品名</th>
+                    <th>编号</th>
+                    <th>规格</th>
+                    <th>总计</th>
+                    <th>备忘</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="commodityList"></tbody>
+            </table>
+            <button id="carryOut" type="button" class="pure-button pure-button-primary" style="margin: 3px 40px 0 0 ;">提交</button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/i/js/handlebars.js"></script>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/table.js"></script>
+<script type="text/javascript" src="/i/js/dialog.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script type="text/javascript" src="/i/js/xml.js"></script>
+<script type="text/javascript" src="/m/sc/js/statistics.js"></script>
+</body>
+</html>

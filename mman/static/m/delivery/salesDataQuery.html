@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据查询统计</title>
+    <!-- <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css" /> -->
+    <style type="text/css">
+        #operatingAll{
+            display: flex;
+            height: 10%;
+        }
+        #operatingClass{
+            margin-left: 20px;
+        }
+        #operatingDept{
+            margin-left: 20px;
+        }
+    		#operatingLine{
+    			margin-left: 20px;
+    		}
+        #dataAll table{
+            width: 100%;
+            overflow-y: auto;
+        }
+        #dataAll table td{
+            text-align: center;
+        }
+    		#operatingCommunity{
+    			margin-left: 20px;
+    			display:none;
+    		}
+        .e-msg-bar {
+            background-color: #12c994;
+            position: fixed;
+            z-index: 1000000;
+            top: 0;
+            width: 100%;
+            height: auto;
+            line-height: 1.8;
+            padding: 13px 0;
+            color: #fff;
+            font-size: 15px;
+            text-align: center;
+            transition: all ease-in-out 2s;
+            -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both
+        }
+        .alert-error {
+            background-color: #f06962!important
+        }
+
+        .alert-info {
+            background-color: #00c0ef!important
+        }
+
+        .alert-warning {
+            background-color: #f39c12!important
+        }
+
+        .alert-success {
+            background-color: #12c994!important
+        }
+        @-webkit-keyframes fadeInDown {
+            0% {
+                -webkit-transform: translate3d(0,-100%,0);
+                transform: translate3d(0,-100%,0)
+            }
+
+            to {
+                -webkit-transform: none;
+                transform: none
+            }
+        }
+
+        @keyframes fadeInDown {
+            0% {
+                -webkit-transform: translate3d(0,-100%,0);
+                transform: translate3d(0,-100%,0)
+            }
+
+            to {
+                -webkit-transform: none;
+                transform: none
+            }
+        }
+
+        .fadeInDown {
+            -webkit-animation-name: fadeInDown;
+            animation-name: fadeInDown
+        }
+
+        @-webkit-keyframes fadeOutUp {
+            0% {
+                opacity: 1
+            }
+
+            to {
+                opacity: 0;
+                -webkit-transform: translate3d(0,-100%,0);
+                transform: translate3d(0,-100%,0)
+            }
+        }
+
+        @keyframes fadeOutUp {
+            0% {
+                opacity: 1
+            }
+
+            to {
+                opacity: 0;
+                -webkit-transform: translate3d(0,-100%,0);
+                transform: translate3d(0,-100%,0)
+            }
+        }
+
+        .fadeOutUp {
+            -webkit-animation-name: fadeOutUp;
+            animation-name: fadeOutUp
+        }
+
+        .animated {
+            -webkit-animation-duration: .5s;
+            animation-duration: .5s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both
+        }
+    </style>
+</head>
+<body>
+<div>
+    <!--上面所有的操作-->
+    <div id="operatingAll">
+        <div id="operatingDate">
+            开始时间:<input id="operatingDateStart" onchange="operatingDateSubmit()" type="date"/>结束时间:<input id="operatingDateEnd" onchange="operatingDateSubmit()" type="date"/><br/>
+            <input type="button" value="今天" onclick="dateSearch(1)"/>
+            <input type="button" value="近三天" onclick="dateSearch(3)"/>
+            <input type="button" value="近一周" onclick="dateSearch(7)"/>
+            <input type="button" value="近一个月" onclick="dateSearch(30)"/>
+            <input type="button" value="导出" onclick="printAll()"/>
+            <div><input type="text" placeholder="输入商品名" id="commodityNo" commodityNo onkeyup="commodityAll(this)"><ul style="width:240px;background-color: #EEEEEE;margin: 0;padding: 0;position: fixed;overflow-y: auto;"></ul></div>
+        </div>
+        <div id="operatingClass">
+            <select id="classSelect" onchange="operatingDateSubmit()">
+                <option value="--请选择分类--">--请选择分类--</option>
+            </select>
+        </div>
+
+		<div id="operatingLine">
+            <select id="lineSelect" onchange="operatingDateSubmit()">
+                <option value="--请选择类型--">--请选择类型--</option>
+                <option value="1">线下</option>
+                <option value="2">线上</option>
+            </select>
+        </div>
+
+        <div id="operatingDept" onchange="operatingDateSubmit()">
+            <select id="operatingSelect" onchange="chageDept(this)">
+                <option value="--请选择部门--">--请选择部门--</option>
+            </select>
+        </div>
+
+		<div id="operatingCommunity" onchange="operatingDateSubmit()">
+            <select id="CommunitySelect">
+                <option value="--请选择小区--">--请选择小区--</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="dataAll">
+        <table border="1">
+            <thead>
+            <tr>
+                <th>品类</th>
+                <th>种类</th>
+                <th>类别编码</th>
+                <th>编号</th>
+                <th>品名</th>
+                <th>规格</th>
+                <th>单位</th>
+                <th>数量</th>
+                <th>进价</th>
+                <th>合计</th>
+                <th>零售价</th>
+                <th>合计</th>
+                <th>差价</th>
+                <th>毛利率</th>
+                <!-- <th>码洋</th> -->
+            </tr>
+            </thead>
+            <tbody id="dataAllTbody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script type="text/javascript" src="/m/delivery/js/salesDataQuery.js"></script>
+</body>
+</html>

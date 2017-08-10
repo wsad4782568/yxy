@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>新增组合商品</title>
+
+    <link rel="stylesheet" href="/i/css/manage/pure.css" />
+    <link rel="stylesheet" href="/i/css/iconfont/iconfont.css" />
+    <link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" />
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+    <style type="text/css">
+        .table {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+        }
+        #tbl {
+            padding-top: 20px;
+            /*width: auto;*/
+            overflow-y: auto;
+        }
+        .plan th,.plan td{
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+<div style="display: flex;height: 95%;background-color: #EEEEEE;">
+    <div style="width: 60%;padding-left: 20px;overflow-y: auto;border-right: 1px solid #FFFFFF;">
+        <div id="trees" style=" width: 12%;top:7%;position: absolute;"></div>
+        <div id="tbl" style="  width: 80%;padding-left: 20%;"></div>
+    </div>
+
+    <div style="width: 35%;">
+        <div style="height:35%;width: 110%;text-align: center;border-bottom: 1px solid #FFFFFF;">
+            <h2 >统一至各子店</h2>
+            <h2>礼包信息</h2>
+            <form id="form_package">
+                <i>品名：</i><input class="form-data" type="text" name="name" placeholder="请输入礼包名" value="">
+                <i>规格：</i><input class="form-data" type="text" name="specification" placeholder="请输入礼包规格" value=""><br>
+                <i>单位：</i><input class="form-data" type="text" name="unit" placeholder="请输入礼包单位" value="">
+                <i>价格：</i><input class="form-data" type="text" name="price" placeholder="请输入礼包价格" value=""><br>
+                <i>简介：</i><input class="form-data" type="text" name="intro" placeholder="请输入礼包简介" value="">
+                <i>种类：</i><select class="form-data"  name="classid" id="class_value"></select>
+            </form>
+        </div>
+
+        <div style="height:55%;text-align: center;">
+            <div style="height: 20%;">
+                <h2>商品列表</h2>
+
+            </div>
+            <div style="overflow-y: auto;height: 80%;width:100%;">
+                <table class="plan" style="width:100%;" border="1">
+                    <thead>
+                    <tr>
+                        <th>商品编号</th>
+                        <th>商品名</th>
+                        <th>规格</th>
+                        <th>单位</th>
+                        <th>数量</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="commodityList"></tbody>
+                </table>
+            </div>
+        </div>
+        <div  style="height: 5%;background-color: #EEEEEE;">
+            <button id="planCommodity" type="button" class="pure-button pure-button-primary" style="float: right;margin: 2% 0 0 0 ;">提交</button>
+        </div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript" src="/i/js/handlebars.js"></script>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/table.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script type="text/javascript" src="/i/js/tree.js"></script>
+<script type="text/javascript">
+    var xmlEmployee = new XMLHttpRequest()
+    xmlEmployee.open("POST","/staff/getstaffinfo",true)
+    xmlEmployee.send()
+    xmlEmployee.onreadystatechange = function(){
+        if (xmlEmployee.readyState==4 && xmlEmployee.status==200){
+            staffinfo = eval('('+xmlEmployee.responseText+');')
+        }
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/sc/commodity/getext", true);
+    xhr.send();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            others = eval('('+xhr.responseText+');')
+            trs=[]
+            trs.push([0,"父节点"])
+            var class_dom=document.querySelector("#form_package").classid
+            for(var i in others.tree) {
+                trs.push([others.tree[i][0],others.tree[i][2],others.tree[i][7],others.tree[i][8],["data-code",others.tree[i][1]]]);
+              /*  if(others.tree[i][8]==1){
+                    var option=document.createElement("option")
+                    option.value=others.tree[i][1]
+                    option.innerHTML=others.tree[i][2]
+                    class_dom.appendChild(option)
+                }*/
+            }
+            others.comclass = []// id 和 姓名  对比  商品tbl里面对应的
+            for(var i in others.tree) {
+                if (others.tree[i][8]==1){//只需要叶子节点的,商品只在这个种类下面
+                    others.comclass.push([others.tree[i][1],others.tree[i][2]]);
+                    var option=document.createElement("option")
+                    option.value=others.tree[i][1]
+                    option.innerHTML=others.tree[i][2]
+                    document.querySelector("#class_value").appendChild(option)
+                }
+            }
+            loadtree(trs)
+            loadtbl()
+            t.funcs.loadData.call(t, {
+                qseq: -1, //id
+                qverb: 'g',// >
+                qpt: -1,  //-1
+                oseq: 0, //顺序的下标
+                odir:"a" //升序降序
+             })
+        }
+    }
+    function loadtree(treedata){
+        var trs=new _e["tree"]()
+        var event=[{e:"click",func:function () { //需要绑定的函数，绑定tbl
+            t.funcs.loadData.call(t,{    //在table.js中的204行显示
+                qseq:12, //数组中下标
+                qverb:'k',// like '% %' 条件
+                qpt:this.getAttribute("data-code") //值
+            })
+        }, is_leaf:1}]
+        trs.init("#trees",treedata,1,"TR",event)    //创建树
+    }
+    function loadtbl(){
+        coldefs = [
+            { seq:1,
+                render:function(item){return "<b>"+item+"</b>"},
+                sortable:true,
+                retrievable: true,
+                title:"品名",
+                visible:true,
+            },{ seq:0,//在数据[[],[]]中的位置rows[i][seq] 返回值
+                render:function(v){ return v},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+                sortable:false, // 可排序 function
+                retrievable: false, // 可检索 function
+                title:"流水号", // 列标题
+                visible:true, //是否可见
+                checkall:false,
+
+            },
+            { seq:12,
+                render:function(item){
+                    for(var i = 0;i<window["others"].comclass.length;i++){
+                        if (others.comclass[i][0]==item) return "<b>"+others.comclass[i][1]+item+"</b>"
+                    }
+                },
+                title:"种类",
+                visible:true,
+                name:"classid",
+                data:others.comclass
+            }, { seq:7,
+                render:function(item){return "<b>"+item+"</b>"},
+                sortable:true,
+                retrievable: true,
+                title:"规格",
+                visible:true,
+            }, { seq:11,
+                render:function(item){return "<b>"+item+"</b>"},
+                sortable:true,
+                retrievable: true,
+                title:"单位",
+                visible:true,
+            },{ seq:4,
+                render:function(item){return "<b>"+(item/100).toFixed(2)+"</b>"},
+                sortable:true,
+                retrievable: true,
+                title:"价格",
+                visible:true,
+            }, { seq:20,
+                title:"编号",
+                render:function(item){return "<b>"+item+"</b>"},
+                sortable:true,
+                retrievable: true,
+                visible:true,
+            }, { seq:22,
+                title:"条形码",
+                render:function(item){
+                  return "<b>"+item+"</b>"
+                },
+                visible:true,
+            }
+        ]
+
+        t = new _e["table"]()
+        row_actions =[{cls:"doerow",func:function(tbl,rows){
+            var datas = tbl.data[rows]
+            for(var i = 0;i< document.querySelector("#commodityList").children.length;i++){
+                if(datas[0] == Number(document.querySelector("#commodityList").children[i].querySelector("td").innerHTML)){
+                    _e["msgBox"]({
+                          msg: "该商品已添加!",
+                          timeout:3000
+                    })
+                    return
+                }
+            }
+
+            var tr = '<tr><td>'+ datas[0] +'</td>' +
+            '<td>'+ datas[1] +'</td>'+
+            '<td>'+ datas[7] +'</td>'+
+            '<td>'+ datas[11] +'</td>'+
+            '<td><input type="number" class="amount" value="1" style="width: 80px;"></td>'
+            tr += '<td><a href="#" style="color: #0a0a0a"><i class="icon iconfont icon-delete" onclick="deleteCom(this)"></i></a></td></tr>'
+            document.querySelector("#commodityList").innerHTML += tr
+
+
+        },title:"添加至礼包"}]
+
+        rows_actions = []
+
+        document.querySelector("#planCommodity").addEventListener("click",function(){
+            var comList = document.querySelector("#commodityList")
+            var all_Amount = comList.querySelectorAll(".amount")
+            var all_form = document.querySelectorAll(".form-data")
+            var fd = new FormData(),xhr = new XMLHttpRequest()
+            if(comList.children.length <2){
+                _e.msgBox({msg:"礼包中最少得有2个商品！"})
+                return
+            }
+            for(var k = 0;k < all_Amount.length;k++){
+                if(Number(all_Amount[k].value) <= 0){
+                    _e.msgBox({msg:"礼包中商品数量必须大于0!"})
+                    return
+                }
+            }
+            for(var k = 0;k < all_form.length;k++){
+                if(all_form[k].value.length < 1){
+                    _e.msgBox({msg:"请填写完整的礼包信息!"})
+                    return
+                }
+                if (k!=3) fd.append(all_form[k].name,all_form[k].value)
+                if (k==3) fd.append(all_form[k].name,Number(all_form[k].value)*100)
+            }
+            var planCom = comList.querySelectorAll("tr")
+            for(var i = 0;i < planCom.length;i++){
+                fd.append("commodityid",planCom[i].children[0].innerHTML)
+                fd.append("amount",planCom[i].children[4].children[0].value)
+            }
+            xhr.open("POST","/sc/commodityrel/newpackage"+_e["jurisdiction"](),true)
+            xhr.send(fd)
+            xhr.onreadystatechange = function(){
+                if (xhr.readyState==4 && xhr.status==200){
+                    var d = eval('('+xhr.responseText+');')
+                    _e["msgBox"]({
+                        msg: d.msg,
+                        className: d.res==-1 ? "error":"success",
+                        timeout:3000
+                    })
+                }
+            }
+        },true)
+
+
+        ext_row = function(rows,i){
+            return "this is row "+i
+        }
+        after_Load = function(tbl,tblDom){}
+        t.funcs.init.call(t,"tbl",
+                coldefs,row_actions,rows_actions,"table","__THE__TABLE__",ext_row,"/sc/commodity/getcommoditys",after_Load)
+        var tbl_head = document.querySelector("#tbl").querySelector("thead")
+        tbl_head.querySelector("#trtime").parentNode.removeChild( tbl_head.querySelector("#trtime"))
+        tbl_head.querySelector("#trdept").parentNode.removeChild( tbl_head.querySelector("#trdept"))
+    }
+    function deleteCom(e){
+        e.parentNode.parentNode.parentNode.parentNode.removeChild(e.parentNode.parentNode.parentNode)
+    }
+</script>
+</html>

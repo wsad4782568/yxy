@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:height="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8" />
+    <title>自定义模块</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+    <style type="text/css">
+
+        #dlg{
+            z-index:1000;
+            position:absolute;
+            width:500px;
+            height:300px;
+            background-color: #eeeeee;
+            border:1px solid;
+            border-radius: 5px;
+
+        }
+        .titleBar{
+            cursor:move;
+            background-color: #c1c1c1;
+            padding: 10px;
+            text-align: center;
+            height: 33px;
+        }
+        .main{
+           text-align: center;
+        }
+        .remark{
+            background-color: #c1c1c1;
+            height: 27px;
+            font-style: italic;
+            margin-top:-11px;
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+
+<div id="dlg" >
+    <div class="pure-g titleBar" draggable="true" style="">
+        <div class="pure-u-5-6" style="font-family：sans-serif;font-size:24px">登录</div>
+        <div class="pure-u-1-6" style="text-align:right;">
+            <span style="cursor:default" class="close" >
+                <button class="pure-button" style="font-size: 70%;border-radius: 50px ;margin-top:-10px;">X</button>
+            </span><br>
+        </div>
+    </div>
+
+    <form class="pure-form" style="height:70%;padding-top:5px">
+            <fieldset>
+                <legend style="font-size: 70%;">共创美好明天</legend>
+                <div class="main">
+                   <p> 用户：<input type="email" placeholder="Email"></p>
+                   <p> 密码：<input type="password" placeholder="Password"> </p>
+
+                    <button type="submit" class="pure-button pure-button-primary" style="margin-left: 70%">Sign in</button>
+                </div>
+            </fieldset>
+    </form>
+
+    <div class="remark" >
+        <p> 我们一直在努力！</p>
+    </div>
+</div>
+
+<script type="text/javascript">
+    if(typeof(_e) == "undefined") {
+        _e = {}
+    }
+    _e["uniqueID"] = function(){
+        if(!window["_EM_UNIQUE_ID"]) {
+            window["_EM_UNIQUE_ID"] = 1
+        }else{
+            window["_EM_UNIQUE_ID"] ++
+
+        }
+        return "_em_unque_id" + window["_EM_UNIQUE_ID"]
+    }
+
+    _e["bind"] = function(selectors,ev,func,dom,flag){
+        var el
+        if(arguments.length==3){
+            el = document.querySelector(selectors)
+
+        }
+        if(arguments.length>3){
+            el = dom.querySelector(selectors)
+
+        }
+        var b = false
+        if(arguments.length==5){
+            b = flag
+        }
+        if(el) el.addEventListener(ev,func,b)
+
+
+
+    }
+
+    _e["bindAll"] = function(selectors,ev,func,dom,flag){
+        var els
+        if(arguments.length==3){
+            els = document.querySelectorAll(selectors)
+
+        }
+        if(arguments.length>3){
+            els = dom.querySelectorAll(selectors)
+
+        }
+        var b = false
+        if(arguments.length==5){
+            b = flag
+        }
+
+        if(els) {
+            for(var i=0; i<els.length;i++)
+                els[i].addEventListener(ev,func,b)
+        }
+
+    }
+
+    _e["dlg"] = function(id){ // #id
+        var dlg = document.querySelector(id),
+                deltaX = 0, deltaY = 0
+        // dlg.style.width = cfg.width;
+
+        var mouseMove = function(e){
+            dlg.style.left = (e.clientX - deltaX) + 'px'
+            dlg.style.top = (e.clientY - deltaY) + 'px'
+
+        }
+        var mouseUp = function(e){
+            document.removeEventListener("mouseup", mouseUp, true)
+            document.removeEventListener("mousemove", mouseMove, true)
+            e.stopPropagation()
+
+        }
+        var mouseDown = function(e){
+            deltaX = e.clientX - this.parentNode.offsetLeft
+            deltaY = e.clientY - this.parentNode.offsetTop
+
+            document.addEventListener('mousemove', mouseMove, true)
+            document.addEventListener('mouseup', mouseUp, true)
+            e.stopPropagation()
+            e.preventDefault()
+
+        }
+
+
+        _e.bind(".titleBar","mousedown",mouseDown,dlg,true)
+        _e.bind(".close","click",function(){
+            dlg.style.display = "none"
+        },dlg,false)
+    }
+
+    _e.dlg("#dlg",{width:"700px",height:"400px"})
+
+
+
+</script>
+</body>
+</html>

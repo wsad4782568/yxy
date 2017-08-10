@@ -1,0 +1,86 @@
+
+1，依赖 eachma包
+2，没有封装context，须使用原request、response对象
+3，侨城汇使用/app打头，兼容目前在线不做任何改变，基本复用原有代码（详细说明），适当整理
+4，nginx配置是静态立即处理，找不到扔给后端，后端不匹配扔给404
+5，支付/pay/打头，使用pingxx
+6，URL dispatch 见示例代码
+7，微信实现公众号问答、公众号地理位置、公众号摇一摇、菜单管理（细节等我下一版说明，可提前实现基本的）
+8，数据库访问简单逻辑在controller中实现，复杂（跨表）在models中封装
+
+
+nginx.conf
+
+
+user  coney;
+worker_processes  1;
+
+
+
+#pid        logs/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+    #                  '$status $body_bytes_sent "$http_referer" '
+    #                  '"$http_user_agent" "$http_x_forwarded_for"';
+
+    #access_log  logs/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+
+
+    # another virtual host using mix of IP-, name-, and port-based configuration
+    #
+    #server {
+    #    listen       8000;
+
+server {
+    listen       80;
+    server_name  localhost;
+
+    charset utf-8;
+    access_log  /var/log/ts.log;
+    #url prefixes:
+    #e examples
+    #i includes
+    #l libs
+    #m manage
+    #s sales
+    #f fuctions
+    location ~^/(f|e|i|l|m|s)/ {
+        access_log off;
+        expires 1d;
+
+        root "/home/coney/go/src/mrten/static";
+        try_files $uri @backend;
+    }
+
+    location / {
+        try_files /_not_exists_ @backend;
+    }
+
+    location @backend {
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header Host            $http_host;
+
+        proxy_pass http://127.0.0.1:8080;
+    }
+}
+
+}

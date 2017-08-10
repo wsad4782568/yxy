@@ -1,0 +1,9 @@
+.table {
+    width: 100%;
+    height: 100%;
+    OVERFLOW-y: auto;
+}
+.tbl {
+    margin: 0px 46px 0px 20px;
+    width: auto;
+}

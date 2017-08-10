@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>出库审核</title>
+    <link rel="shortcut icon" href="/i/css/img/favicon.ico" />
+    <link rel="stylesheet" href="/i/css/manage/pure.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/tree.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/dialog.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/contextmenu.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/formdata.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/table.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/iconfont/iconfont.css" type="text/css"/>
+</head>
+<body>
+<div class="default-main default-top">
+    <div class="main-wrapper">
+        <div class="layout-bd em-left">
+            <div id="trees"></div>
+        </div>
+        <div class="layout-bd middle">
+            <div id="tbl"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/i/js/handlebars.js"></script>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/table.js"></script>
+<script type="text/javascript" src="/i/js/dialog.js"></script>
+<script type="text/javascript" src="/i/js/tree.js"></script>
+<script type="text/javascript" src="/i/js/contextmenu.js"></script>
+<script type="text/javascript" src="/i/js/form.js"></script>
+<script type="text/javascript" src="/i/js/imgup.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script type="text/javascript">
+
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/sc/expressstock/getext", true);
+    xhr.send();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            ddd = eval('('+xhr.responseText+');')
+           var  status=[[1,"待审核",0,1],[4,"未通过",0,1],[3,"出库完成",0,1],[10,"入库完成",0,1]]
+            loadtree(status)
+            loadtbl()
+            t.funcs.loadData.call(t, {
+                qseq: 0, //id
+                qverb: 'g',// >
+                qpt: -1,  //-1
+                oseq: 5, //顺序的下标
+                odir:"d" //升序降序
+            })
+        }
+    }
+
+    function loadtree(treedata) {
+        var trs = new _e["tree"]()
+        var event = [{
+            e: "click", func: function () { //需要绑定的函数，绑定tbl
+                t.funcs.loadData.call(t, {    //在table.js中的204行显示
+                    qseq: 1, //数组中下标
+                    qverb: 'e',// = 条件
+                    qpt: this.getAttribute("data-id") //值
+                })
+            }, is_leaf: 1
+        }]
+        trs.init("#trees", treedata, 1, "TR", event)    //创建树
+    }
+
+
+    function loadtbl(){
+        coldefs = [{ seq:0,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){ return item},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable:true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title:"id", // 列标题
+            visible:true, //是否可见
+            checkall:false,// 是否可全选
+        }, { seq:1,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){
+                if(item==1) return "<b>待审核</b>"
+                if(item==2) return "<b>审核通过</b>"
+                if(item==3) return "<b>出库完成</b>"
+                if(item==4) return "<b>未通过</b>"
+                if(item==5) return "<b>无效单</b>"
+                if(item==10) return "<b>入库完成</b>"
+            },// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            title:"状态", // 列标题
+            visible:true, //是否可见
+            name:"status",//和后端对应，FormData里面的key，后端解析时要一致
+            type:2,
+            data:[]//为select时，这里为需要传入的数据,others里面  如商品，这里应该为商品种类对应的id和name   参考下面种类列
+        },
+            { seq:2,//在数据[[],[]]中的位置rows[i][seq] 返回值
+                render:function(item){return "<b>"+item+"</b>" },
+                sortable:true,
+                retrievable: true,
+                title:"票据单",
+                visible:true,
+                name:"tickcode",
+                type:1,
+                data:[]
+            },
+            { seq:3,
+                render:function(item){return "<b>"+item+"</b>"},
+                sortable:true,
+                retrievable: true,
+                title:"出库说明",
+                visible:true,
+                name:"amount",
+                type:0,
+                data:[]
+            },{ seq:8,
+                render:function(item){return "<b>"+item+"</b>"},
+                sortable:true,
+                retrievable: true,
+                title:"审核说明",
+                visible:true,
+                name:"inmemo",
+                type:0,
+                data:[]
+            },
+            { seq:4,
+                render:function(item){return "<b>"+item+"</b>"},
+                sortable:false,
+                retrievable: false,
+                title:"创建时间",
+                visible:true,
+                name:"offshelf",
+                type:0,
+                data:[]
+            },
+            { seq:5,
+                render:function(item){return "<b>"+item+"</b>"},
+                sortable:false,
+                retrievable: false,
+                title:"修改时间",
+                visible:true,
+                name:"minimum",
+                type:0,
+                data:[]
+            },
+            { seq:6,
+                render:function(item){
+                    for(var i = 0;i<this.data.length;i++){
+                        if (this.data[i][0]==item) return "<b>"+this.data[i][1]+"</b>"
+                    }
+                    return "<b>无</b>"
+                },
+                sortable:false,
+                retrievable: false,
+                title:"出库申请人",
+                visible:true,
+                name:"standardamount",
+                type:0,
+                data:ddd.staff
+            },
+            { seq:7,
+                render:function(item){
+                    for(var i = 0;i<this.data.length;i++){
+                        if (this.data[i][0]==item) return "<b>"+this.data[i][1]+"</b>"
+                    }
+                    return "<b>无</b>"
+                },
+                sortable:false,
+                retrievable: false,
+                title:"审核人",
+                visible:true,
+                name:"recommended",
+                type:0,
+                data:ddd.staff
+            },
+            { seq:9,
+                render:function(item){
+                    for(var i = 0;i<this.data.length;i++){
+                        if (this.data[i][0]==item) return "<b>"+this.data[i][1]+"</b>"
+                    }
+                    return "<b>无</b>"
+                },
+                sortable:false,
+                retrievable: false,
+                title:"入库申请人",
+                visible:true,
+                name:"recommended",
+                type:0,
+                data:ddd.staff
+            }
+        ]
+        t = new _e["table"]()
+        row_actions =[{cls:"edit_check",func:function(tbl,rows){
+            if(tbl.data[rows][1] == 3) {
+                _e.msgBox({msg:"该计划已经审核,不可继续编辑"})
+                return
+            }
+            var url1="/m/sc/privilegedoperation.html?transferid="+tbl.data[rows][0]+"&outmemo="+tbl.data[rows][3]+"&status="+tbl.data[rows][1]
+            window.location.href=encodeURI(url1)
+        },title:"编辑"},
+            {cls:"look_check",func:function(tbl,rows){
+              var title = ""
+                if(tbl.data[rows][1]!=10){
+                  title = tbl.data[rows][0]+"的出库商品"
+                }else {
+                  title = tbl.data[rows][0]+"的入库库商品"
+                }
+                if (document.querySelector("#dlgData1")) document.querySelector("#dlgData1").parentNode.removeChild(document.querySelector("#dlgData1"));
+                var dlg = _e.dialog({id:"dlgData1",width:"500px",
+                    title:title,
+                    mainBody: "<table id='items' style='width: 100%' class='pure-table pure-table-bordered'><thead>" +
+                    "<tr><th>id</th><th>商品名</th><th>流水号</th><th>规格</th><th>现有数量</th><th>出库数量</th><th>入库数量</th><th>单位</th></tr></thead></table>"+
+                    '<h2>审批意见:</h2><input type="text" style="width: 300px;height: 200px;" placeholder="通过或否定理由" id="inmemo"/>',
+                    actions:[{id:"btn-pass",title:"通过",func:function(){
+                        var fd = new FormData(),xhrx2 = new XMLHttpRequest()
+                        if(tbl.data[rows][1]!=1){
+                            dlg.parentNode.removeChild(dlg)
+                            return
+                        }
+                        fd.append("id",tbl.data[rows][0])
+                        fd.append("inmemo",dlg.querySelector("#inmemo").value)
+                        xhrx2.open("POST" ,"/sc/expressstock/passtransfer" +_e["jurisdiction"](), true)
+                        xhrx2.send(fd)
+                        xhrx2.onreadystatechange=function()  {
+                            if (xhrx2.readyState==4 && xhrx2.status==200) {
+                                var dat = eval('(' +xhrx2.responseText+ ');')
+                                _e["msgBox"]({
+                                    msg: dat.msg,
+                                    className: dat.res==-1 ? "error":"success",
+                                    timeout:3000
+                                })
+                                if(dat.res==0){
+                                    dlg.parentNode.removeChild(dlg)
+                                    t.funcs.loadData.call(t)
+                                }
+                            }
+                        }
+                    }},{id:"btn-unpass",title:"否决",func:function(){
+                        var fd = new FormData(),xhrx2 = new XMLHttpRequest()
+                        if(tbl.data[rows][1]!=1){
+                            dlg.parentNode.removeChild(dlg)
+                            return
+                        }
+                        fd.append("id",tbl.data[rows][0])
+                        fd.append("inmemo",dlg.querySelector("#inmemo").value)
+                        xhrx2.open("POST" ,"/sc/expressstock/unpasstransfer" +_e["jurisdiction"](), true)
+                        xhrx2.send(fd)
+                        xhrx2.onreadystatechange=function()  {
+                            if (xhrx2.readyState==4 && xhrx2.status==200) {
+                                var dat = eval('(' +xhrx2.responseText+ ');')
+                                _e["msgBox"]({
+                                    msg: dat.msg,
+                                    className: dat.res==-1 ? "error":"success",
+                                    timeout:3000
+                                })
+                                if(dat.res==0){
+                                    dlg.parentNode.removeChild(dlg)
+                                    t.funcs.loadData.call(t)
+                                }
+                            }
+                        }
+                    }},
+                    {id:"btn-close",title:"关闭",func:function(){
+                      dlg.parentNode.removeChild(dlg)
+                    }}]})
+                if(tbl.data[rows][1]!=1){
+                      dlg.querySelector("#btn-unpass").parentNode.removeChild(dlg.querySelector("#btn-unpass"))
+                      dlg.querySelector("#btn-pass").parentNode.removeChild(dlg.querySelector("#btn-pass"))
+                  }
+                dlg.show()
+
+                var selectTbody1=document.createElement("tbody")
+                selectTbody1.setAttribute("id","selectTbody1")
+                dlg.querySelector("#items").appendChild(selectTbody1)
+                var xhr = new XMLHttpRequest()
+                var url="/sc/expressstock/getitem?id="+_e["stripscript"](tbl.data[rows][0])
+                xhr.open("POST" ,url , true)
+                xhr.send()
+                xhr.onreadystatechange=function()  {
+                    if (xhr.readyState==4 && xhr.status==200) {
+                        var items = eval('(' + xhr.responseText + ');')
+                        if (items.iteminfo.length < 1) {
+                            _e["msgBox"]({msg: "找不到出库商品"})
+                            return
+                        }
+                        for (var i = 0; i < items.iteminfo.length; i++) {
+                            var tr = document.createElement("tr")
+                            tr.innerHTML = '<td>' + items.iteminfo[i][0] + '</td>' +
+                                    '<td>' + items.iteminfo[i][1] + '</td>' +
+                                      '<td>' + items.iteminfo[i][10] + '</td>' +
+                                      '<td>' + items.iteminfo[i][2] + '</td>' +
+                                    '<td>' + items.iteminfo[i][3] + '</td>' +
+                                    '<td>' + items.iteminfo[i][4] + '</td>' +
+                                    '<td>' + items.iteminfo[i][5] + '</td>' +
+                                    '<td>' + items.iteminfo[i][6] + '</td>'
+                            selectTbody1.appendChild(tr)
+                        }
+                          dlg.querySelector("#inmemo").value=items.inmemo
+                    }
+                }
+            },title:"审核"}]
+        rows_actions = []
+
+        ext_row = function(rows,i){
+            return "this is row "+i
+        }
+        after_Load = function(tbl,tblDom){
+          var edit_check = tblDom.querySelectorAll(".edit_check")
+          var look_check = tblDom.querySelectorAll(".look_check")
+          for(var i=0;i<tbl.data.length;i++){
+            if(tbl.data[i][1]!=1){
+              edit_check[i].style.display="none"
+              look_check[i].innerHTML="查看内容"
+            }
+          }
+        }
+        t.funcs.init.call(t,"tbl",
+                coldefs,row_actions,rows_actions,"table","__THE__TABLE__",ext_row,"/sc/expressstock/gettransferout",after_Load)
+        var tbl_head = document.querySelector("#tbl").querySelector("thead")
+        tbl_head.querySelector("#trunit").parentNode.removeChild( tbl_head.querySelector("#trunit"))
+        var trtime = tbl_head.querySelector("#trtime")
+        var trSearch = document.createElement("tr") //添加快捷键
+        trSearch.innerHTML = '<td><input type="button" value="今天" onclick="dateSearch(1)"/></td>'+
+          '<td><input type="button" value="近三天" onclick="dateSearch(3)"/></td>'+
+          '<td><input type="button" value="近一周" onclick="dateSearch(7)"/></td>'+
+          '<td><input type="button" value="近一个月" onclick="dateSearch(30)"/></td>'
+        trtime.parentNode.insertBefore(trSearch,trtime)
+    }
+    function dateSearch(e){   //时间快捷键
+      var tody=_e["CurentTime"]()
+      tody=_e["addDate"](tody,1)
+      var times=document.querySelector("#tbl").querySelectorAll(".cqtime")
+        times[0].value=_e["addDate"](tody,0-e)
+        times[1].value=tody
+        t.funcs.reloadOption.call(t)
+        t.funcs.loadData.call(t, {
+            qseq: 0, //id
+            qverb: 'g',// >
+            qpt: -1,  //-1
+            oseq: 5, //顺序的下标
+            odir:"d" //升序降序
+        })
+    }
+</script>
+</body>
+
+</html>

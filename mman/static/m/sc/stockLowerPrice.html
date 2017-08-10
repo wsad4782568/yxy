@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>特价商品数量</title>
+    <link rel="shortcut icon" href="/i/css/img/favicon.ico" />
+    <link rel="stylesheet" href="/i/css/manage/pure.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/tree.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/dialog.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/contextmenu.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/formdata.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/table.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/iconfont/iconfont.css" type="text/css"/>
+</head>
+
+<body>
+<div class="default-main default-top">
+    <div class="main-wrapper">
+        <div class="layout-bd em-left">
+            <div id="trees"></div>
+        </div>
+        <div class="layout-bd middle">
+            <div id="tbl"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/i/js/handlebars.js"></script>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/table.js"></script>
+<script type="text/javascript" src="/i/js/dialog.js"></script>
+<script type="text/javascript" src="/i/js/tree.js"></script>
+<script type="text/javascript" src="/i/js/contextmenu.js"></script>
+<script type="text/javascript" src="/i/js/form.js"></script>
+<script type="text/javascript" src="/i/js/imgup.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script>
+
+    /**
+     * Created by Administrator on 2016/6/6.
+     */
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/sc/stock/getextend", true);
+    xhr.send();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            others = eval('('+xhr.responseText+');')
+            trs=[]
+            trs.push([0,"父节点"])
+            for(var i in others.tree) {
+                trs.push([others.tree[i][0],others.tree[i][2],others.tree[i][3],others.tree[i][4],["data-code",others.tree[i][1]]]);
+            }
+            loadtree(trs)
+            loadtbl()
+            t.funcs.loadData.call(t, {
+                qseq: -1, //id
+                qverb: 'g',// >
+                qpt: -1,  //-1
+                oseq: 0, //顺序的下标
+                odir:"a" //升序降序
+            })
+        }
+    }
+    function loadtree(treedata){
+        var trs=new _e["tree"]()
+        var event=[{e:"click",func:function () { //需要绑定的函数，绑定tbl
+            t.funcs.loadData.call(t,{
+                qseq:17, //数组中下标
+                qverb:'k',// = 条件
+                qpt:this.getAttribute("data-code") //值
+            })
+        }, is_leaf:1}]
+        trs.init("#trees",treedata,1,"TR",event)    //创建树
+    }
+
+    function loadtbl(){
+        coldefs = [{ seq:16,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){ return item},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            retrievable: true,
+            sortable:true,
+            title:"流水号",
+            visible:true,
+
+        }, { seq:1,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){return "<b>"+item+"</b>"},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable:true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title:"品名", // 列标题
+            visible:true, //是否可见
+
+        }, { seq:20,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){
+                if(item.length>3) return "<img src=' http://od35wia0b.bkt.clouddn.com/"+item+"?imageMogr2/thumbnail/80x80!' />"
+                return "<b>"+item+"</b>"
+            },// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable:true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title:"图片", // 列标题
+            visible:true, //是否可见
+
+        },{ seq:17,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){return item},
+            sortable:true,
+            retrievable: true,
+            title:"种类",
+            visible:true,
+        },{ seq:19,//在数据[[],[]]中的位置rows[i][seq] 返回值
+          render:function(item){
+              var codes=item.split(",")
+              var barcode = ''
+              for(var i = 0 ;i < codes.length-1;i++){
+                  barcode+='<i>'+codes[i]+'</i><br>'
+              }
+              return "<b>"+barcode+"</b>"
+          },
+            title:"条码",
+            visible:true,
+        },{ seq:15,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){return "<b>"+item+"</b>"},// 这里render是function，它可以组合或变换当前数据行，然后进行显示},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable:true, // 可排序 function
+            retrievable: true,
+            title:"规格", // 列标题
+            visible:true, //是否可见
+        }, { seq:14,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){return "<b>"+item+"</b>"},// 这里render是function，它可以组合或变换当前数据行，然后进行显示},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable:true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title:"单位", // 列标题
+            visible:true, //是否可见
+        }, { seq:7,
+            render:function(item){return "<b>"+(item/100).toFixed(2)+"</b>"},
+            sortable:true,
+            title:"零售价",
+            visible:true,
+            name:"price",
+            type:0,
+            data:[]
+        }, { seq:2,
+            render:function(item){return "<b>"+item+"</b>"},
+            sortable:true,
+            retrievable: true,
+            title:"库存",
+            visible:true,
+        },
+            { seq:3,
+                render:function(item){
+                    if (item==1) return "<b>在售</b>"
+                    return "<b></b>"},
+                title:"销售状态",
+                visible:true,
+                name:"offshelf"
+            },
+            { seq:6,
+                render:function(item){return "<b>"+item+"</b>"},
+                title:"推荐状态",
+                name:"recommended"
+            },{ seq:18,
+                render:function(item){
+                    if (item==1) return "<b>首页</b>"
+                    return "<b></b>"},
+                title:"首页状态",
+                visible:true,
+                name:"homepage"
+            }
+        ]
+
+        t = new _e["table"]()
+        row_actions =[{cls:"doerow",func:function(tbl,rows){
+            if (document.querySelector("#dlgData")) document.querySelector("#dlgData").parentNode.removeChild(document.querySelector("#dlgData"));
+            var dlg = _e.dialog({id:"dlgData",width:"500px",
+                title:tbl.data[rows][1]+" 的正常商品",
+                mainBody: '<h1 style="font-size: 20px;">增加 '+tbl.data[rows][1]+' 的数量</h1><input type="number" id="addamount"/>' +tbl.data[rows][14]+
+                '<input id="btn_add" type="button" value="增加数量" style="margin-left: 100px;"/>'+
+                '<table class="plan" style="width:100%;" border="1"> <thead> <tr> ' +
+                '<th>流水号</th> ' +
+                '<th>商品名</th> ' +
+                '<th>商品价格</th> ' +
+                '<th>单位</th> ' +
+                '<th>规格</th> ' +
+                '<th>条形码</th> ' +
+                //'<th>商品数量</th>' +
+                '<th>转换减少的数量</th>' +
+                '</tr> </thead> <tbody id="commodityList"></tbody></table>',
+                actions:[{id:"btn",title:"确定",func:function(){
+                    dlg.parentNode.removeChild(dlg)
+                }}]})
+            dlg.show()
+            var fd = new FormData(), xhr = new XMLHttpRequest()
+            fd.append("id",tbl.data[rows][0])
+            xhr.open("POST" ,"/sc/lowerprice/getNormalById", true)
+            xhr.send(fd)
+            xhr.onreadystatechange=function()  {
+                if (xhr.readyState==4 && xhr.status==200){
+                    var d = eval('('+xhr.responseText+');')
+                    var tbody=document.querySelector("#commodityList")
+                    tbody.innerHTML=""
+                    if(d.res==-1) {
+                        _e["msgBox"]({msg: d.msg})
+                        return
+                    }
+                    for(var i=0;i< d.freegift.length;i++){
+                        var tr='<tr id="'+d.freegift[i][0]+'"><td>'+ d.freegift[i][9]+'</td>' +
+                                '<td>'+d.freegift[i][1]+'</td>' +
+                                '<td>'+(d.freegift[i][2]/100).toFixed(2)+'</td>' +
+                                '<td>'+d.freegift[i][3]+'</td>' +
+                                '<td>'+d.freegift[i][4]+'</td>' +
+                                '<td>'+d.freegift[i][10]+'</td>' +
+                                //'<td class="amount">'+d.freegift[i][7]+'</td>'+
+                                '<td class="reduce_amount">0</td>'
+                        tbody.innerHTML+=tr
+
+                    }
+                }
+            }
+
+            _e.bind("#addamount","change",change_amount,dlg)
+            function change_amount(){
+                var add=Number(this.value)
+                var reduce_amount=dlg.querySelectorAll(".reduce_amount")
+                for(var i=0;i<reduce_amount.length;i++){
+                    reduce_amount[i].innerHTML = add
+                }
+            }
+            _e.bind("#btn_add","click",commit,dlg)
+            function commit(){
+                var add_amount=Number(dlg.querySelector("#addamount").value)
+                var trs=dlg.querySelectorAll(".amount")
+                if(isNaN(add_amount) || add_amount<=0){
+                    _e.msgBox({msg:"请检查数量！"})
+                    return
+                }
+                if(trs.length<0){
+                    _e.msgBox({msg:"请重新打开"})
+                    return
+                }
+                if(confirm("是否确认增加 "+tbl.data[rows][1] + " "+add_amount+" "+tbl.data[rows][14])){
+                    var fd = new FormData(), xhr = new XMLHttpRequest()
+                    fd.append("lowerstockid",tbl.data[rows][0])
+                    fd.append("normelstockid",dlg.querySelector("#commodityList").children[0].id)
+                    fd.append("name",tbl.data[rows][1])
+                    fd.append("amount",add_amount)
+                    fd.append("status",1)
+                    xhr.open("POST" ,"/sc/lowerprice/addamount"+_e["jurisdiction"]() , true)
+                    xhr.send(fd)
+                    xhr.onreadystatechange=function()  {
+                        if (xhr.readyState==4 && xhr.status==200){
+                            var d = eval('('+xhr.responseText+');')
+                            _e["msgBox"]({
+                                msg: d.msg,
+                                className: d.res==-1 ? "error":"success",
+                                timeout:3000
+                            })
+                            if(d.res==0){
+                                dlg.parentNode.removeChild(dlg)
+                                t.funcs.loadData.call(t)
+                            }
+                        }
+                    }
+                }
+            }
+        },title:"增加数量"},
+        {cls:"doerow",func:function(tbl,rows){
+            if (document.querySelector("#dlgData")) document.querySelector("#dlgData").parentNode.removeChild(document.querySelector("#dlgData"));
+            var dlg = _e.dialog({id:"dlgData",width:"500px",
+                title:tbl.data[rows][1]+" 的正常商品",
+                mainBody: '<h1 style="font-size: 20px;">减少 '+tbl.data[rows][1]+' 的数量</h1><input type="number" id="addamount"/>' +tbl.data[rows][14]+
+                '<input id="btn_add" type="button" value="减少数量" style="margin-left: 100px;"/>'+
+                '<table class="plan" style="width:100%;" border="1"> <thead> <tr> ' +
+                '<th>流水号</th> ' +
+                '<th>商品名</th> ' +
+                '<th>商品价格</th> ' +
+                '<th>单位</th> ' +
+                '<th>规格</th> ' +
+                '<th>条形码</th> ' +
+                //'<th>商品数量</th>' +
+                '<th>转换增加的数量</th>' +
+                '</tr> </thead> <tbody id="commodityList"></tbody></table>',
+                actions:[{id:"btn",title:"确定",func:function(){
+                    dlg.parentNode.removeChild(dlg)
+                }}]})
+            dlg.show()
+            var fd = new FormData(), xhr = new XMLHttpRequest()
+            fd.append("id",tbl.data[rows][0])
+            xhr.open("POST" ,"/sc/lowerprice/getNormalById", true)
+            xhr.send(fd)
+            xhr.onreadystatechange=function()  {
+                if (xhr.readyState==4 && xhr.status==200){
+                    var d = eval('('+xhr.responseText+');')
+                    var tbody=document.querySelector("#commodityList")
+                    tbody.innerHTML=""
+                    if(d.res==-1) {
+                        _e["msgBox"]({msg: d.msg})
+                        return
+                    }
+                    for(var i=0;i< d.freegift.length;i++){
+                        var tr='<tr id="'+d.freegift[i][0]+'"><td>'+ d.freegift[i][9]+'</td>' +
+                                '<td>'+d.freegift[i][1]+'</td>' +
+                                '<td>'+(d.freegift[i][2]/100).toFixed(2)+'</td>' +
+                                '<td>'+d.freegift[i][3]+'</td>' +
+                                '<td>'+d.freegift[i][4]+'</td>' +
+                                '<td>'+d.freegift[i][10]+'</td>' +
+                                //'<td class="amount">'+d.freegift[i][7]+'</td>'+
+                                '<td class="reduce_amount">0</td>'
+                        tbody.innerHTML+=tr
+
+                    }
+                }
+            }
+
+            _e.bind("#addamount","change",change_amount,dlg)
+            function change_amount(){
+                var add=Number(this.value)
+                var reduce_amount=dlg.querySelectorAll(".reduce_amount")
+                for(var i=0;i<reduce_amount.length;i++){
+                    reduce_amount[i].innerHTML = add
+                }
+            }
+            _e.bind("#btn_add","click",commit,dlg)
+            function commit(){
+                var add_amount=Number(dlg.querySelector("#addamount").value)
+                var trs=dlg.querySelectorAll(".amount")
+                if(isNaN(add_amount) || add_amount<=0){
+                    _e.msgBox({msg:"请检查数量！"})
+                    return
+                }
+                if(trs.length<0){
+                    _e.msgBox({msg:"请重新打开"})
+                    return
+                }
+                if(confirm("是否确认减少 "+tbl.data[rows][1] + " "+add_amount+" "+tbl.data[rows][14])){
+                    var fd = new FormData(), xhr = new XMLHttpRequest()
+                    fd.append("lowerstockid",tbl.data[rows][0])
+                    fd.append("normelstockid",dlg.querySelector("#commodityList").children[0].id)
+                    fd.append("name",tbl.data[rows][1])
+                    fd.append("amount",add_amount)
+                    fd.append("status",2)
+                    xhr.open("POST" ,"/sc/lowerprice/addamount"+_e["jurisdiction"]() , true)
+                    xhr.send(fd)
+                    xhr.onreadystatechange=function()  {
+                        if (xhr.readyState==4 && xhr.status==200){
+                            var d = eval('('+xhr.responseText+');')
+                            _e["msgBox"]({
+                                msg: d.msg,
+                                className: d.res==-1 ? "error":"success",
+                                timeout:3000
+                            })
+                            if(d.res==0){
+                                dlg.parentNode.removeChild(dlg)
+                                t.funcs.loadData.call(t)
+                            }
+                        }
+                    }
+                }
+            }
+        },title:"减少数量"}]
+        rows_actions = []
+        ext_row = function(rows,i){
+            return "this is row "+i
+        }
+        t.funcs.init.call(t,"tbl",
+                coldefs,row_actions,rows_actions,"table","__THE__TABLE__",ext_row,"/sc/lowerprice/getLoswePriceStock")
+        var tblDom=document.querySelector("#tbl")
+        var tbl_head = document.querySelector("#tbl").querySelector("thead")
+        tbl_head.querySelector("#trtime").parentNode.removeChild( tbl_head.querySelector("#trtime"))
+    }
+
+
+</script>
+</body>
+</html>

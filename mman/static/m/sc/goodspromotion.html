@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>指定促销方式</title>
+    <link rel="shortcut icon" href="../../i/css/img/favicon.ico" />
+
+    <link rel="stylesheet" href="../../i/css/manage/pure.css" type="text/css" />
+    <link rel="stylesheet" href="../../i/css/manage/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../i/css/manage/base.css" type="text/css" />
+    <link rel="stylesheet" href="../../i/css/manage/tree.css" type="text/css" />
+    <link rel="stylesheet" href="../../i/css/manage/table.css" type="text/css" />
+    <link rel="stylesheet" href="css/promotion.css" type="text/css" />
+
+</head>
+
+<body>
+    <div class="default-main default-top">
+        <h2>指定促销方式</h2>
+        <div class="main-wrapper">
+            <div class="layout-bd em-left main-left" style="height:66%;overflow:auto">
+                <div id="trees"></div>
+            </div>
+            <div class="layout-bd middle main-middle" style="height:66%;width: 45.2%;">
+                <div id="tbl1" class="tbl1-css"></div>
+            </div>
+            <div class="layout-bd em-right main-right" style="height:66%;width: 40.85%;">
+                <div id="tbl2" class="tbl2-right"></div>
+                <button type="submit" id="btn_restart" class="pure-button pure-button-primary" style="display: none">重新选择促销方式</button>
+                <div class="data-tbl" style="margin-left: 15px;border-bottom:1px solid #c1c1c1 ;"></div>
+                <div class="data-goods" style="margin: 10px">
+                    <table class="pure-table pure-table-horizontal" style="display: none">
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>商品名</th>
+                                <th>单位</th>
+                                <th>规格</th>
+                                <th>数量</th>
+                                <th>价格</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="data-goods-tbody">
+                        </tbody>
+                    </table>
+
+                </div>
+                <button type="submit" class="pure-button pure-button-primary goodspromotionId">提交</button>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="../../i/js/handlebars.js"></script>
+    <script type="text/javascript" src="../../i/js/_e.js"></script>
+    <script type="text/javascript" src="../../i/js/table.js"></script>
+    <script type="text/javascript" src="../../i/js/tree.js"></script>
+    <script type="text/javascript" src="../../i/js/msgbox.js"></script>
+    <script type="text/javascript" src="../../i/js/dialog.js"></script>
+    <script type="text/javascript" src="js/goodspromotion.js"></script>
+
+</body>
+
+</html>

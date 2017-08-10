@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>小区-门店</title>
+    <link rel="shortcut icon" href="/i/css/img/favicon.ico" />
+    <link rel="stylesheet" href="/i/css/manage/pure.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/dialog.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/formdata.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/table.css" type="text/css"/>
+</head>
+<body>
+    <div class="default-main default-top">
+      <div class="main-wrapper">
+        <div class="layout-bd middle">
+          <div id="tbl"></div>
+        </div>
+      </div>
+  </div>
+
+
+
+<script type="text/javascript" src="/i/js/handlebars.js"></script>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/table.js"></script>
+<script type="text/javascript" src="/i/js/dialog.js"></script>
+<script type="text/javascript" src="/i/js/form.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script type="text/javascript">
+    /**
+     * Created by eachma on 16-7-14.
+     */
+
+            dlvtypeExtendDept = JSON.parse(localStorage.getItem("alldept"))
+            loadtbl()
+            t.funcs.loadData.call(t)
+
+    function loadtbl(){
+        coldefs = [{ seq:0,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(v){ return v},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            title:"id", // 列标题
+            visible:true, //是否可见
+            checkall:false,// 是否可全选
+//            isID:1,
+            name:"id",//和后端对应，FormData里面的key，后端解析时要一致
+            type:-1,//-1:不可见 0:input 1:select 2:不可修改input 3:不可修改select（需要跨表转换时）
+            data:[]//为select时，这里为需要传入的数据,others里面  如商品，这里应该为商品种类对应的id和name   参考下面种类列
+
+        },
+            { seq:1,//在数据[[],[]]中的位置rows[i][seq] 返回值
+                render:function(item){
+                    for(var i=0;i<this.data.length;i++){
+                        if(this.data[i].id==item) return "<b>"+this.data[i].name+"</b>"
+                    }
+                },// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+                title:"门店", // 列标题
+                visible:true, //是否可见
+                name:"dept",//和后端对应，FormData里面的key，后端解析时要一致
+                type:-1,
+                data:dlvtypeExtendDept//为select时，这里为需要传入的数据,others里面  如商品，这里应该为商品种类对应的id和name   参考下面种类列
+            },
+            { seq:2,//在数据[[],[]]中的位置rows[i][seq] 返回值
+                render:function(item){return "<b>"+item+"</b>"},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+                sortable:false, // 可排序 function
+                retrievable: true, // 可检索 function
+                title:"小区", // 列标题
+                visible:true, //是否可见
+                name:"subdistrict",//和后端对应，FormData里面的key，后端解析时要一致
+                type:-1,//-1:不可见 0:input 1:select 2:不可修改 3:radio 4:checkbox  目前只实现-1,0,1三种方式
+                data:[]//为select时，这里为需要传入的数据,others里面  如商品，这里应该为商品种类对应的id和name   参考下面种类列
+            },
+            { seq:3,//在数据[[],[]]中的位置rows[i][seq] 返回值
+                render:function(item){return "<b>"+(item/100).toFixed(2)+"</b>"},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+                sortable:true, // 可排序 function
+                title:"配送费", // 列标题
+                visible:true, //是否可见
+                name:"deliveryfee",//和后端对应，FormData里面的key，后端解析时要一致
+                type:0,//-1:不可见 0:input 1:select 2:不可修改 3:radio 4:checkbox  目前只实现-1,0,1三种方式
+                data:[]//为select时，这里为需要传入的数据,others里面  如商品，这里应该为商品种类对应的id和name   参考下面种类列
+            },
+            { seq:4,//在数据[[],[]]中的位置rows[i][seq] 返回值
+                render:function(item){return "<b>"+item+"</b>"},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+                sortable:true, // 可排序 function
+                title:"配送时间", // 列标题
+                visible:true, //是否可见
+                name:"deliverytime",//和后端对应，FormData里面的key，后端解析时要一致
+                type:0,//-1:不可见 0:input 1:select 2:不可修改 3:radio 4:checkbox  目前只实现-1,0,1三种方式
+                data:[]//为select时，这里为需要传入的数据,others里面  如商品，这里应该为商品种类对应的id和name   参考下面种类列
+            },
+            { seq:5,//在数据[[],[]]中的位置rows[i][seq] 返回值
+                render:function(item){return "<b>"+(item/100).toFixed(2)+"</b>"},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+                sortable:true, // 可排序 function
+                title:"免费配送最低金额", // 列标题
+                visible:true, //是否可见
+                name:"freedeliverythreshold",//和后端对应，FormData里面的key，后端解析时要一致
+                type:0,//-1:不可见 0:input 1:select 2:不可修改 3:radio 4:checkbox  目前只实现-1,0,1三种方式
+                data:[]//为select时，这里为需要传入的数据,others里面  如商品，这里应该为商品种类对应的id和name   参考下面种类列
+            },
+            { seq:6,//在数据[[],[]]中的位置rows[i][seq] 返回值
+                render:function(item){
+                    for(var i=0;i<this.data.length;i++){
+                        if(this.data[i][0]==item) return "<b>"+this.data[i][1]+"</b>"
+                    }
+                },// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+                sortable:true, // 可排序 function
+                retrievable: false, // 可检索 function
+                title:"配送类型", // 列标题
+                visible:true, //是否可见
+                name:"ordertype",//和后端对应，FormData里面的key，后端解析时要一致
+                type:1,//-1:不可见 0:input 1:select 2:不可修改 3:radio 4:checkbox  目前只实现-1,0,1三种方式
+                data:[[1,"便利店"],[2,"预定"]]//为select时，这里为需要传入的数据,others里面  如商品，这里应该为商品种类对应的id和name   参考下面种类列
+            }
+        ]
+
+        t = new _e["table"]()
+        row_actions =[{cls:"doerow",func:function(tbl,rows){
+            if (document.querySelector("#dlgData")) document.querySelector("#dlgData").parentNode.removeChild(document.querySelector("#dlgData"));
+            var dlg = _e.dialog({id:"dlgData",class:"dlgData",width:"500px",
+                title:"基本信息修改",
+                mainBody:_e["genForm"](coldefs),
+                actions:[{id:"btn",class:"bottom",title:"确定",func:function(){
+                    var data=dlg.querySelectorAll(".form-data")
+                    var fd = new FormData(), xhr = new XMLHttpRequest()
+                    for(var i=0;i<data.length;i++){
+                        if(i==2) continue
+                        if(i==3 || i==5){
+                            fd.append(data[i].name,Number(data[i].value)*100)
+                        }else{
+                            fd.append(data[i].name,data[i].value)
+                        }
+
+                    }
+                    xhr.open("POST" ,"/basis/deliverytype/update"+_e["jurisdiction"]() , true)
+                    xhr.send(fd)
+                    xhr.onreadystatechange=function(){
+                        if (xhr.readyState==4 && xhr.status==200){
+                            var d = eval('('+xhr.responseText+');')
+                            _e["msgBox"]({
+                                msg: d.msg,
+                                className: d.res==-1 ? "error":"success",
+                                timeout:3000
+                            })
+                            if(d.res==0){
+                              dlg.parentNode.removeChild(dlg)
+                              t.funcs.loadData.call(t)
+                            }
+                        }
+                    }
+                }}]})
+            dlg.show()
+            var forms = dlg.querySelector(".main").children[0]
+            var form_data = forms.querySelectorAll(".form-data")//获取每个input或者select的DOM对象
+            for(var i=0;i<form_data.length;i++){
+                if(i==3||i==5){
+                    form_data[i].value=(tbl["data"][rows][i]/100.).toFixed(2) //将tbl里面的值填入input
+                } else{
+                    form_data[i].value=tbl["data"][rows][i]
+                }
+            }
+        },title:"基本信息"},
+        {cls:"doerow",func:function(tbl,rows){
+            if (document.querySelector("#dlgData")) document.querySelector("#dlgData").parentNode.removeChild(document.querySelector("#dlgData"));
+            rodertype = ""
+            if(tbl.data[rows][6] == 1) rodertype = "便利店"
+            else rodertype = "预定"
+            var dlg = _e.dialog({id:"dlgData",width:"500px",
+                title:"删除",
+                mainBody:"<h2>是否移除小区 ： " + tbl.data[rows][2]+"</h2>"+
+                "<h2>ID ： " + tbl.data[rows][0]+"</h2>"+
+                "<h2>配送类型 ： " +rodertype+"</h2>",
+                actions:[{id:"btn",title:"移除",func:function(){
+                    var data=dlg.querySelectorAll(".form-data")
+                    var fd = new FormData(), xhr = new XMLHttpRequest()
+                    fd.append("id",tbl.data[rows][0])
+                    xhr.open("POST" ,"/basis/deliverytype/delete"+_e["jurisdiction"]() , true)
+                    xhr.send(fd)
+                    xhr.onreadystatechange=function(){
+                        if (xhr.readyState==4 && xhr.status==200){
+                            var d = eval('('+xhr.responseText+');')
+                            if (d.res==-1){
+                                _e["msgBox"]({msg:d.msg})
+                            }
+                            else {
+                                _e["msgBox"]({
+                                    msg:d.msg,
+                                    className:"success"
+                                })
+                                dlg.parentNode.removeChild(dlg)
+                                t.funcs.loadData.call(t)
+                            }
+                        }
+                    }
+                }},{id:"btndelete",title:"取消",func:function(){
+                  dlg.parentNode.removeChild(dlg)
+                }}]})
+            dlg.show()
+        },title:"移除小区"}
+        ]
+        rows_actions = [{
+            func:function(tbl,rows){
+                if (document.querySelector("#dlgData")) document.querySelector("#dlgData").parentNode.removeChild(document.querySelector("#dlgData"));
+                var nowdept=document.querySelector("#cqdept")
+                var dlg = _e.dialog({id:"dlgData",width:"500px",
+                    title:"在"+nowdept.children[nowdept.selectedIndex].innerHTML+"下添加小区",
+                    mainBody:_e["genForm"](coldefs)+"<div style='display: inline-block;'>按小区名查询<input id='input-name' value=''></div>"+"<button type='button' id='btnSearch' style='margin-top: 16px'>查询</button>"+
+                    "<table style='width:300px'><thead><tr><th>id</th><th>省</th><th>市</th><th>区域</th><th>小区名</th><th>小区说明</th></tr></thead>"+
+                    "<tbody id='selectTbody'></tbody></table>",
+                    actions:[{id:"btn",title:"确定",func:function(){
+                        var data=dlg.querySelectorAll(".form-data")
+                        var fd = new FormData(), xhr = new XMLHttpRequest()
+                        var fd2 = new FormData(), xhr2 = new XMLHttpRequest()
+                        if(data[3].value.length < 1 || data[4].value.length < 1 || data[5].value.length < 1){
+                            _e["msgBox"]({msg: "请填写完整的信息",})
+                            return
+                        }
+                        var checkIpt = dlg.querySelectorAll(".checkIpt")
+                        var checkeds=[]
+                        for(var s1=0;s1<checkIpt.length;s1++){
+                            if(checkIpt[s1].checked) {
+                              checkeds.push(checkIpt[s1])
+                              fd.append("subdistrictarr",checkIpt[s1].parentNode.children[1].innerText)
+                              fd2.append("subdistrictarr",checkIpt[s1].parentNode.children[1].innerText)
+                            }
+                        }
+                        if (checkeds.length<1){
+                            _e["msgBox"]({msg: "必须选择一个小区",})
+                            return
+                        }
+
+                        for(var i=1;i<data.length-1;i++){
+                            if(i==2) continue
+                            if(i==3 || i==5){
+                                fd.append(data[i].name, Math.round(Number(data[i].value)*100))
+                                fd2.append(data[i].name, Math.round(Number(data[i].value)*100))
+                            }else{
+                                fd.append(data[i].name,data[i].value)
+                                fd2.append(data[i].name,data[i].value)
+                            }
+                        }
+                        if(data[i].value == 3){
+                          fd.append('ordertype',1)
+                          fd2.append('ordertype',2)
+                          xhr2.open("POST" ,"/basis/deliverytype/insert"+_e["jurisdiction"]() , true)
+                          xhr2.send(fd2)
+                          xhr2.onreadystatechange=function(){
+                              if (xhr2.readyState==4 && xhr2.status==200){
+                                  var d2 = eval('('+xhr2.responseText+');')
+                                  _e["msgBox"]({
+                                      msg: d2.msg,
+                                      className: d2.res==-1 ? "error":"success",
+                                      timeout:3000})
+                                  if(d2.res == 0){
+                                    t.funcs.loadData.call(t)
+                                  }
+                              }
+                          }
+                        }else {
+                          fd.append(data[i].name,data[i].value)
+                          fd2.append(data[i].name,data[i].value)
+                        }
+                        xhr.open("POST" ,"/basis/deliverytype/insert"+_e["jurisdiction"]() , true)
+                        xhr.send(fd)
+                        xhr.onreadystatechange=function(){
+                            if (xhr.readyState==4 && xhr.status==200){
+                                var d = eval('('+xhr.responseText+');')
+                                _e["msgBox"]({
+                                    msg: d.msg,
+                                    className: d.res==-1 ? "error":"success",
+                                    timeout:3000})
+                                if(d.res == 0){
+                                  t.funcs.loadData.call(t)
+                                }
+                            }
+                        }
+                    }}]})
+                dlg.show()
+                var options3 = document.createElement("option")
+                options3.value=3
+                options3.innerHTML="通用"
+                dlg.querySelectorAll(".form-data")[6].appendChild(options3)
+                _e.bind("#btnSearch","click",comModify)
+                _e.bind("#input-name","change",comModify)
+                function comModify(){
+                    var selectTbody = document.querySelector("#selectTbody")
+                    if(dlg.querySelector("#input-name").value == ""){
+                        _e["msgBox"]({msg: "输入不能为空!"})
+                    }
+                    var fd = new FormData();
+                    fd.append("name",dlg.querySelector("#input-name").value)
+                    var xhr = new XMLHttpRequest()
+                    xhr.open("POST","/basis/subdistrict/getbyname",true)
+                    xhr.send(fd)
+                    xhr.onreadystatechange = function(){
+                        if(xhr.readyState == 4 && xhr.status == 200){
+                            var dat = eval('('+xhr.responseText+');')
+                            if(dat.subdistrict.length == 0){
+                                _e["msgBox"]({msg: "没有这个小区!"})
+                            }
+                            var checkIpt = dlg.querySelectorAll(".checkIpt")
+                            for(var s1=0;s1<checkIpt.length;s1++){
+                                if(!checkIpt[s1].checked) {
+                                  checkIpt[s1].parentNode.parentNode.parentNode.removeChild(checkIpt[s1].parentNode.parentNode)
+                                }
+                            }
+                            for(var i=0; i<dat.subdistrict.length; i++){
+                                var tr = document.createElement("tr")
+                                tr.innerHTML = '<td>'+'<input type="checkbox" class="checkIpt">'+'<span>'+dat.subdistrict[i][0]+'</span>'+'</td>'+
+                                        '<td>'+dat.subdistrict[i][1]+'</td>'+
+                                        '<td>'+dat.subdistrict[i][2]+'</td>'+
+                                        '<td>'+dat.subdistrict[i][3]+'</td>'+
+                                        '<td>'+dat.subdistrict[i][4]+'</td>'+
+                                        '<td>'+dat.subdistrict[i][5]+'</td>'
+                                selectTbody.appendChild(tr)
+                            }
+
+
+                        }
+                    }
+                }
+            },title:"添加小区"}]
+
+        ext_row = function(rows,i){
+            return "this is row "+i
+        }
+        t.funcs.init.call(t,"tbl",
+                coldefs,row_actions,rows_actions,"table","__THE__TABLE__",ext_row,"/basis/deliverytype/get"+_e["jurisdiction"]())
+        var tbl_head = document.querySelector("#tbl").querySelector("thead")
+        tbl_head.querySelector("#trtime").parentNode.removeChild( tbl_head.querySelector("#trtime"))
+        tbl_head.querySelector("#trunit").parentNode.removeChild( tbl_head.querySelector("#trunit"))
+    }
+</script>
+</body>
+</html>

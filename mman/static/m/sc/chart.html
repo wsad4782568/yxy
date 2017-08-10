@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图标管理</title>
+    <link rel="stylesheet" type="text/css" href="/i/css/sale/loading.css" />
+    <link rel="stylesheet" type="text/css" href="/i/css/iconfont/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="/i/css/sale/mobile.css" />
+    <link rel="stylesheet" href="/i/css/manage/pure.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/dialog.css" type="text/css"/>
+    <style type="text/css">
+        #mainHead{
+            display: flex;
+        }
+        #mainHead div{
+            width: 10%;
+        }
+        #chartDisplay{
+            margin-top: 20px;
+        }
+        #chartDisplay .typeList .flex{
+            width: 20%;
+        }
+    </style>
+</head>
+<body>
+<div id="mainHead">
+    <select id="cqdept" onchange="change_show_imageDept(this)"></select>
+    <div><select id="classification" onchange="change_show_imageType(this)"></select></div>
+    <!--<div><input type="button" value="新增" onclick="addDiv()"/></div>-->
+</div>
+<div id="chartDisplay">
+    <div class="typeList">
+        <div>
+            <ul class='flex'><p style='background-color: #15DD8D'><i class='icon iconfont icon-fruit'></i></p><li class='flex-1'><h1>时令水果</h1><h2>只做生鲜水果</h2></li></ul>
+            图标选择：<input class='chartName' value="fruit" type="text" onBlur="chartName(this)"/>
+            类名颜色：<input class="chartColor" value="#15DD8D" type="color" onBlur="chartName(this)"/>
+            <select class="selectUrl" onchange="chanageUrl(this)"></select><br/>
+            种类名字：<input class="comName" value="时令水果" type="text" onBlur="chartName(this)"/>
+            种类说明：<input class="comMemo" value="只做生鲜水果" type="text" onBlur="chartName(this)"/>
+            链接：<input class="chartUrl" type="text"/>
+            <input type="button" class="submit" seq="1" onclick="submit(this)" value="确定"/>
+        </div>
+        <div>
+            <ul class='flex'><p style='background-color: #15DD8D'><i class='icon iconfont icon-airplane'></i></p><li class='flex-1'><h1>酒品饮品</h1><h2>挑选自原产地</h2></li></ul>
+            图标选择：<input class="chartName" value="airplane" type="text" onBlur="chartName(this)"/>
+            类名颜色：<input class="chartColor" value="#15DD8D" type="color" onBlur="chartName(this)"/>
+            <select class="selectUrl" onchange="chanageUrl(this)"></select><br/>
+            种类名字：<input class="comName" value="酒品饮品" type="text" onBlur="chartName(this)"/>
+            种类说明：<input class="Memo" value="挑选自原产地" type="text" onBlur="chartName(this)"/>
+            链接：<input class="chartUrl" type="text"/>
+            <input type="button" class="submit" seq="2" onclick="submit(this)" value="确定"/>
+        </div>
+        <div>
+            <ul class='flex'><p style='background-color: #15DD8D'><i class='icon iconfont icon-helpsales'></i></p><li class='flex-1'><h1>推荐商品</h1><h2>10号店的推荐</h2></li></ul>
+            图标选择：<input class="chartName" value="helpsales" type="text" onBlur="chartName(this)"/>
+            类名颜色：<input class="chartColor" value="#15DD8D" type="color" onBlur="chartName(this)"/>
+            <select class="selectUrl" onchange="chanageUrl(this)"></select><br/>
+            种类名字：<input class="comName" value="推荐商品" type="text" onBlur="chartName(this)"/>
+            种类说明：<input class="Memo" value="10号店的推荐" type="text" onBlur="chartName(this)"/>
+            链接：<input class="chartUrl" type="text"/>
+            <input type="button" class="submit" seq="3" onclick="submit(this)" value="确定"/>
+        </div>
+        <div>
+            <ul class='flex'><p style='background-color: #15DD8D'><i class='icon iconfont icon-snacks'></i></p><li class='flex-1'><h1>果糖类</h1><h2>酸酸甜甜</h2></li></ul>
+            图标选择：<input class="chartName" value="snacks" type="text" onBlur="chartName(this)"/>
+            类名颜色：<input class="chartColor" value="#15DD8D" type="color" onBlur="chartName(this)"/>
+            <select class="selectUrl" onchange="chanageUrl(this)"></select><br/>
+            种类名字：<input class="comName" value="果糖类" type="text" onBlur="chartName(this)"/>
+            种类说明：<input class="Memo" value="酸酸甜甜" type="text" onBlur="chartName(this)"/>
+            链接：<input class="chartUrl" type="text"/>
+            <input type="button" class="submit" seq="4" onclick="submit(this)" value="确定"/>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/i/js/handlebars.js"></script>
+<script type="text/javascript" src="/i/js/xml.js"></script>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script type="text/javascript" src="/i/js/dialog.js"></script>
+<script type="text/javascript" src="/m/sc/js/chart.js"></script>
+</body>
+</html>

@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>10号便利店</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="shortcut icon" href="http://static-1.shopten.cn/images/favicon.ico" type="image/x-icon" />
+
+    <link rel="stylesheet" href="/i/dist/css/mui.min.css">
+    <link rel="stylesheet" href="/i/dist/css/iconfont.css">
+    <link rel="stylesheet" href="/e/sales/mui/css/app.css">
+    <style type="text/css">
+        /**shopping cart**/
+
+        .menu-open {
+            height: 100%;
+            width: 100%;
+        }
+        .menu-open .mui-scroll-wrapper {
+            position: absolute;
+            top: 48px;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+            width: 100%;
+            overflow: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .backdrop {
+            display: none;
+        }
+        .menu-open .backdrop {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            height: 100%;
+            width: 100%;
+            display: block;
+            z-index: 998;
+            background-color: rgba(0, 0, 0, .3);
+        }
+        .menu-wrapper {
+            bottom: 0;
+            position: fixed;
+            z-index: 999;
+            background-color: #333;
+            width: 100%;
+        }
+        .menu-wrapper.hidden {
+            -webkit-transform: translate3d(0, -100%, 0);
+            transform: translate3d(0, -100%, 0);
+            z-index: -1;
+        }
+        .menu-wrapper.mui-active,
+        .menu-wrapper.mui-active .menu {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="mui-bar mui-bar-nav e-topmenu">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+    <!--<a href="#offCanvasSide" class="mui-icon mui-action-menu mui-icon-bars mui-pull-right"></a>-->
+    <h1 class="mui-title">10号便利店</h1>
+</header>
+<nav class="mui-bar e-total mui-bar-tab">
+    <div class="e-unitprice" id="shoppingCart">
+        <p>订单共计：¥25</p>
+    </div>
+    <button type="button" id="confirm_checkout">确认下单</button>
+</nav>
+
+<div id="menu-wrapper" class="menu-wrapper hidden" style="margin-top: 50px">
+    <div id="menu" class="menu">
+        <div class="e-shoppingCartList">
+            <div class="e-listTitle">
+                <h1><i class="iconfont icon-info1"></i>配送时间:每天9:30至11:30</h1>
+                <h2><i class="iconfont icon-trash">清空购物车</i></h2>
+            </div>
+            <div id="cartDetailStyle" class="e-listGoods">
+                <div class="e-gList">
+                    <ul>
+                        <h1>榄菜肉沫四季豆 1份</h1>
+                        <h2>¥18</h2>
+                        <h3>
+                            <div class="e-addTo"><i class="mui-icon mui-icon-minus"></i><b>1</b><i class="mui-icon mui-icon-plus"></i></div>
+                        </h3>
+                    </ul>
+                </div>
+                <div class="e-gList-B">
+                    <p>净菜</p>
+                    <ul>
+                        <h1>榄菜肉沫四季豆 1份</h1>
+                        <h2>¥18</h2>
+                        <h3>
+                            <div class="e-addTo"><i class="mui-icon mui-icon-minus"></i><b>1</b><i class="mui-icon mui-icon-plus"></i></div>
+                        </h3>
+                    </ul>
+                </div>
+                <div class="e-gList-C">
+                    <p>水果</p>
+                    <ul>
+                        <h1>阿克苏糖心苹果（3个装） 1kg</h1>
+                        <h2>¥14</h2>
+                        <h3>
+                            <div class="e-addTo"><i class="mui-icon mui-icon-minus"></i><b>1</b><i class="mui-icon mui-icon-plus"></i></div>
+                        </h3>
+                    </ul>
+                    <ul>
+                        <h1>砂糖橘 1kg</h1>
+                        <h2>¥12</h2>
+                        <h3>
+                            <div class="e-addTo"><i class="mui-icon mui-icon-minus"></i><b>1</b><i class="mui-icon mui-icon-plus"></i></div>
+                        </h3>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mui-content mui-row mui-fullscreen" >
+    <div class="mui-col-xs-3 ">
+        <div id="segmentedControls" class="mui-segmented-control mui-segmented-control-inverted mui-segmented-control-vertical"></div>
+    </div>
+    <div id="segmentedControlContents" class="mui-col-xs-9" style="border-left: 1px solid #c8c7cc;">
+
+    </div>
+</div>
+<div id="menu-backdrop" class="backdrop"></div>
+<div class="mui-off-canvas-backdrop"></div>
+<script src="/i/dist/js/mui.js"></script>
+<script type="text/javascript" src="/i/assets/js/utils.js"></script>
+<script>
+    mui.init({
+        swipeBack: true //启用右滑关闭功能
+    });
+    var controls = document.getElementById("segmentedControls");
+    var contents = document.getElementById("segmentedControlContents");
+    var html = [];
+    var i = 1,
+            j = 1,
+            m = 16, //左侧选项卡数量+1
+            n = 21; //每个选项卡列表数量+1
+    for (; i < m; i++) {
+        html.push('<a class="mui-control-item" href="#content' + i + '">选项' + i + '</a>');
+    }
+    controls.innerHTML = html.join('');
+    html = [];
+    for (i = 1; i < m; i++) {
+        html.push('<div id="content' + i + '" class="mui-control-content  e-goodsList"><ul class="mui-table-view">');
+        for (j = 1; j < n; j++) {
+
+            html.push('<li class="mui-table-view-cell mui-media">' +
+                    '<img class=" mui-pull-left" src="/s/img/p15.jpg">' +
+                    '<div class="mui-media-body">' +
+                    '<h1>汇源100%纸盒苹果汁1L</h1>' +
+                    '<h2>¥9.90 <s>原价 ¥12.50</s></h2>' +
+                    '<h3><span class="e-bgcolor-FF9900">特价</span>' +
+                    '<div class="e-addTo"><i class="mui-icon mui-icon-minus"></i><b>' + j +'</b><i class="mui-icon mui-icon-plus"></i></div></h3>' +
+                    '</div>' +
+                    '</li>');
+        }
+        html.push('</ul></div>');
+    }
+    contents.innerHTML = html.join('');
+    //默认选中第一个
+    controls.querySelector('.mui-control-item').classList.add('mui-active');
+    contents.querySelector('.mui-control-content').classList.add('mui-active');
+    var menuWrapper = document.getElementById("menu-wrapper");
+    var shoppingCart = document.getElementById("shoppingCart");
+    var menuWrapperClassList = menuWrapper.classList;
+    var backdrop = document.getElementById("menu-backdrop");
+
+
+    backdrop.addEventListener('tap', toggleMenu);
+    //下沉菜单中的点击事件
+    mui('.e-total').on('tap', '#shoppingCart', function() {
+        toggleMenu();
+    });
+    mui('.e-total').on('click', '#shoppingCart', function() {
+        toggleMenu();
+    });
+    var busying = false;
+
+    function toggleMenu() {
+        if (busying) {
+            return;
+        }
+        busying = true;
+
+        if (menuWrapperClassList.contains('mui-active')) {
+            document.body.classList.remove('menu-open');
+            menuWrapper.className = 'menu-wrapper fadeOutDown animated';
+            menu.className = 'menu bounceOutDown animated';
+            setTimeout(function() {
+                backdrop.style.opacity = 0;
+                menuWrapper.classList.add('hidden');
+            }, 500);
+        } else {
+            document.body.classList.add('menu-open');
+            menuWrapper.className = 'menu-wrapper fadeInUp animated mui-active';
+            menu.className = 'menu bounceInUp animated';
+            setTimeout(function() {
+                backdrop.style.opacity = 1;
+            }, 300);
+
+        }
+        setTimeout(function() {
+            busying = false;
+        }, 500);
+    }
+
+    mui(".e-goodsList").on("tap",".mui-table-view-cell",function(e){
+        console.dir(e);
+        mui.openWindow({
+            url:'/sales/goods/detail.html'
+        })
+    });
+    mui(".e-goodsList").on("click",".mui-table-view-cell",function(e){
+        console.dir(e);
+        mui.openWindow({
+            url:'/sales/goods/detail.html'
+        })
+    });
+    mui(".e-addTo").on("tap",".mui-icon-minus",function(e){
+        console.dir('-');
+        alert(2)
+        e.preventDefault()
+        e.stopPropagation()
+    });
+    mui(".e-addTo").on("tap",".mui-icon-plus",function(e){
+        console.dir('+');
+        _e.msg({
+            msg:"添加到购物车"
+        });
+        e.stopPropagation()
+        e.preventDefault()
+    });
+    mui(".e-addTo").on("click",".mui-icon-minus",function(e){
+        console.dir('-');
+        alert(2)
+        e.preventDefault()
+        e.stopPropagation()
+    });
+    mui(".e-addTo").on("click",".mui-icon-plus",function(e){
+        console.dir('+');
+        _e.msg({
+            msg:"添加到购物车"
+        });
+        e.stopPropagation()
+        e.preventDefault()
+    });
+    mui(".e-total").on("click","#confirm_checkout",function(e){
+        console.dir(e);
+        mui.openWindow({
+            url:'/sales/wxpay/checkout.html'
+        })
+    });
+
+</script>
+
+</body>
+
+</html>

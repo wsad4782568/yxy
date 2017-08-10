@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>供应商管理</title>
+    <link rel="shortcut icon" href="/i/css/img/favicon.ico" />
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/tree.css"  type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/dialog.css"  type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/contextmenu.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/formdata.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/table.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/pure.css" type="text/css"/>
+
+</head>
+<body>
+<div id="loop"><span>条形码:</span><input type="text" id="barcode" placeholder="请输入要检索条码"> <input type="button" value="查找" onclick="lookSupplierByBarocde()"></div>
+<div class="default-main default-top">
+    <div class="main-wrapper">
+        <div class="layout-bd em-left">
+            <div id="trees"></div>
+        </div>
+        <div class="layout-bd middle">
+            <div id="tbl"></div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="/i/js/handlebars.js"></script>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/table.js"></script>
+<script type="text/javascript" src="/i/js/dialog.js"></script>
+<script type="text/javascript" src="/i/js/tree.js"></script>
+<script type="text/javascript" src="/i/js/form.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script type="text/javascript" src="/i/js/contextmenu.js"></script>
+<script type="text/javascript">
+var supplierclass=[[1,"通用",0,1],[2,"水果",0,1],[3,"面包",0,1],[4,"酒类",0,1],[5,"食品",0,1],[6,"奶制品",0,1],[7,"土特产",0,1],[1,"日用便利",0,1]]
+
+function loadtree(treedata){
+    var trs=new _e["tree"]()
+    var event=[{e:"click",func:function () { //需要绑定的函数，绑定tbl
+        t.funcs.loadData.call(t,{    //在table.js中的204行显示
+            qseq:1, //数组中下标
+            qverb:'e',// = 条件
+            qpt:this.getAttribute("data-id"), //值
+        })
+    }, is_leaf:1}]
+    trs.init("#trees",treedata,1,"TR",event)    //创建树
+}
+loadtree(supplierclass)
+    loadtbl()
+    t.funcs.loadData.call(t)
+    function loadtbl(){
+        coldefs = [{ seq:0,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(v){ return v},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable:true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title:"序号", // 列标题
+            visible:true, //是否可见
+            name:"id",//和后端对应，FormData里面的key，后端解析时要一致
+            type:-1,//-1:不可见 0:input 1:select 2:不可修改input 3:不可修改select（需要跨表转换时）
+            data:[]//为select时，这里为需要传入的数据,others里面  如商品，这里应该为商品种类对应的id和name   参考下面种类列
+
+        },
+            { seq:1,
+                render:function(item){
+                    for(var i=0;i<supplierclass.length;i++){
+                        if (supplierclass[i][0]==item) return "<b>"+supplierclass[i][1]+"</b>"
+                    }
+                    return  "<b> </b>"
+                },
+                sortable:true,
+                retrievable: true,
+                title:"货商分类",
+                name:"class",
+                visible:true,
+                type:1,
+                data:supplierclass
+            },
+            { seq:2,
+                render:function(item){return "<b>"+item+"</b>"},
+                sortable:true,
+                retrievable: true,
+                title:"供应商名称",
+                visible:true,
+                name:"name",
+                type:0,
+                data:[]
+            },
+            { seq:3,//在数据[[],[]]中的位置rows[i][seq] 返回值
+                render:function(item){return "<b>"+item+"</b>"},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+                sortable:true, // 可排序 function
+                retrievable: true, // 可检索 function
+                title:"联系方式", // 列标题
+                visible:true, //是否可见
+                name:"contactinfo",//和后端对应，FormData里面的key，后端解析时要一致
+                type:0,//-1:不可见 0:input 1:select 2:不可修改 3:radio 4:checkbox  目前只实现-1,0,1三种方式
+                data:[]//为select时，这里为需要传入的数据,others里面  如商品，这里应该为商品种类对应的id和name   参考下面种类列
+            },
+            { seq:4,
+                render:function(item){return "<b>"+item+"</b>"},
+                sortable:true,
+                retrievable: true,
+                title:"地址",
+                visible:true,
+                name:"address",
+                type:0,
+                data:[]
+            },
+            { seq:5,
+                render:function(item){return "<b>"+item+"</b>"},
+                sortable:true,
+                retrievable: true,
+                title:"联系人",
+                visible:true,
+                name:"phone",
+                type:0,
+                data:[]
+            },
+            { seq:6,
+                render:function(item){return "<b>"+item+"</b>"},
+                sortable:true,
+                retrievable: true,
+                title:"传真",
+                visible:true,
+                name:"fax",
+                type:0,
+                data:[]
+            },
+            { seq:7,
+                render:function(item){return "<b>"+item+"</b>"},
+                sortable:true,
+                retrievable: true,
+                title:"邮箱",
+                visible:true,
+                name:"email",
+                type:0,
+                data:[]
+            },
+            { seq:8,
+                title:"开户银行",
+                name:"bank",
+                type:0,
+                data:[]
+            },
+            { seq:9,
+                title:"银行账号",
+                name:"acount",
+                type:0,
+                data:[]
+            },
+            { seq:10,
+                title:"税务登记",
+                name:"taxmemo",
+                type:0,
+                data:[]
+            },
+            { seq:11,
+                title:"结账方式",
+                name:"checkoutmemo",
+                type:0,
+                data:[]
+            },
+            { seq:12,
+                title:"合作方式",
+                name:"corporation",
+                type:0,
+                data:[]
+            }
+
+        ]
+
+        t = new _e["table"]()
+        row_actions =[{cls:"doerow",func:function(tbl,rows){
+            if (document.querySelector("#dlgData")) document.querySelector("#dlgData").parentNode.removeChild(document.querySelector("#dlgData"));
+            var dlg = _e.dialog({id:"dlgData",class:"dlgData",width:"800px",
+                title:tbl.data[rows][1]+" 的基本信息",
+                mainBody:_e["genForm"](coldefs)+'<div><p>供应商备注:</p><textarea rows="5" cols="60" id="memo" placeholder=""></textarea></div>',
+                actions:[{id:"btn",class:"bottom",title:"修改",func:function(){
+                    var data=dlg.querySelectorAll(".form-data")
+                    var fd = new FormData(), xhr = new XMLHttpRequest()
+                    if (data[2].value.length<1){
+                        _e.msgBox({msg:"供应商名称不能为空"})
+                        return
+                    }if (data[3].value.length<1){
+                        _e.msgBox({msg:"供应商联系方式不能为空"})
+                        return
+                    }
+                    for(var i=0;i<data.length;i++){
+                        fd.append(data[i].name,data[i].value)
+                    }
+                    fd.append("memo",dlg.querySelector("#memo").value)
+                    xhr.open("POST" ,"/sc/supplier/update"+_e["jurisdiction"]() , true)
+                    xhr.send(fd)
+                    xhr.onreadystatechange=function(){
+                        if (xhr.readyState==4 && xhr.status==200){
+                            var d = eval('('+xhr.responseText+');')
+                            _e["msgBox"]({
+                                msg: d.msg,
+                                className: d.res==-1 ? "error":"success",
+                                timeout:3000})
+                            if(d.res!=-1){
+                                dlg.parentNode.removeChild(dlg)
+                                t.funcs.loadData.call(t)
+                            }
+                        }
+                    }
+                }}]})
+            dlg.show()
+            var forms = dlg.querySelector(".main").children[0]
+            var form_data = forms.querySelectorAll(".form-data")
+            for(var i=0;i<form_data.length;i++){
+                form_data[i].value=tbl["data"][rows][i]
+            }
+            dlg.querySelector("#memo").value=tbl["data"][rows][12]
+        },title:"基本信息"},
+            {cls:"doerow2",func:function(tbl,rows){
+                if (document.querySelector("#dlgData")) document.querySelector("#dlgData").parentNode.removeChild(document.querySelector("#dlgData"));
+                var dlg = _e.dialog({id:"dlgData",class:"dlgData",width:"800px",
+                    title:tbl.data[rows][1]+" 的供应商品",
+                    mainBody:'<div><table class="pure-table pure-table-bordered"> <thead> <tr> ' +
+                    '<th>品名</th> ' +
+                    '<th>流水号</th> ' +
+                    '<th>商品种类</th> ' +
+                    '<th>规格</th> ' +
+                    '<th>单位</th> ' +
+                    '<th>零售价</th> ' +
+                    '<th>编号</th> ' +
+                    '<th>条形码</th> ' +
+                    '</tr> ' +
+                    '</thead> <tbody id="codelist"></tbody> </table></div>',
+                    actions:[{id:"btn",class:"bottom",title:"添加条码",func:function(){
+                        var code = prompt("请输入条形码", "");
+                        var fd = new FormData(), xhr = new XMLHttpRequest()
+                        fd.append("code",code)
+                        fd.append("supplier",tbl.data[rows][0])
+                        xhr.open("POST" ,"/sc/supplier/bindcode"+_e["jurisdiction"]() , true)
+                        xhr.send(fd)
+                        xhr.onreadystatechange=function(){
+                            if (xhr.readyState==4 && xhr.status==200){
+                                var d = eval('('+xhr.responseText+');')
+                                _e["msgBox"]({
+                                    msg: d.msg,
+                                    className: d.res==-1 ? "error":"success",
+                                    timeout:3000})
+                                if(d.res!=-1){
+                                    load()
+                                }
+                            }
+                        }
+                    }},{id:"btn2",class:"bottom",title:"关闭",func:function(){
+                        dlg.parentNode.removeChild(dlg)
+                    }}]})
+                load()
+                dlg.show()
+                function load(){
+                    var codetbody = dlg.querySelector("#codelist")
+                    console.log(codetbody)
+                    var fd1 = new FormData(), xhr1 = new XMLHttpRequest()
+                    fd1.append("supplier",tbl.data[rows][0])
+                    xhr1.open("POST" ,"/sc/supplier/showcode"+_e["jurisdiction"]() , true)
+                    xhr1.send(fd1)
+                    xhr1.onreadystatechange=function(){
+                        if (xhr1.readyState==4 && xhr1.status==200){
+                            var dd = eval('('+xhr1.responseText+');')
+                            if(dd.res==-1){
+                                _e["msgBox"]({msg: dd.msg})
+                            }
+                            for(var j=0;j<dd.codecm.length;j++){
+                                var tr = document.createElement("tr")
+                                tr.innerHTML= '<td>'+dd.codecm[j][0]+'</td> ' +
+                                        '<td>'+dd.codecm[j][1]+'</td> ' +
+                                        '<td>'+dd.codecm[j][2]+'</td> ' +
+                                        '<td>'+dd.codecm[j][3]+'</td> ' +
+                                        '<td>'+dd.codecm[j][4]+'</td> ' +
+                                        '<td>'+(dd.codecm[j][5]/100).toFixed(2)+'</td> ' +
+                                        '<td>'+dd.codecm[j][6]+'</td> ' +
+                                        '<td>'+dd.codecm[j][9]+'</td> '
+                                codetbody.appendChild(tr)
+                            }
+                        }
+                    }
+                }
+            },title:"条码管理"}
+        ]
+        rows_actions = [{cls:"doerow",func:function(tbl,rows){
+            if (document.querySelector("#dlgData")) document.querySelector("#dlgData").parentNode.removeChild(document.querySelector("#dlgData"));
+            var dlg = _e.dialog({id:"dlgData",class:"dlgData",width:"800px",
+                title:"新增供应商",
+                mainBody:_e["genForm"](coldefs)+'<div style="padding-top: 240px"><p>供应商备注:</p><textarea rows="5" cols="60" id="memo" placeholder=""></textarea></div>',
+                actions:[{id:"btn",class:"bottom",title:"新增",func:function(){
+                    var data=dlg.querySelectorAll(".form-data")
+                    var fd = new FormData(), xhr = new XMLHttpRequest()
+                    if (data[2].value.length<1){
+                        _e.msgBox({msg:"供应商名称不能为空"})
+                        return
+                    }if (data[3].value.length<1){
+                        _e.msgBox({msg:"供应商联系方式不能为空"})
+                        return
+                    }
+
+                    for(var i=0;i<data.length;i++){
+                        fd.append(data[i].name,data[i].value)
+                    }
+                    fd.append("memo",dlg.querySelector("#memo").value)
+                    xhr.open("POST" ,"/sc/supplier/insert"+_e["jurisdiction"]() , true)
+                    xhr.send(fd)
+                    xhr.onreadystatechange=function(){
+                        if (xhr.readyState==4 && xhr.status==200){
+                            var d = eval('('+xhr.responseText+');')
+                            _e["msgBox"]({
+                                msg: d.msg,
+                                className: d.res==-1 ? "error":"success",
+                                timeout:3000})
+                            if(d.res!=-1){
+                                dlg.parentNode.removeChild(dlg)
+                                t.funcs.loadData.call(t)
+                            }
+                        }
+                    }
+                }}]})
+            dlg.show()
+
+        },title:"新增供应商"}]
+
+        ext_row = function(rows,i){
+            return "this is row "+i
+        }
+        t.funcs.init.call(t,"tbl",
+                coldefs,row_actions,rows_actions,"table","__THE__TABLE__",ext_row,"/sc/supplier/get")
+        var tbl_head = document.querySelector("#tbl").querySelector("thead")
+        tbl_head.querySelector("#trtime").parentNode.removeChild( tbl_head.querySelector("#trtime"))
+        tbl_head.querySelector("#trunit").parentNode.removeChild( tbl_head.querySelector("#trunit"))
+        tbl_head.querySelector("#trdept").parentNode.removeChild( tbl_head.querySelector("#trdept"))
+    }
+
+
+    function lookSupplierByBarocde(){
+        var barcode=document.querySelector("#barcode").value
+        if(barcode.length<1){
+            _e.msgBox({msg:"请输入条码"})
+            return
+        }
+
+        if (document.querySelector("#dlgData")) document.querySelector("#dlgData").parentNode.removeChild(document.querySelector("#dlgData"));
+        var dlg = _e.dialog({id:"dlgData",class:"dlgData",width:"800px",
+            title:barcode+"的供应商列表",
+            mainBody: "<table id='rels' style='width: 100%' class='pure-table pure-table-bordered'><thead><tr>" +
+            "<th>供应商序号</th><th>供应商</th><th>联系方式</th><th>地址</th><th>联系人</th><th>邮箱</th>" +
+            "</tr></thead><tbody id='supplierList'></tbody></table>",
+            actions:[{id:"btn",class:"bottom",title:"确定",func:function(){
+                dlg.parentNode.removeChild(dlg)
+            }}]})
+        dlg.show()
+        var fd = new FormData(), xhr = new XMLHttpRequest()
+        fd.append("code",barcode)
+        xhr.open("POST" ,"/sc/supplier/showsupplier"+_e["jurisdiction"]() , true)
+        xhr.send(fd)
+        xhr.onreadystatechange=function(){
+            if (xhr.readyState==4 && xhr.status==200){
+                var d = eval('('+xhr.responseText+');')
+                if(d.res==-1){
+                    _e["msgBox"]({msg: d.msg})
+                    return
+                }
+                var spltbody=dlg.querySelector("#supplierList")
+                for(var i=0;i< d.splist.length;i++){
+                    var tr=document.createElement("tr")
+                    tr.innerHTML='<td>'+ d.splist[i][0]+'</td>' +
+                            '<td>'+ d.splist[i][1]+'</td>' +
+                            '<td>'+ d.splist[i][2]+'</td>' +
+                            '<td>'+ d.splist[i][3]+'</td>' +
+                            '<td>'+ d.splist[i][4]+'</td>' +
+                            '<td>'+ d.splist[i][5]+'</td>'
+                    spltbody.appendChild(tr)
+                }
+
+            }
+        }
+    }
+</script>
+</body>
+</html>

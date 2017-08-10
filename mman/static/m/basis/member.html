@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>送货信息</title>
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/pure.css"  type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/dialog.css"  type="text/css"/>
+    <link rel="stylesheet" href="/i/css/iconfont/iconfont.css" type="text/css"/>
+
+</head>
+<body>
+  <div style="font:20px bold italic ;background-color:#77FFEE;width:20%;height:100%;">
+  <a class="pure-menu-heading" style="padding-left:15%;font:40px bold italic ;">会员列表</a>
+  <ul id="member_type_list"></ul>
+  <button class="pure-button" style="position:absolute;left:5%;top:85%;background: rgb(28, 184, 65);" onclick="new_member()">新增会员</button>
+</div>
+<div style="width:60%;  position:absolute;left:30%;top:0;font:18px bold italic ;">
+  <form class="pure-form pure-form-aligned" id="member_intro">
+      <fieldset>
+          <div class="pure-control-group">
+              <label for="id">ID：</label>
+              <input class="form-data" id="id" type="text" disabled="true">
+          </div>
+
+          <div class="pure-control-group">
+              <label for="name">名称：</label>
+              <input class="form-data" id="name" type="text">
+          </div>
+
+          <div class="pure-control-group">
+              <label for="discount">折扣：</label>
+              <input class="form-data" id="discount" type="text">%
+          </div>
+
+          <div class="pure-control-group">
+              <label for="satisfy_money">升下级所需充值金额：</label>
+              <input class="form-data" id="satisfy_money" type="text">
+          </div>
+          <div class="pure-control-group">
+              <label for="satisfy_scores">升下级所需积分：</label>
+              <input class="form-data" id="satisfy_scores" type="text">
+          </div>
+          <div class="pure-control-group">
+              <label for="grade">等级：</label>
+              <input class="form-data" id="grade" type="text">
+          </div>
+
+          <div class="pure-controls">
+              <button class="pure-button pure-button-primary" onclick="update_member()">修改</button>
+          </div>
+      </fieldset>
+  </form>
+</div>
+<script type="text/javascript" src="/i/js/handlebars.js"></script>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/dialog.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script>
+var member_arr = []
+load()
+function load(){
+  member_arr = []
+  var xhr = new XMLHttpRequest()
+  xhr.open("POST" ,"/basis/member/get", true)
+  xhr.send()
+  xhr.onreadystatechange=function(){
+      if (xhr.readyState==4 && xhr.status==200){
+          var d = eval('('+xhr.responseText+');')
+          if(d.res==-1){
+            _e["msgBox"]({msg: d.msg})
+            return
+          }
+          var list_ul = document.querySelector("#member_type_list")
+          list_ul.innerHTML=""
+          for(var i=0;i<d.member.length;i++){
+            member_arr.push(d.member[i])
+            var li = document.createElement("li")
+            li.className = "pure-menu-heading"
+            li.setAttribute("data-id", d.member[i][0])
+            li.innerHTML= '<a href="#" data-id="'+ d.member[i][0] +'" onclick=loadmember(this)>'+ d.member[i][1] +'</a>'+
+            '<i class="icon iconfont delete deleteunit" onclick="delete_member(this)">&#xe617;</i>'
+            list_ul.appendChild(li)
+          }
+
+      }
+  }
+}
+
+function loadmember(clickDom){
+  var id = Number(clickDom.getAttribute("data-id"))
+  if (isNaN(id) || id < 1 || member_arr.length < 1){
+    _e.msgBox({msg:"加载数据失败"})
+    return
+  }
+  for(var i=0;i<member_arr.length;i++){
+    if(id == member_arr[i][0]){
+      var member_inputs = document.querySelectorAll(".form-data")
+      for(var j=0;j<member_inputs.length;j++){
+        member_inputs[j].value = member_arr[i][j]
+        if(j == 3) member_inputs[j].value = (member_arr[i][j]/100).toFixed(2)
+      }
+    }
+  }
+}
+
+function update_member(){
+    var member_inputs = document.querySelectorAll(".form-data")
+    var fd = new FormData(), xhr = new XMLHttpRequest()
+    for(var i=0;i<member_inputs.length;i++){
+      if(i > 1 ){
+        var vlu = Number(member_inputs[i].value)
+        if (isNaN(vlu) || vlu < 1){
+          _e.msgBox({msg:"请输入正确的数据"})
+          return
+        }
+        if(i == 3 ) vlu = vlu * 100
+        vlu = Math.round(vlu)
+        fd.append(member_inputs[i].id,vlu)
+      }else {
+        fd.append(member_inputs[i].id,member_inputs[i].value)
+      }
+    }
+    xhr.open("POST" ,"/basis/member/update", true)
+    xhr.send(fd)
+    xhr.onreadystatechange=function(){
+        if (xhr.readyState==4 && xhr.status==200){
+          var d = eval('('+xhr.responseText+');')
+          _e["msgBox"]({
+              msg: d.msg,
+              className: d.res==-1 ? "error":"success",
+              timeout:3000
+          })
+          if(d.res==0){
+            load()
+          }
+        }
+    }
+}
+
+function delete_member(clickDom){
+  var id = Number(clickDom.parentNode.getAttribute("data-id"))
+  if(isNaN(id) || id < 1){
+    _e.msgBox({msg:"删除失败，请重试！"})
+    return
+  }
+  var fd = new FormData(), xhr = new XMLHttpRequest()
+  fd.append("id",id)
+  var dlg = _e.dialog({id:"dlgData",width:"400px",
+      title:"删除会员",
+      mainBody:"<h2>是否确认删除 "+ clickDom.parentNode.children[0].innerHTML +" ？</h2>",
+      actions:[{id:"btn",title:"确定",func:function(){
+          xhr.open("POST" ,"/basis/member/delete"+_e["jurisdiction"]() , true)
+          xhr.send(fd)
+          xhr.onreadystatechange=function() {
+              if (xhr.readyState==4 && xhr.status==200){
+                  var d = eval('('+xhr.responseText+');')
+                  _e["msgBox"]({
+                      msg: d.msg,
+                      className: d.res==-1 ? "error":"success",
+                      timeout:3000
+                  })
+                  if(d.res==0){
+                    load()
+                  }
+              }
+          }
+      }},{id:"btn",title:"取消",func:function(){
+          dlg.parentNode.removeChild(dlg)
+      }}]})
+    dlg.show()
+}
+function new_member(){
+  var dlg = _e.dialog({id:"dlgData",width:"400px",
+      title:"新增会员",
+      mainBody:'<form class="pure-form pure-form-stacked">'+
+    '<fieldset>'+
+        '<label for="name">名称</label>'+
+        '<input class="form-data" id="name" type="text" placeholder="不能超过十个字">'+
+
+        '<label for="discount">折扣</label>'+
+        '<input class="form-data" id="discount" type="text" placeholder="0到100之内的整数">'+
+
+        '<label for="satisfy_money">升级所需充值金额：</label>'+
+        '<input class="form-data" id="satisfy_money" type="text" placeholder="最多两位小数">'+
+
+        '<label for="satisfy_scores">升级所需积分：</label>'+
+        '<input class="form-data" id="satisfy_scores" type="text" placeholder="请输入正确的整数">'+
+
+        '<label for="grade">等级：</label>'+
+        '<input class="form-data" id="grade" type="text" placeholder="数值大的等级高">'+
+
+    '</fieldset>'+
+'</form>',
+      actions:[{id:"btn",title:"确定",func:function(){
+          var fd = new FormData(), xhr = new XMLHttpRequest()
+          var inputs = dlg.querySelectorAll(".form-data")
+          fd.append("name",inputs[0].value)
+          for(var i =1;i<inputs.length;i++){
+            var vlu = Number(inputs[i].value)
+            if(isNaN(vlu) || vlu < 1){
+              _e.msgBox({msg:"请按规范输入！"})
+              return
+            }
+            if(i == 2) vlu*=100
+            vlu = Math.round(vlu)
+            fd.append(inputs[i].id,vlu)
+          }
+          xhr.open("POST" ,"/basis/member/insert"+_e["jurisdiction"]() , true)
+          xhr.send(fd)
+          xhr.onreadystatechange=function() {
+              if (xhr.readyState==4 && xhr.status==200){
+                  var d = eval('('+xhr.responseText+');')
+                  _e["msgBox"]({
+                      msg: d.msg,
+                      className: d.res==-1 ? "error":"success",
+                      timeout:3000
+                  })
+                  if(d.res==0){
+                    dlg.parentNode.removeChild(dlg)
+                    load()
+                  }
+              }
+          }
+      }},{id:"btn",title:"取消",func:function(){
+          dlg.parentNode.removeChild(dlg)
+      }}]})
+    dlg.show()
+}
+</script>
+</body>
+</html>

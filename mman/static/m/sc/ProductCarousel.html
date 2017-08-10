@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品图片管理</title>
+    <link rel="shortcut icon" href="/i/css/img/favicon.ico" />
+    <link rel="stylesheet" href="/i/css/manage/pure.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/tree.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/dialog.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/table.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/iconfont/iconfont.css" type="text/css"/>
+    <!--<style type="text/css">-->
+        <!--.main{-->
+            <!--left: 12.5%;-->
+            <!--width: 57%;-->
+        <!--}-->
+        <!--.em-right{-->
+            <!--left:64.5%;-->
+            <!--width:35%;-->
+        <!--}-->
+        <!--.em-right{-->
+            <!--height: 100%;-->
+            <!--border-left:1px solid #EEEEEE ;-->
+        <!--}-->
+        <!--.em-right #imageTbl table{-->
+            <!--width: 100%;-->
+            <!--overflow-y: auto;-->
+            <!--margin-left: 5px;-->
+        <!--}-->
+    <!--</style>-->
+    <style type="text/css">
+        #main{
+            background-color: #EEEEEE;
+            height: 100%;
+            overflow-y: auto;
+        }
+        #commodityImage{
+            display: flex;
+            width: 100%;
+        }
+        #commodityImage table{
+            width: 100%;
+        }
+        #commodityImage table th,#commodityImage table td{
+            text-align: center;
+            width: 150px;
+        }
+        .main{
+            overflow-y: auto;
+            width: 75%;
+            display: flex;
+            height: 105%;
+        }
+        .mainRight{
+            width: 24%;
+            margin-left: 2px;
+            text-align: center;
+        }
+        .comName{
+            color: #907aff;
+        }
+    </style>
+</head>
+<body>
+<div style="text-align: center;"><h3>商品图片管理</h3></div>
+<div id="main">
+    <!--根据select里面的值去-->
+    <select id="classification"  onchange="change_show_imageType(this)"></select>
+    <div id="commodityImage">
+        <div style="width: 75%">      <!--商品图片管理-->
+            <table border="1">
+                <thead>
+                <tr>
+                    <th style="width: 120px;">商品种类</th>
+                    <th>商品类别</th>
+                    <th style="width: 60px;">seq顺序</th>
+                    <th style="width:60px">flag单多</th>
+                    <th>说明</th>
+                    <th style="width:120px">商品名</th>
+                    <th style="width:60px">图片</th>
+                    <th style="width:60px">操作</th>
+                </tr>
+                </thead>
+                <tbody id="commodityTbody"></tbody>
+            </table>
+            <div style="text-align: center;">
+                <a href="#" style="color: #0a0a0a;text-decoration:none;">
+                    <i class="icon iconfont icon-pluscircle" onclick="addCom()"></i>
+                </a>
+            </div>
+            <!--<button id="planCommodity" type="button" class="pure-button pure-button-primary" style="margin: 2% 0px 0px 85%;">提交</button>-->
+        </div>
+
+        <div class="mainRight"></div>
+    </div>
+
+<!--添加商品-->
+    <div class="main">
+        <div class="main-tree" style="width: 20%;">
+            <div id="trees"></div>
+        </div>
+        <div style="width: 75%;">
+            <div id="tbl"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/i/js/handlebars.js"></script>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/table.js"></script>
+<script type="text/javascript" src="/i/js/dialog.js"></script>
+<script type="text/javascript" src="/i/js/tree.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script type="text/javascript" src="/i/js/xml.js"></script>
+<!--<script type="text/javascript" src="/i/js/imgup.js"></script>-->
+<script type="text/javascript" src="/m/sc/js/ProductCarousel.js"></script>
+</body>
+
+</html>

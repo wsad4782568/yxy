@@ -1,0 +1,246 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>绘制部门配送范围</title>
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+    <script src="http://webapi.amap.com/maps?v=1.3&key=ea39e06aad936538b8ac81ab2ace8df4&plugin=AMap.MouseTool,AMap.PolyEditor,AMap.CircleEditor"></script>
+    <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+    <style type="text/css">
+           .marker-content {
+               position: absolute;
+               width: 50px;
+                height: 50px;
+               font-size: 1.5em;
+               color: #e90000;
+           }
+       </style>
+</head>
+<body>
+<div id="container"></div>
+<div class="button-group">
+  <select id="sub">
+  </select>
+    <input type="button" class="button" value="重新绘制该部门范围" id="polygon"/>
+    <input type="button" class="button" value="详细编辑" onClick="editor.startEditPolygon()"/>
+ <input type="button" class="button" value="结束编辑" onClick="editor.closeEditPolygon()"/>
+ <input type="button" class="button" value="更新到数据库" onClick="updatePolygon()" />
+</div>
+<script>
+  window.onload=function(){
+    var xml = new XMLHttpRequest()
+    xml.open("GET","/basis/gps/getsubinfo",true)
+    xml.onreadystatechange = function(){
+        if (xml.readyState==4 && xml.status==200){
+            var d = eval('('+xml.responseText+');')
+            if(d.res==1){
+              var sub_info=d.subs
+              var sublist = document.querySelector("#sub")
+              for (var i=0;i<sub_info.length;i++){
+                sublist.innerHTML+='<option value="'+sub_info[i][0]+'">'+
+                sub_info[i][1]+'</option>'
+            }
+
+            }
+        }
+    }
+      xml.send()
+}
+var editorTool,map = new AMap.Map("container", {
+    resizeEnable: true,
+    zoom:15,
+    center: [113.971889, 22.552028]
+});
+var editor={};
+
+//在地图中添加MouseTool插件
+var mouseTool = new AMap.MouseTool(map);
+
+var polygonArr=[]
+var polygonlist=[]
+var markers = []
+      var xml = new XMLHttpRequest()
+      xml.open("GET","/basis/gps/getSubGps",true)
+      xml.onreadystatechange = function(){
+          if (xml.readyState==4 && xml.status==200){
+              var d = eval('('+xml.responseText+');')
+              if(d.res==1){
+                for (var i=0;i<d.data.length;i++){
+                var text= d.data[i].subName
+                var sub_id=d.data[i].subdistrict
+                var lat=d.data[i].lat
+                var lng=d.data[i].lng
+              lat.substring(0,lat.length-1)
+              lng.substring(0,lng.length-1)
+              var lata=lat.split(",")
+              var lnga=lng.split(",")
+                var a2=[]
+                 for (var j=0;j<lata.length-1;j++){
+                   var a1 = []
+                    a1.push(lnga[j],lata[j])
+                    a2.push(a1)
+                 }
+                 polygonlist[i]=  new AMap.Polygon({
+                       map: map,
+                       path: a2,
+                       strokeColor: "#0000ff",
+                       strokeOpacity: 1,
+                       strokeWeight: 3,
+                       fillColor: "#B9D3EE",
+                       fillOpacity: 0.35,
+                       extData:text+","+sub_id
+                   })
+                  editor._polygonEditor= new AMap.PolyEditor(map,polygonlist[i]);
+                     polygonArr.push(editor._polygonEditor)
+                     var cen= polygonlist[i].getBounds().getCenter()
+                     var sub_info=polygonlist[i].H.extData
+                     var di=sub_info.split(",")
+                           var marker = new AMap.Marker({ //添加自定义点标记
+                            map: map,
+                            position: [cen.lng, cen.lat], //基点位置
+                            offset: new AMap.Pixel(-17, -42), //相对于基点的偏移位置
+                            draggable: false,  //是否可拖动
+                           content: '<div class="marker-content">'+di[0]+'</div>'   //自定义点标记覆盖物内容
+                             });
+                         markers[i]=marker
+                }
+                map.setFitView();
+              }
+            }
+          }
+          xml.send()
+
+
+
+    // AMap.event.addDomListener(
+    //      //AMap.event.removeListener(clickListener);
+    // }, false);
+    document.getElementById('polygon').onclick= function() {
+      for (var i=0;i<polygonArr.length;i++){
+        var sublist = document.querySelector("#sub")
+         var index = sublist.selectedIndex
+         var sub_id=sublist.options[index].value
+         var sub_info=polygonlist[i].H.extData
+         var di=sub_info.split(",")
+          if (di[1]==sub_id){
+             var re=confirm("此部门区域范围存在，确定重新绘制？")
+             if (re){
+              // var rep=map.getAllOverlays(polygon).slice(i*2,i*2+2)
+              // map.remove(rep)
+               polygonlist[i].setMap(null)
+               polygonArr.splice(i,1)
+              //  arr.splice(i,1)
+               polygonlist.splice(i,1)
+               break;
+             }else{
+               return
+             }
+          }
+      }
+      mouseTool.polygon();
+    }
+    var clickListener= AMap.event.addListener(mouseTool, 'draw', function(msg){
+      var sublist = document.querySelector("#sub")
+        var index = sublist.selectedIndex
+        var text = sublist.options[index].text
+        var sub_id=sublist.options[index].value
+        var path_point=msg.obj.H.path
+        var a2=[]
+         for (var i=0;i<path_point.length;i++){
+           var a1 = []
+            a1.push(path_point[i].lng,path_point[i].lat)
+            a2.push(a1)
+         }
+        //  arr.push(a2)
+        polygonlist[polygonArr.length]= new AMap.Polygon({
+              map: map,
+              path: a2,
+              strokeColor: "#0000ff",
+              strokeOpacity: 1,
+              strokeWeight: 3,
+              fillColor: "#B9D3EE",
+              fillOpacity: 0.35,
+              extData:text+","+sub_id
+          });
+         editor._polygonEditor= new AMap.PolyEditor(map,polygonlist[polygonArr.length]);
+         var cen= polygonlist[polygonArr.length].getBounds().getCenter()
+         var sub_info=polygonlist[polygonArr.length].H.extData
+         var di=sub_info.split(",")
+               var marker = new AMap.Marker({ //添加自定义点标记
+                map: map,
+                position: [cen.lng, cen.lat], //基点位置
+                offset: new AMap.Pixel(-17, -42), //相对于基点的偏移位置
+                draggable: false,  //是否可拖动
+               content: '<div class="marker-content">'+di[0]+'</div>'   //自定义点标记覆盖物内容
+                 });
+             markers[polygonArr.length]=marker
+            polygonArr.push(editor._polygonEditor)
+            msg.obj.setMap(null)
+             mouseTool.close()
+    })
+    // map.setFitView();
+       editor.startEditPolygon=function(){
+         for (var i=0;i<polygonArr.length;i++){
+             polygonArr[i].open();
+         }
+         }
+         editor.closeEditPolygon=function(){
+             for (var i=0;i<polygonArr.length;i++){
+               console.log(markers)
+                 markers[i].setMap(null)
+                 polygonArr[i].close();
+                var cen= polygonlist[i].getBounds().getCenter()
+                var sub_info=polygonlist[i].H.extData
+                var di=sub_info.split(",")
+                      var marker = new AMap.Marker({ //添加自定义点标记
+                       map: map,
+                       position: [cen.lng, cen.lat], //基点位置
+                       offset: new AMap.Pixel(-17, -42), //相对于基点的偏移位置
+                       draggable: false,  //是否可拖动
+                      content: '<div class="marker-content">'+di[0]+'</div>'   //自定义点标记覆盖物内容
+                        });
+                    markers[i]=marker
+                  }
+           }
+           updatePolygon=function(){
+             var flag_j=0
+             for (var i=0;i<polygonlist.length;i++){
+               var fd = new FormData()
+               var sub_info= polygonlist[i].H.extData
+               var di=sub_info.split(",")
+                fd.append("subname",di[0])
+                fd.append("subid",parseInt(di[1]))
+                var sth=polygonlist[i].H.path
+                for (var j=0;j<sth.length;j++){
+                  fd.append("lng",sth[j].lng)
+                  fd.append("lat",sth[j].lat)
+                }
+                var xml = new XMLHttpRequest()
+                xml.open("POST","/basis/gps/updateSubGps",true)
+                xml.onreadystatechange = function(){
+                    if (xml.readyState==4 && xml.status==200){
+                        var d = eval('('+xml.responseText+');')
+                        if (d.res!=1){
+                          alert("更新失败")
+                        }
+                     }
+                }
+                  xml.send(fd)
+             }
+               alert("更新成功")
+
+           }
+        //  polygon = new AMap.Polygon({
+        //     map: map,
+        //    path: arr
+        //       });
+        //  }
+ // AMap.event.addDomListener(document.getElementById('calc'), 'click', function() {
+ //     alert('点是否在多边形内：' + polygon.contains([113.141267, 29.327421]));
+ // });
+
+</script>
+</body>
+</html>

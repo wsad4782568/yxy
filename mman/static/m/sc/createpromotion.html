@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>促销方式配置</title>
+    <link rel="shortcut icon" href="/i/css/img/favicon.ico" />
+    <link rel="stylesheet" href="/i/css/manage/pure.css" type="text/css" />
+    <link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css" />
+    <link rel="stylesheet" href="css/promotion.css" type="text/css" />
+
+</head>
+
+<body>
+
+    <div class="default-main default-top">
+        <h2>促销方式配置</h2>
+        <div class="main-wrapper">
+            <div class="layout-bd em-left creategiftpakageleft" style="width: 32%;margin-left:10px">
+                <div class="middle-top">
+                    <p>有效范围：</p>
+                    <input style="height: 20px;width: 20px;" class="validipt" type="checkbox" style="margin: 5px">
+                    <b>线上</b>
+                    <input style="height: 20px;width: 20px;" class="validipt" type="checkbox" style="margin: 5px">
+                    <b>线下</b>
+
+                </div>
+                <div class="middle-middle">
+                    <p>选择促销方式：</p>
+                    <div>
+                        <input style="height: 20px;width: 20px;" type="radio" name="choice" class="promotionbtn" data-id="4" style="margin: 5px">
+                        <b>红包</b>
+                        <input style="height: 20px;width: 20px;" type="radio" name="choice" class="promotionbtn" data-id="1" style="margin: 5px">
+                        <b>买送</b>
+                        <!-- <input type="radio" name="choice" class="promotionbtn" data-id="3" style="margin: 5px">
+                    <b>优惠券</b> -->
+                        <input style="height: 20px;width: 20px;" type="radio" name="choice" class="promotionbtn" data-id="2" style="margin: 5px">
+                        <b>折扣</b>
+                    </div>
+                </div>
+                <div style="margin: 10px 0px;">
+                    <a>用户可享受次数:</a>
+                    <p>
+                        <input style="font-size: 20px;width: 275px;" class="getcount" type="text" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                    </p>
+                </div>
+                <div style="margin: 10px 0px;">
+                <a>用户可购买数量:</a>
+                <p>
+                    <input placeholder="请输入数字..." style="font-size: 20px;width: 275px;" class="getGoodCount" type="text" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                </p>
+            </div>
+                <div>
+                    <div>
+                        <span>开始生效时间：</span>
+                        <p>
+                            <input class="valid" style="font-size:20px;width: 275px;" type="datetime-local" name="user_date" />
+                        </p>
+                    </div>
+                    <div style="margin-top:10px">
+                        <span>有效期截至时间：</span>
+                        <p>
+                            <input class="expired" style="font-size: 20px;width: 275px;" type="datetime-local" name="user_date" />
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!--//买送编辑-->
+            <div class="layout-bd em-left main-left right-giftpakage" style="left:27%;height:66%;overflow:auto;display: none">
+                <div id="trees"></div>
+            </div>
+
+
+            <div class="layout-bd middle creategiftpakageright right-giftpakage" style="height:66%;left: 49%;display: none">
+                <div class="middle-main" style="overflow:auto;height:66%;">
+                    <h3 class="adddetails" data-id="1">买送编辑：</h3>
+                    <div class="right-modile">
+                        <div class="right-modile-bottom">
+                            <div>
+                                <div style="display: flex">
+                                    <a>名称:</a>
+                                    <input class="giftname" type="text">
+                                </div>
+                                <div style="display: flex">
+                                    <a>介绍:</a>
+                                    <input type="text" class="giftinfo">
+                                </div>
+                                <div style="display: flex">
+                                    <div style="display: flex">
+                                        <a> 买：</a>
+                                        <input onkeyup="this.value=this.value.replace(/[^\d]/g,'')" placeholder="请输入数字" class="giftbuy" type="text">
+                                    </div>
+                                    <div style="display: flex;">
+                                        <a> 送：</a>
+                                        <input onkeyup="this.value=this.value.replace(/[^\d]/g,'')" placeholder="请输入数字" class="giftsale" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="tbl"></div>
+                            <div class="goodsidname">
+                            </div>
+                            <!--<button type="submit" class="pure-button pure-button-primary submitgoods">应用</button>-->
+                        </div>
+                    </div>
+                </div>
+                <table class="pure-table pure-table-horizontal">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>商品名</th>
+                            <th>单位</th>
+                            <th>规格</th>
+                            <th>数量</th>
+                            <th>价格</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="tblGoods">
+
+                    </tbody>
+                </table>
+            </div>
+            <!--//优惠券编辑-->
+            <div class="layout-bd middle creategiftpakageright right-coupon" style="left: 49%; display: none">
+                <div class="middle-main">
+                    <h3 class="adddetails" data-id="4">优惠券编辑：</h3>
+                    <div class="middle-main">
+                        <div class="right-modile">
+                            <div style="display: flex">
+                                <span>面额：</span>
+                                <input type="text" class="cash" placeholder="请输入数字" onkeyup="this.value=this.value.replace(/[^\d]/g,'')"> 元
+                            </div>
+                            <!-- <div>
+                             <div>
+                                <span>开始生效时间：</span>
+                                <input  type="date" class="valid">
+                            </div>
+                            <div>
+                                <span>有效期截至时间：</span>
+                                <input  type="date" class="expired">
+                            </div>
+                        </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--//红包编辑-->
+
+            <div class="layout-bd middle creategiftpakageright right-cash" style="left: 49%;display: none">
+                <div class="middle-main">
+
+                    <h3 class="adddetails" data-id="3">红包编辑：</h3>
+                    <div class="middle-main">
+                        <div class="right-modile">
+                            <div style="display: flex">
+                                <span>面额：</span>
+                                <input type="text" class="cashgift" placeholder="请输入数字" onkeyup="this.value=this.value.replace(/[^\d]/g,'')"> 元
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--//折扣编辑-->
+            <div class="layout-bd middle creategiftpakageright right-discount" style="left: 49%;display: none">
+                <div class="middle-main">
+                    <h3 class="adddetails" data-id="2">折扣编辑：</h3>
+                    <div class="middle-main">
+                        <div class="right-modile">
+                            <div style="display: flex">
+                                <span>几折：</span>
+                                <input type="text" class="discount" placeholder="请输入数字1-100" onkeyup="this.value=this.value.replace(/[^\d]/g,'')"> 折
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+        <button type="submit" style="margin-top: -330px;position: absolute" class="pure-button pure-button-primary submitPromotion">提交</button>
+    </div>
+
+
+
+    <script type="text/javascript" src="/i/js/handlebars.js"></script>
+    <script type="text/javascript" src="/i/js/_e.js"></script>
+    <script type="text/javascript" src="../../i/js/tree.js"></script>
+    <script type="text/javascript" src="/i/js/table.js"></script>
+    <script type="text/javascript" src="/i/js/msgbox.js"></script>
+    <script type="text/javascript" src="js/createpromotion.js"></script>
+</body>
+
+</html>

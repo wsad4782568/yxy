@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>10号便利店　-管理平台</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="/i/dist/css/zui.min.css">
+    <link rel="shortcut icon" href="http://static-1.shopten.cn/images/favicon.ico" type="image/x-icon" />
+ 
+</head>
+<body>
+<div id="ct"></div>
+<div id="et"></div>
+ <table>
+      <thead>
+        <tr>
+          <th>姓名</th>
+          <th>性别</th>
+          <th>年龄</th>
+        </tr>
+      </thead>
+      <tbody id="tableList">
+        
+      </tbody>
+    </table>
+
+
+
+
+</body>
+<script src="/i/dist/js/jq.js"></script>
+<script src="/i/dist/js/zui.min.js"></script>
+<script src="/i/dist/js/handlebars.js"></script>
+ <script id="table-template" type="text/x-handlebars-template">
+      {{#each student}}
+        <tr>
+          <td>{{name}}</td>
+          <td>{{sex}}</td>
+          <td>{{age}}</td>
+        </tr> 
+      {{/each}}
+ </script>
+<script id="entry-template" type="text/x-handlebars-template">
+  <div class="entry">
+    <h1>{{title}}</h1>
+    <div class="body">
+      {{body}}
+    </div>
+  </div>
+</script>
+ <script type="text/javascript">
+      $(document).ready(function() {
+        //模拟的json对象
+        var data = {
+                    "student": [
+                        {
+                            "name": "张三",
+                            "sex": "0",
+                            "age": 18
+                        },
+                        {
+                            "name": "李四",
+                            "sex": "0",
+                            "age": 22
+                        },
+                        {
+                            "name": "妞妞",
+                            "sex": "1",
+                            "age": 18
+                        }
+                    ]
+                };
+
+        var myTemplate = Handlebars.compile($("#table-template").html());
+        
+          $('#tableList').html(myTemplate(data));
+      });
+    </script>
+<script type="text/javascript">
+
+function genTree(tree){
+	var s=""
+	for(var i in tree){
+		var ti = tree[i] 
+		if(ti.isLeaf){
+			
+			s+='<li><a href="#">' + ti.title + '</a></li>'
+		}else{
+			s+='<li><a href="#">'+ti.title+'</a>'+genTree(ti.subtree)+'</li>'
+			
+		}
+		
+		
+	}
+	return '<ul>'+s+'</ul>'
+}
+var tree=[{isLeaf:true,title:"粥"},{title:"水果",subtree:[{isLeaf:true,title:"菠萝"},{
+	title:"啊啊",subtree:[{isLeaf:true,title:"菠萝"}]
+}]}]
+$("#ct").html(genTree(tree))
+$("#ct > ul").addClass("tree").tree()
+alert(Handlebars)
+
+var source   = $("#entry-template").html();
+var template = Handlebars.compile(source);
+
+var context = {title: "My New Post", body: "This is my first post!"};
+$("#et").html( template(context));
+
+
+</script>
+</html>

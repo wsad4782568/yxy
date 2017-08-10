@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="format-detection" content="telephone=no" />
+	<title>Mr.Ten</title>
+	<link rel="icon" type="image/x-icon" href="../i/css/img/favicon.ico" />
+	<link rel="shortcut icon" type="image/x-icon" href="../i/css/img/favicon.ico" />
+	<link rel="apple-touch-icon-precomposed" href="../i/css/img/favicon.png" />
+
+	<link rel="stylesheet" type="text/css" href="../i/css/sale/loading.css" />
+	<link rel="stylesheet" type="text/css" href="../i/css/iconfont/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="../i/css/sale/mobile.css" />
+	<!--<script type="text/javascript" src="../i/jquery-2.2.0.min.js"></script>-->
+	<!--<script type="text/javascript" src="../i/mobile.js"></script>-->
+	<script src="../i/js/autoTextarea.js"></script>
+
+	<script>
+		//			$(document).ready(function() {
+		//				$('.freebackReplyTextarea').autoTextarea({
+		//					//maxHeight:150,
+		//					minHeight: 42
+		//				});
+		//			});
+	</script>
+
+</head>
+
+<body>
+<!--page start-->
+<div class="header bgc-FFF100">
+	<ul class="headerMenu flex">
+		<li onclick="window.history.go(-1)"><i class="icon iconfont icon-arrowleft"></i></li>
+		<h1 class="flex-1">反馈详情</h1>
+		<li><i class="icon iconfont icon-delete"></i></li>
+	</ul>
+</div>
+<!--main start-->
+<div class="main scrollable">
+
+	<div class="freebackDetail">
+		<h1>Freeback Type Title</h1>
+		<div>Something about our platform presentation in English, welcome to join us and use our platform.</div>
+		<p>2016.03.08 18:38:07</p>
+	</div>
+
+	<div class="freebackReply">
+		<ul><span>[ 客服 ] : </span>welcome to join us and use our platform.
+			<p>2小时前</p>
+		</ul>
+		<li><span>[ 我 ] : </span>Thank you!
+			<p>5分钟前</p>
+		</li>
+		<!---->
+		<div><textarea placeholder="输入要回复的内容..." oninput="HAuto()" class="freebackReplyTextarea"></textarea></div>
+		<button type="button" class="bgc-17D7B0">提交</button>
+	</div>
+
+</div>
+<!--main end-->
+
+<!--page end-->
+<script type="text/javascript">
+	//改为addEventListener没有成功
+//	document.querySelector(".freebackReplyTextarea").addEventListener("onselect",function(){
+		var maxHeight=null
+		var qrysTextareacClas=document.querySelector(".freebackReplyTextarea")
+		var minHeight=qrysTextareacClas.offsetHeight//保存初始高度
+//		HAuto(qrysTextareacClas,minHeight)
+//	})
+	//除去文本域高度自适应jq，改为js
+
+	function HAuto(){
+		var height,style=qrysTextareacClas.style
+		qrysTextareacClas.style.height =minHeight + 'px'
+		console.log(qrysTextareacClas.scrollHeight)
+		//判断现在的高度和初始的高度
+		if (qrysTextareacClas.scrollHeight >minHeight) {
+			if (qrysTextareacClas.maxHeight && qrysTextareacClas.scrollHeight > qrysTextareacClas.maxHeight) {
+				height = qrysTextareacClas.maxHeight;
+				style.overflowY = 'scroll'
+				console.log(height+"a1")
+			} else {
+				height = qrysTextareacClas.scrollHeight;
+				style.overflowY = 'hidden'
+				console.log(height+"aa2")
+
+			}
+			style.height = height  + 'px'
+			console.log(height+"aaa3")
+		}
+	}
+</script>
+</body>
+
+</html>

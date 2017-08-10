@@ -1,0 +1,393 @@
+/*所有的css都整合在一起，注释区域标出了各自的模块*/
+/*这几个模块需要*/
+html { height: 100%; overflow: hidden; _padding: 45px 0 76px; }
+body {
+    height: 100%; max-height: 100%;
+    border: 0;
+    font: 12px/20px Arial, Helvetica, sans-serif;
+    -moz-user-select: -moz-none;
+}
+caption,th { text-align: left; }
+/*中间左边的菜单布局*/
+.minwidth { min-width: 600px; }
+.clearfix { _zoom: 1; }
+.clearfix:after { content: "."; display: block; visibility: hidden; clear: both; height: 0px; }
+.em-container {
+    width: auto;
+    margin: 0px 1px 30px 1px;
+    text-align: left;
+}
+
+.em-container label {
+    font-family: 'BebasNeueRegular', 'Arial Narrow', Arial, sans-serif;
+    padding: 2px 20px;
+    position: relative;
+    z-index: 20;
+    display: block;
+    height: 30px;
+    cursor: pointer;
+    color: #777;
+    text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
+    line-height: 33px;
+    font-size: 12px;
+    background: #ffffff;
+    background: -moz-linear-gradient(top, #ffffff 1%, #eaeaea 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#ffffff), color-stop(100%,#eaeaea));
+    background: -webkit-linear-gradient(top, #ffffff 1%,#eaeaea 100%);
+    background: -o-linear-gradient(top, #ffffff 1%,#eaeaea 100%);
+    background: -ms-linear-gradient(top, #ffffff 1%,#eaeaea 100%);
+    background: linear-gradient(top, #ffffff 1%,#eaeaea 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eaeaea',GradientType=0 );
+    box-shadow: 0px 0px 0px 1px rgba(155,155,155,0.3),
+    1px 0px 0px 0px rgba(255,255,255,0.9) inset,
+    0px 2px 2px rgba(0,0,0,0.1);
+}
+
+.em-container input:checked ~ article.em-small {
+    height: auto;
+}
+
+.em-container input:checked ~ article.em-medium {
+    height: auto;
+}
+
+.em-container input:checked ~ article.em-large {
+    height: auto;
+}
+
+.em-container label:hover {
+    background: #fff;
+}
+
+.em-container input:checked + label,
+.em-container input:checked + label:hover {
+    background: #c6e1ec;
+    color: #3d7489;
+    text-shadow: 0px 1px 1px rgba(255,255,255, 0.6);
+    box-shadow: 0px 0px 0px 1px rgba(155,155,155,0.3),
+    0px 2px 2px rgba(0,0,0,0.1);
+}
+
+.em-container label:hover:after,
+.em-container input:checked + label:hover:after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    right: 13px;
+    top: 7px;
+    background: transparent url(/i/css/img/arrow_down.png) no-repeat center center;
+}
+
+.em-container input:checked + label:hover:after {
+    background-image: url(/i/css/img/arrow_up.png);
+}
+
+.em-container input {
+    display: none;
+}
+
+.em-container article {
+    background: rgba(255, 255, 255, 0.5);
+    margin-top: -1px;
+    overflow: hidden;
+    height: 0px;
+    position: relative;
+    z-index: 10;
+    -webkit-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+    -moz-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+    -o-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+    -ms-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+    transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+}
+.em-container input:checked ~ article {
+    -webkit-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+    -moz-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+    -o-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+    -ms-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+    transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+    box-shadow: 0px 0px 0px 1px rgba(155,155,155,0.3);
+}
+.em-small{
+    border-left: 5px solid #005b9e;
+}
+.em-small p{
+    padding: 1px 0px 1px 35px;
+    margin: 0px;
+    width: 123%;
+    color: black;
+
+}
+
+.em-small p:hover{
+    background-color: #eef3ff;
+
+    width: 100%;
+}
+.em-small ul{
+    list-style: none;
+    position: relative;
+    margin: 0;
+    padding: 0;
+
+}
+.em-small>li{
+    list-style: none;
+    position: relative;
+}
+.em-small li:hover{
+    background-color: #eef3ff;
+}
+/*accordion功能自定义css*/
+.anchorPage {
+    font-size: 12px;
+    text-decoration: none;
+    width: 100%;
+}
+
+.header_log {
+    width: 48px;
+    float: left;
+    margin-left: 30px;
+}
+
+.header_link {
+    /*margin-left: 133px;*/
+    width: 50%;
+    float: left;
+}
+
+.header_link ul li {
+    display: inline-flex;
+    font-size: 12px;
+}
+
+.header_link ul li a {
+    margin: 1px 12px 0px 0px;
+    padding: 6px 12px;
+    color: #808080;
+    text-decoration: none;
+}
+
+.header_link ul li:hover a {
+    background-color: #0000FF;
+    color: white;
+    border-radius: 6px;
+}
+/*accordion功能自定义css*/
+/*中间左边的菜单布局*/
+
+/*圣杯布局*/
+.minwidth {
+    min-width: 600px;
+}
+
+.clearfix {
+    _zoom: 1;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    visibility: hidden;
+    clear: both;
+    height: 0px;
+}
+
+.default-main {
+    position: absolute;
+    _position: relative;
+    margin-top: 10px;
+    top: 44px;
+    _top: auto;
+    bottom: 5%;
+    _bottom: auto;
+    width: 100%;
+    _height: 100%;
+    overflow: hidden;
+}
+
+.default-top {
+    top: 30px;
+    height: 93%
+}
+
+.main-wrapper {
+    _margin: 0 252px 0 172px;
+    height: 100%;
+}
+
+.layout-hd, .layout-ft {
+    /*background: #EEEEEE;*/
+    overflow-y: visible;
+    z-index: 40;
+}
+
+.layout-bd {
+    position: absolute;
+    height: 100%;
+    overflow: auto;
+}
+
+.layout-hd {
+    height: 53px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.layout-ft {
+    border-top: 1px solid #c1c1c1;
+    height: 5%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: auto;
+    text-align: right;
+}
+
+.em-left {
+    border-top: 1px solid #c1c1c1;
+    left: 0;
+    width: 12.5%;
+    overflow: auto;
+}
+
+.middle {
+    min-width: 60%;
+    width: 88%;
+    left: 12.5%;
+    right: 251px;
+    /*border-left: 1px solid #c1c1c1;*/
+}
+
+/*圣杯right*/
+/*.em-right {
+  border-top: 1px solid #c1c1c1;
+  right: 0;
+  background:#ddd;
+  width: 0;
+  border-left: 1px solid #c1c1c1;
+}*/
+.doerow{
+    width: auto;
+}
+.em_1 {
+    font-size: 15px;
+    color: black;
+    text-decoration: none;
+}
+#em_3 {
+    display: none;
+    OVERFLOW-y: auto;
+}
+
+/*圣杯布局*/
+/*ifrm*/
+.frm {
+    width: 100%;
+    height: 100%;
+    border:1px solid #c1c1c1;
+}
+
+.e-msg-bar {
+    background-color: #12c994;
+    position: fixed;
+    z-index: 1000000;
+    top: 0;
+    width: 100%;
+    height: auto;
+    line-height: 1.8;
+    padding: 13px 0;
+    color: #fff;
+    font-size: 15px;
+    text-align: center;
+    transition: all ease-in-out 2s;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both
+}
+
+.alert-error {
+    background-color: #f06962!important
+}
+
+.alert-info {
+    background-color: #00c0ef!important
+}
+
+.alert-warning {
+    background-color: #f39c12!important
+}
+
+.alert-success {
+    background-color: #12c994!important
+}
+
+@-webkit-keyframes fadeInDown {
+    0% {
+        -webkit-transform: translate3d(0,-100%,0);
+        transform: translate3d(0,-100%,0)
+    }
+
+    to {
+        -webkit-transform: none;
+        transform: none
+    }
+}
+
+@keyframes fadeInDown {
+    0% {
+        -webkit-transform: translate3d(0,-100%,0);
+        transform: translate3d(0,-100%,0)
+    }
+
+    to {
+        -webkit-transform: none;
+        transform: none
+    }
+}
+
+.fadeInDown {
+    -webkit-animation-name: fadeInDown;
+    animation-name: fadeInDown
+}
+
+@-webkit-keyframes fadeOutUp {
+    0% {
+        opacity: 1
+    }
+
+    to {
+        opacity: 0;
+        -webkit-transform: translate3d(0,-100%,0);
+        transform: translate3d(0,-100%,0)
+    }
+}
+
+@keyframes fadeOutUp {
+    0% {
+        opacity: 1
+    }
+
+    to {
+        opacity: 0;
+        -webkit-transform: translate3d(0,-100%,0);
+        transform: translate3d(0,-100%,0)
+    }
+}
+
+.fadeOutUp {
+    -webkit-animation-name: fadeOutUp;
+    animation-name: fadeOutUp
+}
+
+.animated {
+    -webkit-animation-duration: .5s;
+    animation-duration: .5s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both
+}

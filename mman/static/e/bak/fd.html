@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>10号便利店　-管理平台</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="/i/dist/css/zui.min.css">
+    <link rel="shortcut icon" href="http://static-1.shopten.cn/images/favicon.ico" type="image/x-icon" />
+ 
+</head>
+<body>
+
+
+
+
+
+</body>
+
+ <script type="text/javascript">
+ /*
+var fd = new FormData();
+fd.append("name", "eachma");
+fd.append("site", "http://eachma.com");
+//fd.append("file", document.getElementById("file"));
+var xhr = new XMLHttpRequest();       
+xhr.open("POST" ,"/u/test" , true);
+xhr.send(fd);
+xhr.onreadystatechange=function()
+  {
+  if (xhr.readyState==4 && xhr.status==200)
+    {
+    alert(xhr.responseText)
+    }
+  }
+  */
+  
+var xmlhttp = new XMLHttpRequest();   // 
+xmlhttp.open("POST", "/test/ajax_json");
+xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+xmlhttp.send(JSON.stringify({"Name":"eldly"}));
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    alert(xmlhttp.responseText)
+    }
+  }
+
+</script>
+</html>

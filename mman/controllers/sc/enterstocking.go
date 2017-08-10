@@ -1,0 +1,4 @@
+package sc
+
+func EnterStockingHandlers() {
+}

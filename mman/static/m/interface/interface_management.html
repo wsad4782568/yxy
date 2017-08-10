@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>接口管理</title>
+    <link rel="stylesheet" href="/i/dist/css/user_admin.css" />
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+    <link href="/i/dist/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/i/em/css/ten.css" rel="stylesheet">
+    <script type="text/javascript" src="/i/em/tbl.js"></script>
+    <script type="text/javascript" src="/i/em/tr.js"></script>
+    <script type="text/javascript" src="/i/dist/js/handlebars.js"></script>
+    <script type="text/javascript" src="/i/em/_e.js"></script>
+    <style type="text/css">
+        /*—————————公用样式——————————*/
+
+    </style>
+</head>
+
+<body>
+<!——————————S中间——————————>
+<div class="default-main">
+    <div class="main-wrapper">
+        <div class="mb-layout-bd column1">
+            <div class="container">
+                <section class="ac-container">
+                    <div class="ac_">
+                        <input id="ac-1" name="accordion-1" type="checkbox" />
+                    </div>
+                    <div class="ac_">
+                        <input id="ac-2" name="accordion-1" type="checkbox" />
+                    </div>
+                    <div class="ac_">
+                        <input id="ac-3" name="accordion-1" type="checkbox" />
+                    </div>
+                    <div class="ac_">
+                        <input id="ac-4" name="accordion-1" type="checkbox" />
+                    </div>
+                    <div class="ac_">
+                        <input id="ac-5" name="accordion-1" type="checkbox" />
+                    </div>
+                    <div class="ac_">
+                        <input id="ac-6" name="accordion-1" type="checkbox" />
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="mb-layout-bd column2">
+            <!--<div id="tbl"></div>-->
+            <iframe id="iframe" src="../tbl/commodity.html" style="width: 100%;height: 508px;"></iframe>
+        </div>
+    </div>
+</div>
+<!——————————E中间——————————>
+<!——————————S头部——————————>
+<div class="mb-layout-hd"></div>
+<!——————————E头部——————————>
+<!——————————S底部——————————>
+<div class="mb-layout-ft minwidth"> </div>
+<!——————————E底部——————————>
+</body>
+<script>
+    var info=document.querySelectorAll(".iformation")
+    for(var i=0;i<info.length;i++){
+        info[i].onclick=function () {
+            change_tbl(this.id)
+        }
+    }
+    function change_tbl(name) {
+        var iframe=document.getElementById("iframe")
+        iframe.src="./tbl/"+name+".html"
+//        console.log(iframe.src)
+    }
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://10.168.1.193:8081/basis/admin/gettr", true);
+    xhr.send();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var json_msg=eval('(' + xhr.responseText + ')');
+            var arr = new Array();
+            for(var i in json_msg.data) {
+                arr.push([parseInt(json_msg.data[i].id),json_msg.data[i].name,parseInt(json_msg.data[i].pid),parseInt(json_msg.data[i].is_leaf)]);
+            }
+            var trs=new tr()
+            trs.init("#trees",arr,1,"TR")    //创建树
+            trs.set_event([{func:function () { //需要绑定的函数
+                var win = document.getElementById("iframe").contentWindow;
+                win.postMessage(this.getAttribute("data-id"), "*");
+                //win.postMessage(JSON.stringify(trs), "*");
+            }, is_leaf:1}  //0：非叶子节点 1:叶子节点 2：所有树节点
+            ])
+        }
+    }
+</script>
+</html>

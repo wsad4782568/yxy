@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta />
+		<title>登录界面</title>
+		<link rel="stylesheet" href="/i/css/manage/pure.css" />
+		<link rel="stylesheet" href="/i/css/manage/base.css" />
+		<style type="text/css">
+			body{
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+	<form class="pure-form">
+		<fieldset>
+			<legend>Mr.Ten</legend>
+
+			<input type="text" placeholder="邮箱" required id="username" value="">
+			<br>
+			<input type="password" placeholder="密码" required id="pwd" value="">
+			<br>
+			<input class="pure-button pure-button-primary" type="button" id="subBtn" value="确定">
+		</fieldset>
+	</form>
+	<button id="btns">获取信息</button>
+	</body>
+	<script type="text/javascript" src="/i/js/handlebars.js" ></script>
+	<script type="text/javascript" src="/i/js/_e.js"></script>
+	<script type="text/javascript" src="/i/js/msgbox.js"></script>
+
+	<script type="text/javascript">
+		_e.bind("#subBtn","click",pc_login)
+		_e.bind("#btns","click",getinfo)
+		function getinfo(){
+			loadDate({
+				data:{},
+				method:"post",
+				url:"/staff/getstaffinfo",
+				callback:function(d){
+					console.log(d)
+					if(d.res==-1) _e["msgBox"]({msg: d.msg})
+				}
+			})
+		}
+		function pc_login(){
+			var username=document.querySelector("#username").value
+			var pwd=document.querySelector("#pwd").value;
+			loadDate({
+				data:{username:username,pwd:pwd},
+				method:"post",
+				url:"/staff/pc_staff_login",
+				callback:function(d){
+					var body = document.querySelector("body")
+					if(d.res==0){
+						body.innerHTML = "<h2>欢迎来到10号店管理部门</h2>"
+					}
+					_e["msgBox"]({
+						msg: d.msg,
+						className: d.res==-1 ? "error":"success",
+						timeout:3000
+					})
+				}
+			})
+		}
+		function  loadDate(options){
+			var options_ = options?options:{},
+					fData = new FormData(),
+					xhr =  new XMLHttpRequest();
+			for(var i in options_["data"]){
+				fData.append(i,options["data"][i]);
+			}
+			xhr.onreadystatechange=function () {
+				if (xhr.readyState==4 && xhr.status==200){
+					var d = eval('('+xhr.responseText+');')
+					options["callback"](d)
+				}
+			};
+			xhr.open(options["method"],options["url"],true);
+			xhr.send(fData);
+		}
+	</script>
+
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!--<meta charset="UTF-8" http-equiv="refresh" content="20">-->
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css" />
+    <link rel="stylesheet" href="/i/css/manage/tree.css" type="text/css" />
+    <title>图片管理</title>
+    <style type="text/css">
+        #photoGallery {
+            display: flex;
+        }
+
+        #imgDisplay {
+            width: 70%;
+        }
+
+        #imgDisplay #imgUrl {
+            height: 400px;
+            width: 100%;
+            border: 1px solid #311532;
+        }
+
+        #imgDisplay #imgUrl #img {
+            height: 270px;
+            width: 100%;
+            padding-top: 2%;
+            text-align: center;
+            border: 1px solid #311532;
+        }
+
+        #imgDisplay #imgUrl #url {
+            text-align: center;
+        }
+
+        #imgDisplay #imgUrl #url input {
+            width: 200px;
+        }
+
+        .loadImg1 {
+            background-color: #ff7667;
+            border: 1px solid #ff7667;
+        }
+
+        #pictures {
+            margin-left: 10px;
+            width: 300px;
+            border: 1px solid #311532;
+        }
+
+        #pictures #picturesAll {
+            overflow-y: auto;
+            height: 400px;
+            text-align: center;
+        }
+
+        #comDetail {
+            text-align: center;
+            visibility: hidden;
+        }
+
+        #urlChange {
+            width: 50%;
+        }
+
+        .main-wrapper {
+            display: flex;
+            height: 100%;
+        }
+
+        .main-tree {
+            height: 500px;
+            width: 25%;
+            overflow-y: auto;
+        }
+
+        .main-tbl {
+            height: 500px;
+            width: 70%;
+            padding-left: 20px;
+            overflow-y: auto;
+        }
+
+        .table tbody tr {
+            line-height: 25px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="display: flex;">
+        <!--图片管理-->
+        <div style="width: 50%;">
+            <select id="cqdept" onchange="change_show_imageType(this)"></select>
+            <select id="classification" onchange="change_show_imageType(this)"></select>
+            <div id="photoGallery">
+                <div id="imgDisplay">
+                    <div id="imgUrl">
+                        <div id="img">
+                            <img src="" />
+                        </div>
+                        <div id="url">
+                            链接：<input type="url" id="" placeholder="请输入网址" />
+                        </div>
+                        <div id="comDetail">
+                            商品名：<input type="text" id="comName" placeholder="请输入商品名" /><br/> 商品名颜色：
+                            <input type="color" id="comColor" /><br/> 备注：
+                            <input type="text" id="comMemo" placeholder="请输入商品备注" /><br/>
+                        </div>
+                    </div>
+                    <div id="imgNum">
+                        <div>
+                            <input type="button" value="1" seq="1" imgName="" urlName="" comColor="" comName="" comMemo="" class="loadImg" onclick="loadImg(this)" />
+                            <input type="button" value="2" seq="2" imgName="" urlName="" comColor="" comName="" comMemo="" class="loadImg" onclick="loadImg(this)" />
+                            <input type="button" value="3" seq="3" imgName="" urlName="" comColor="" comName="" comMemo="" class="loadImg" onclick="loadImg(this)" />
+                            <input type="button" value="4" seq="4" imgName="" urlName="" comColor="" comName="" comMemo="" class="loadImg" onclick="loadImg(this)" />
+                            <input type="button" value="5" seq="5" imgName="" urlName="" comColor="" comName="" comMemo="" class="loadImg" onclick="loadImg(this)" />
+                            <input type="button" value="6" seq="6" imgName="" urlName="" comColor="" comName="" comMemo="" class="loadImg" onclick="loadImg(this)" />
+                            <input type="button" value="7" seq="7" imgName="" urlName="" comColor="" comName="" comMemo="" class="loadImg" onclick="loadImg(this)" />
+                            <input type="button" value="8" seq="8" imgName="" urlName="" comColor="" comName="" comMemo="" class="loadImg" onclick="loadImg(this)" />
+                            <input type="button" value="9" seq="9" imgName="" urlName="" comColor="" comName="" comMemo="" class="loadImg" onclick="loadImg(this)" />
+                            <input type="button" value="10" seq="10" imgName="" urlName="" comColor="" comName="" comMemo="" class="loadImg" onclick="loadImg(this)" />
+                        </div>
+
+                        <input type="button" value="确定" id="imgOK" />
+                        <input type="button" value="清除" id="imgClear" />
+                    </div>
+                </div>
+                <div id="pictures">
+                    <div id="picturesAll"></div>
+                    <input type="file" value="上传" id="imgUp" /><input type="button" value="确认上传" id="imgUpOK" />
+                    <input type="button" value="批量删除" id="batchAll" batchBlock="block" onclick="batch(this)" />
+                    <input type="button" value="确认删除" style="visibility:hidden; " id="batchDelete" />
+                </div>
+            </div>
+        </div>
+
+        <!--url的选择-->
+        <div id="urlChange">
+            <select id="urlNameAll"></select><input type="button" id="urlAdd" value="添加" />
+            <div class="main-wrapper">
+                <div class="main-tree">
+                    <div id="trees"></div>
+                </div>
+                <div class="main-tbl">
+                    <div id="tbl" style="height: 100%;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/i/js/handlebars.js"></script>
+    <script type="text/javascript" src="/i/js/xml.js"></script>
+    <script type="text/javascript" src="/i/js/_e.js"></script>
+    <script type="text/javascript" src="/i/js/table.js"></script>
+    <script type="text/javascript" src="/i/js/tree.js"></script>
+    <script type="text/javascript" src="/i/js/xml.js"></script>
+    <script type="text/javascript" src="/i/js/msgbox.js"></script>
+    <script type="text/javascript" src="/m/sc/js/commodityImg.js"></script>
+</body>
+
+</html>

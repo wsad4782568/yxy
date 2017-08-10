@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>预警库存管理</title>
+    <link rel="shortcut icon" href="/i/css/img/favicon.ico" />
+    <link rel="stylesheet" href="/i/css/manage/pure.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/dialog.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/table.css" type="text/css"/>
+    <style type="text/css">
+        #warnstocklist .warnstock-warn1{
+            background-color: #FF8888;
+        }
+        #warnstocklist .warnstock-warn2{
+            background-color: #FFDD55;
+        }
+        #warnstocklist .warnstock-warn3{
+            background-color: #EEFFBB;
+        }
+    </style>
+</head>
+
+<body>
+<div >
+    <select id="cqdept"></select>
+    <input type="button" id="warnstock" value="按库存数量排序" style="margin-left:70%" onclick="changestock()"/>
+    <input type="button" id="warntime" value="按过期时间排序" onclick="changetime()" />
+    <table class="pure-table pure-table-bordered">
+        <thead>
+        <tr class="colDefs">
+            <th>品名</th>
+            <th>流水号</th>
+            <th>图片</th>
+            <th>种类</th>
+            <th>条码</th>
+            <th>规格</th>
+            <th>单位</th>
+            <th>进价</th>
+            <th>零售价</th>
+            <th>库存</th>
+            <th>预警库存</th>
+            <th>预警指标</th>
+            <th>过期时间</th>
+            <th>提前预警</th>
+            <th>销售状态</th>
+            <th>线上</th>
+            <th>部门</th>
+        </tr>
+        </thead>
+        <tbody id="warnstocklist">   </tbody>
+    </table>
+</div>
+<script type="text/javascript" src="/i/js/handlebars.js"></script>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/table.js"></script>
+<script type="text/javascript" src="/i/js/dialog.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script>
+    var stockOrTime = 1
+    function changestock(){
+        stockOrTime=1
+        loadData(document.querySelector("#cqdept").value.toString())
+    }
+    function changetime(){
+        stockOrTime=2
+        loadData(document.querySelector("#cqdept").value.toString())
+    }
+
+    loadalldept()
+    function loadalldept(){
+        alldept = JSON.parse(localStorage.getItem("alldept"))
+        var idept =document.querySelector("#cqdept")
+        _e.bind("#cqdept","change",loadData)
+        for(var i =0;i<alldept.length;i++){
+            var option=document.createElement("option")
+            option.value=alldept[i].id
+            option.innerHTML=alldept[i].name
+            idept.appendChild(option)
+        }
+    }
+    loadData(document.querySelector("#cqdept").value.toString())
+    function loadData(asd){
+        var id
+        if (this.value!=undefined)  id=this.value
+        else id=asd
+        var fd=new FormData(), xhr=new XMLHttpRequest()
+        fd.append("id",id)
+        fd.append("status",stockOrTime)
+        xhr.open("POST","/sc/warnstock/get"+_e["jurisdiction"](),true)
+        xhr.send(fd)
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var d = eval('(' + xhr.responseText + ');')
+                if(d.res==-1){
+                    _e["msgBox"]({msg: d.msg})
+                    return
+                }else{
+                    if(stockOrTime==1) {
+                        var dd=softWarnIndex(d.rows)
+                    }else{
+                        var dd=softTimeIndex(d.rows)
+                    }
+                    console.log(dd)
+                    var warnstocklist=document.querySelector("#warnstocklist")
+                    warnstocklist.innerHTML=""
+                    var myDate = new Date();
+                    var now=myDate.toLocaleDateString();
+                    for (var i=0;i< dd.length;i++){
+                        var tr=document.createElement("tr")
+                       if(stockOrTime==1){
+                           if (dd[i][24]<100){
+                               tr.className="warnstock-warn1"
+                           }else if (100<=dd[i][24] && dd[i][24]<120){
+                               tr.className="warnstock-warn2"
+                           }else if (120<=dd[i][24] && dd[i][24]<150){
+                               tr.className="warnstock-warn3"
+                           }
+                       }else{
+                           var time=_e.dateToInt(dd[i][21])
+                           if (time<_e.dateToInt(_e.addDate(now,1))){
+                               tr.className="warnstock-warn1"
+                           }else if (_e.dateToInt(_e.addDate(now,1))<=time && time<_e.dateToInt(_e.addDate(now,3))){
+                               tr.className="warnstock-warn2"
+                           }else if (_e.dateToInt(_e.addDate(now,3))<=time && time<_e.dateToInt(_e.addDate(now,7))){
+                               tr.className="warnstock-warn3"
+                           }
+                       }
+                        tr.innerHTML=' <th>'+ dd[i][1]+'</th> ' +
+                                '<th>'+ dd[i][0]+'</th> '
+                        if( dd[i][20].length>3){
+                            tr.innerHTML+= '<th><img style="margin: 0;" src=" http://od35wia0b.bkt.clouddn.com/'+ dd[i][20]+'?imageMogr2/thumbnail/60x60!"/></th> '
+                        }else{
+                            tr.innerHTML+=  '<th></th> '
+                        }
+                                tr.innerHTML+='<th>'+ dd[i][17]+'</th> ' +
+                                '<th>'+ dd[i][19]+'</th> ' +
+                                '<th>'+ dd[i][15]+'</th> ' +
+                                '<th>'+ dd[i][14]+'</th> ' +
+                                '<th>'+ (dd[i][7]/100).toFixed(2)+'</th> ' +
+                                '<th>'+ (dd[i][8]/100).toFixed(2)+'</th> ' +
+                                '<th>'+ dd[i][2]+'</th> ' +
+                                '<th>'+ dd[i][11]+'</th> ' +
+                                '<th>'+ dd[i][24].toFixed(2) +'%</th> ' +
+                                '<th>'+ dd[i][21]+'</th> ' +
+                                '<th>'+ dd[i][22]+'</th> '
+                        if( dd[i][3]==1){
+                            tr.innerHTML+=  '<th>在售</th>'
+                        }else{
+                            tr.innerHTML+=  '<th></th>'
+                        }
+                        if( dd[i][9]==13){
+                            tr.innerHTML+=  '<th>商城</th>'
+                        }else{
+                            tr.innerHTML+=  '<th></th> '
+                        }
+                        tr.innerHTML+= '<th>'+ dd[i][23]+'</th>'
+                        warnstocklist.appendChild(tr)
+                    }
+                }
+            }
+        }
+    }
+
+    function softTimeIndex(data){
+        var new_data=[]
+        for(var i = 0; i < data.length ; i++){
+            data[i].push( data[i][2]/data[i][11]*100)
+            new_data.push(data[i])
+        }
+        return new_data
+    }
+    function softWarnIndex(data){
+        var new_data=[]
+        data[0].push(data[0][2]/data[0][11]*100)  //加载第一个的指标
+        new_data.push(data[0])
+        for(var i = 1; i < data.length ; i++){
+            var warnindex = data[i][2]/data[i][11]*100
+            data[i].push(warnindex)
+            for(var j=0;j<new_data.length;j++){
+                if(warnindex<=new_data[0][24]){
+                    new_data.unshift(data[i])
+                    break
+                }else if(j==new_data.length-1){
+                    if(warnindex<new_data[j][24]){
+                        new_data.splice(j,0,data[i])
+                    }else if(warnindex>new_data[j][24]){
+                        new_data.splice(j+1,0,data[i])
+                    }
+                    break
+                }else if(warnindex>new_data[j][24] && warnindex<=new_data[j+1][24]){
+                    new_data.splice(j+1, 0, data[i])
+                    break
+                }
+            }
+            var st=""
+            for(var k=0;k<new_data.length;k++){
+                st+=new_data[k][24]+" , "
+            }
+            console.log(st)
+        }
+        return new_data
+    }
+</script>
+</body>
+</html>

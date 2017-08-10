@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>组合套餐管理</title>
+
+    <link rel="stylesheet" href="/i/css/manage/pure.css" />
+    <link rel="stylesheet" href="/i/css/iconfont/iconfont.css" />
+    <link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" />
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/dialog.css" type="text/css"/>
+    <style type="text/css">
+        .table {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+        }
+        #tbl {
+            padding-top: 20px;
+            /*width: auto;*/
+            overflow-y: auto;
+        }
+        .plan th,.plan td{
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+<div style="display: flex;height: 95%;background-color: #EEEEEE;">
+    <div style="width: 60%;padding-left: 20px;overflow-y: auto;border-right: 1px solid #FFFFFF;">
+        <div id="trees" style=" width: 12%;position: absolute;"></div>
+        <div id="tbl" style="  width: 80%;padding-left: 20%;"></div>
+    </div>
+
+    <div style="width: 35%;padding-top: 10%">
+        <div style="height:90%;text-align: center;border-bottom: 1px solid #FFFFFF;">
+            <h2 id="commodity_name"></h2>
+            <div style="height: 20%;">
+                <h2>组合商品列表</h2>
+                <table class="plan" style="width:100%;" border="1">
+                    <thead>
+                    <tr>
+                        <th>商品id</th>
+                        <th>商品名</th>
+                        <th>商品价格</th>
+                        <th>单位</th>
+                        <th>规格</th>
+                        <th>商品数量</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="commodityList"></tbody>
+                </table>
+            </div>
+        </div>
+        <button id="makenewfreegift" type="button" class="pure-button pure-button-primary" style="float: right;margin: 3px 40px 0 0 ;">添加套餐商品</button>
+    </div>
+</div>
+</div>
+
+</body>
+<script type="text/javascript" src="/i/js/handlebars.js"></script>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/table.js"></script>
+<script type="text/javascript" src="/i/js/dialog.js"></script>
+<script type="text/javascript" src="/i/js/tree.js"></script>
+<script type="text/javascript" src="/i/js/contextmenu.js"></script>
+<script type="text/javascript" src="/i/js/form.js"></script>
+<script type="text/javascript" src="/i/js/imgup.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script type="text/javascript">
+    var xmlEmployee = new XMLHttpRequest()
+    xmlEmployee.open("POST","/staff/getstaffinfo",true)//获取登录用户信息
+    xmlEmployee.send()
+    xmlEmployee.onreadystatechange = function(){
+        if (xmlEmployee.readyState==4 && xmlEmployee.status==200){
+            staffinfo = eval('('+xmlEmployee.responseText+');')
+        }
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/sc/commodity/getext", true);//获取该部门下其他员工的信息  名字与id对应
+    xhr.send();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            others = eval('('+xhr.responseText+');')
+            trs=[]
+            trs.push([0,"父节点"])
+            for(var i in others.tree) {
+                trs.push([others.tree[i][0],others.tree[i][2],others.tree[i][7],others.tree[i][8],["data-code",others.tree[i][1]]]);
+            }
+            loadtree(trs)
+            loadtbl()
+            t.funcs.loadData.call(t)
+        }
+    }
+    function loadtree(treedata){
+        var trs=new _e["tree"]()
+        var event=[{e:"click",func:function () { //需要绑定的函数，绑定tbl
+            t.funcs.loadData.call(t,{    //在table.js中的204行显示
+                qseq:7, //数组中下标
+                qverb:'k',// like '% %' 条件
+                qpt:this.getAttribute("data-code") //值
+            })
+        }, is_leaf:1}]
+        trs.init("#trees",treedata,1,"TR",event)    //创建树
+    }
+    function loadtbl(){
+        coldefs = [{
+            seq: 1, //在数据[[],[]]中的位置rows[i][seq] 返回值
+            render: function(item) {
+                return "<b>" + item + "</b>"
+            }, // 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable: true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title: "品名", // 列标题
+            visible: true, //是否可见
+            name: "name", //和后端对应，FormData里面的key，后端解析时要一致
+        },{
+            seq: 0, //在数据[[],[]]中的位置rows[i][seq] 返回值
+            render: function(item) {
+                return "<b>" + item + "</b>"
+            }, // 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable: false, // 可排序 function
+            retrievable: false, // 可检索 function
+            title: "流水号", // 列标题
+            visible: true, //是否可见
+            checkall: false, // 是否可全选
+            name: "id", //和后端对应，FormData里面的key，后端解析时要一致
+        },{
+            seq: 9, //在数据[[],[]]中的位置rows[i][seq] 返回值
+            render: function(item) {return "<b>" + item + "</b>" }, // 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable: true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title: "编号", // 列标题
+            visible: true, //是否可见
+        },{
+            seq: 7,
+            render: function(item) {
+                for(var i =0;i<others.tree.length;i++){
+                    if(others.tree[i][1]==item){
+                        return "<b>" + others.tree[i][2] + "</b>"}
+                }
+
+            },
+            retrievable: true, // 可检索 function
+            title: "商品种类", // 列标题
+            visible: true, //是否可见
+            sortable: false
+        },{
+            seq: 5, //在数据[[],[]]中的位置rows[i][seq] 返回值
+            render: function(item) {
+                return "<b>" + item + "</b>"
+            }, // 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable: true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title: "规格 ", // 列标题
+            visible: true, //是否可见
+            name: "standardamount", //和后端对应，FormData里面的key，后端解析时要一致
+        },{
+            seq: 6, //在数据[[],[]]中的位置rows[i][seq] 返回值
+            render: function(item) {return "<b>" + item + "</b>"}, // 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable: true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title: "单位", // 列标题
+            visible: true, //是否可见
+            name: "unit", //和后端对应，FormData里面的key，后端解析时要一致
+        },{
+            seq: 4, //在数据[[],[]]中的位置rows[i][seq] 返回值
+            render: function(item) {   return "<b>" + (item/100).toFixed(2) + "</b>" }, // 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable: true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title: "价格", // 列标题
+            visible: true, //是否可见
+            name: "offshelf", //和后端对应，FormData里面的key，后端解析时要一致
+        }, { seq:9,
+            title:"条形码",
+            render:function(item){
+                var codes=item.split(",")
+                var barcode = ''
+                for(var i = 0 ;i < codes.length-1;i++){
+                    barcode+='<i>'+codes[i]+'</i><br>'
+                }
+
+                return "<b>"+barcode+"</b>"
+            },
+            sortable:true,
+            retrievable: true,
+            visible:true,
+        }]
+
+        t = new _e["table"]()
+        row_actions =[{cls:"doerow",func:function(tbl,rows){
+            var fd = new FormData(), xhr = new XMLHttpRequest()
+            fd.append("id",tbl.data[rows][0])
+            xhr.open("POST" ,"/sc/conpackage/getbyid" , true)
+            xhr.send(fd)
+            xhr.onreadystatechange=function()  {
+                if (xhr.readyState==4 && xhr.status==200){
+                    var d = eval('('+xhr.responseText+');')
+                    var tbody=document.querySelector("#commodityList")
+                    tbody.innerHTML=""
+                    if(d.res==-1) {
+                        _e["msgBox"]({msg: d.msg})
+                        return
+                    }
+                    for(var i=0;i< d.freegift.length;i++){
+                        var tr='<tr id="'+d.freegift[i][6]+'"><td>'+ d.freegift[i][0]+'</td>' +
+                                '<td>'+d.freegift[i][1]+'</td>' +
+                                '<td>'+(d.freegift[i][2]/100).toFixed(2)+'</td>' +
+                                '<td>'+d.freegift[i][3]+'</td>' +
+                                '<td>'+d.freegift[i][4]+'</td>' +
+                                '<td>'+d.freegift[i][7]+'</td>' +
+                                '<td><i class="icon iconfont edit editrel" onclick="updateamount(this)">&#xe618;</i>' +
+                                '<i class="icon iconfont delete " onclick="deletefreegift(this)">&#xe617;</i></td></tr>'
+                        tbody.innerHTML+=tr
+
+                    }
+                    document.querySelector("#commodity_name").innerHTML=tbl.data[rows][1]
+                    document.querySelector("#makenewfreegift").setAttribute("data-comma",tbl.data[rows][0])
+                }
+            }
+
+        },title:"套餐管理"}]
+
+        rows_actions = []
+
+
+        ext_row = function(rows,i){
+            return "this is row "+i
+        }
+        after_Load = function(tbl,tblDom){}
+        t.funcs.init.call(t,"tbl",
+                coldefs,row_actions,rows_actions,"table","__THE__TABLE__",ext_row,"/sc/conpackage/getcommoditys",after_Load)
+        var tbl_head = document.querySelector("#tbl").querySelector("thead")
+        tbl_head.querySelector("#trtime").parentNode.removeChild( tbl_head.querySelector("#trtime"))
+        tbl_head.querySelector("#trunit").parentNode.removeChild( tbl_head.querySelector("#trunit"))
+        tbl_head.querySelector("#trdept").parentNode.removeChild( tbl_head.querySelector("#trdept"))
+    }
+    function deletefreegift(e){ //将当前商品的特价商品添加至计划中
+        if (confirm("确定要删除吗？")) {
+            var df2 = new FormData,xhr2 = new XMLHttpRequest()
+            df2.append("id",e.parentNode.parentNode.id)
+            xhr2.open("POST","/sc/commodityrel/deleterel"+_e["jurisdiction"](),true)
+            xhr2.send(df2)
+            xhr2.onreadystatechange = function(){
+                if(xhr2.readyState == 4 && xhr2.status == 200){
+                    var dat = eval('(' +xhr2.responseText+ ');')
+                    _e["msgBox"]({
+                        msg: dat.msg,
+                        className: dat.res==-1 ? "error":"success",
+                        timeout:3000
+                    })
+                    if(dat.res==0){
+                        dlg.parentNode.removeChild(dlg)
+                        t.funcs.loadData.call(t)
+                    }
+                }
+            }
+        }
+    }
+    function updateamount(e){
+        if (document.querySelector("#dlgData")) document.querySelector("#dlgData").parentNode.removeChild(document.querySelector("#dlgData"));
+        var dlg = _e.dialog({id:"dlgData",width:"500px",
+            title:"修改套餐中"+ e.parentNode.parentNode.children[1].innerHTML+" 的数量",
+            mainBody: '<div><i>套餐数量：</i><input type="number" id="newAmount" value=""></div>',
+            actions:[{id:"btn",title:"确定",func:function(){
+                var fd = new FormData(), xhr = new XMLHttpRequest()
+                var isexclusive =dlg.querySelector("#newAmount").value
+                if(Number(isexclusive)<0) {
+                    _e["msgBox"]({msg: "请输入正确的数量"})
+                    return
+                }
+                fd.append("id", e.parentNode.parentNode.id)
+                fd.append("amount", dlg.querySelector("#newAmount").value)
+                xhr.open("POST" ,"/sc/commodityrel/updateamount"+_e["jurisdiction"]() , true)
+                xhr.send(fd)
+                xhr.onreadystatechange=function()  {
+                    if (xhr.readyState==4 && xhr.status==200){
+                        var d = eval('('+xhr.responseText+');')
+                        _e["msgBox"]({
+                            msg: d.msg,
+                            className: d.res==-1 ? "error":"success",
+                            timeout:3000
+                        })
+                        if(d.res==0){
+                            dlg.parentNode.removeChild(dlg)
+                        }
+                    }
+                }
+            }}]})
+        dlg.show()
+        dlg.querySelector("#newAmount").value=e.parentNode.parentNode.children[5].innerHTML
+    }
+
+
+    document.querySelector("#makenewfreegift").addEventListener("click",function(){//提交
+        if(document.querySelector("#commodity_name").innerHTML.length<1){
+            _e["msgBox"]({msg: "必须得再商品下面添加!"})
+            return
+        }
+        if (document.querySelector("#dlgRel")) document.querySelector("#dlgRel").parentNode.removeChild(document.querySelector("#dlgRel"));
+        var dlg = _e.dialog({id:"dlgRel",width:"650px",
+            title:"新增"+ document.querySelector("#commodity_name").innerHTML+"的套餐商品",
+            mainBody:"<input id='comname' type='text' value=''><button type='button' id='btnSearch' style='margin-top: 16px'>查询</button>"+
+            "<table style='width:600px' id='rel_tbl' class='pure-table pure-table-bordered'><thead>" +
+            "<tr><th>流水号</th><th>商品名</th><th>规格</th><th>单位</th><th>单位类型</th><th>编号</th><th>价格</th><th>套餐中的数量</th></tr></thead></table>",
+            actions:[{id:"btn",title:"增加",func:function(){
+                var df1 = new FormData,xhr1 = new XMLHttpRequest()
+                var  tbody_rel=document.querySelector("#selectRelTbody")
+                var trs=tbody_rel.querySelectorAll("tr")
+                var checked_tr = []
+
+                for (var i=0;i<trs.length;i++){
+                    if(trs[i].children[0].children[0].checked) {
+                        if(Number(trs[i].children[7].children[0].value) <= 0){
+                            _e["msgBox"]({msg: "数量不能小于1!"})
+                            return
+                        }
+                        checked_tr.push(trs[i])
+                    }
+                }
+                if(checked_tr.length<1) {
+                    _e["msgBox"]({msg: "请选择商品!"})
+                    return
+                }
+                if(checked_tr.length>1) {
+                    _e["msgBox"]({msg: "只能勾选一个商品!"})
+                    return
+                }
+                var tds=checked_tr[0].querySelectorAll("td")
+                df1.append("comma", document.querySelector("#makenewfreegift").getAttribute("data-comma"))
+                df1.append("commb",_e["stripscript"](tds[0].children[1].innerHTML))
+                df1.append("reltype","5")
+                df1.append("amount",_e["stripscript"](tds[7].children[0].value))
+                xhr1.open("POST","/sc/commodityrel/insert"+_e["jurisdiction"](),true)
+                xhr1.send(df1)
+                xhr1.onreadystatechange = function(){
+                    if(xhr1.readyState == 4 && xhr1.status == 200){
+                        var dat = eval('(' +xhr1.responseText+ ');')
+                        _e["msgBox"]({
+                            msg: dat.msg,
+                            className: dat.res==-1 ? "error":"success",
+                            timeout:3000
+                        })
+                        if(dat.res==0){
+                            dlg.parentNode.removeChild(dlg)
+                            t.funcs.loadData.call(t)
+                        }
+                    }
+                }
+            }},{id:"btn",title:"关闭",func:function(){
+                dlg.parentNode.removeChild(dlg)
+            }}]})
+        dlg.show()
+        function comModify(){
+            if(document.querySelector("#selectRelTbody")){
+                document.querySelector("#selectRelTbody").parentNode.removeChild(document.querySelector("#selectRelTbody"))
+            }
+            var fd = new FormData();
+            fd.append("name",_e["stripscript"](dlg.querySelector("#comname").value))
+            var xhr = new XMLHttpRequest()
+            xhr.open("POST","/sc/commodity/getcombyname",true)
+            xhr.send(fd)
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState == 4 && xhr.status == 200){
+                    var dat = eval('('+xhr.responseText+');')
+                    var selectTbody=document.createElement("tbody")
+                    selectTbody.setAttribute("id","selectRelTbody")
+                    dlg.querySelector("#rel_tbl").appendChild(selectTbody)
+                    var selectTxt = dlg.querySelector("#selectRelTbody")
+                    if(dat.commodity.length == 0){
+                        _e["msgBox"]({msg: "没有这个商品!"})
+                    }
+                    if(dlg.querySelector("#comname").value == ""){
+                        selectTxt.style.background = "transparent"
+                        _e["msgBox"]({msg: "输入不能为空!"})
+                    }else{
+                        for(var i=0; i<dat.commodity.length; i++){
+                            var tr = document.createElement("tr")
+                            tr.innerHTML = '<td>'+'<input type="checkbox" class="checkIpt">'+'<span>'+dat.commodity[i][0]+'</span>'+'</td>'+
+                                    '<td>'+dat.commodity[i][1]+'</td>'+
+                                    '<td>'+dat.commodity[i][7]+'</td>'+
+                                    '<td>'+dat.commodity[i][11]+'</td>'+
+                                    '<td>'+_e.unit[dat.commodity[i][17]]+'</td>'+
+                                    '<td>'+dat.commodity[i][18]+'</td>'+
+                                    '<td>'+(dat.commodity[i][4]/100).toFixed(2)+'</td>'+
+                                    '<td><input type="text" value="1"  style="width: 50px" class="textIpt" id="'+i+'"/></td>'
+                            selectTxt.appendChild(tr)
+                        }
+                        if(dat.commodity.length > 9){
+                            dlg.querySelector(".main").style.overflow = "auto"
+                            dlg.querySelector(".main").style.height = "300px"
+                        }
+                    }
+                }
+            }
+        }
+        document.querySelector('#btnSearch').onclick = comModify
+    },true)
+
+</script>
+</html>

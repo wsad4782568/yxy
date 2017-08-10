@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>10号便利店　-管理平台</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="/i/dist/css/zui.min.css">
+    <link rel="shortcut icon" href="http://static-1.shopten.cn/images/favicon.ico" type="image/x-icon" />
+
+</head>
+<body>
+
+
+
+<input type="file" id="file" name="file" /><button id="upload">上传</button>
+
+</body>
+
+ <script type="text/javascript">
+ /*
+var fd = new FormData();
+fd.append("name", "eachma");
+fd.append("site", "http://eachma.com");
+//fd.append("file", document.getElementById("file"));
+var xhr = new XMLHttpRequest();
+xhr.open("POST" ,"/u/test" , true);
+xhr.send(fd);
+xhr.onreadystatechange=function()
+  {
+  if (xhr.readyState==4 && xhr.status==200)
+    {
+    alert(xhr.responseText)
+    }
+  }
+  */
+  document.querySelector("#upload").onclick = function(){
+    var xmlhttp = new XMLHttpRequest();   //
+    xmlhttp.open("POST", "/qn/token",true);
+    xmlhttp.send()
+    xmlhttp.onreadystatechange=function()
+      {
+      if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+
+          var xp = new XMLHttpRequest(), fd = new FormData
+          xp.open("POST", "http://up.qiniu.com",true)
+
+          //xp.setRequestHeader("Content-type", "multipart/form-data")
+
+
+          fd.append("file",document.querySelector("#file").files[0])
+          alert(xmlhttp.responseText)
+          fd.append("token",xmlhttp.responseText)
+
+
+          xp.onreadystatechange = function(){
+            if (xp.readyState==4 && xp.status==200){
+
+              alert("gocheck")
+            }
+
+          }
+          xp.send(fd)
+
+        }
+      }
+  }
+
+
+
+
+</script>
+</html>

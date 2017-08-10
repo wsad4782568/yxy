@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>10号便利店　-管理平台</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="/l/_e.js"></script>
+ 
+</head>
+<body>
+    <div id="treeDiv"></div>
+
+<!--[if lt IE 9]>
+<p class="alert alert-danger">您的浏览器版本<strong>过低</strong>,后台管理平台不支持低版本浏览器。推荐使用<a
+        href="http://rj.baidu.com/soft/detail/14744.html">谷歌浏览器</a></p>
+<![endif]-->
+<input type="range" id="rg" max="80" min="10" value="10" />
+<p id="ed" data-content="">双击编辑</p>
+<script src="../l/tree.js"></script>
+<script type="text/javascript">
+var data = [
+    [1,"A",0,0],//id name pid isLeaf
+    [2,"B",1,1],
+    [3,"C",1,0],
+    [4,"D",3,1],
+    [5,"E",3,1]
+] 
+var tree = new tr()
+tree.init.call(tree,"#treeDiv",data,1,"mytree")
+
+/*
+_e.bind("#rg","change",function(e){alert(this.value)})
+_e.bind("#ed","dblclick", function(e){
+    this.setAttribute("data-content",this.innerHTML) 
+    this.contentEditable = true
+})
+_e.bind("#ed","blur", function(e){
+    this.contentEditable = false
+    if(confirm("是否修改")){
+         alert(this.innerHTML)
+        
+    }else{
+         this.innerHTML = this.getAttribute("data-content") 
+        
+    }
+    alert(this.innerHTML)
+})
+
+*/
+</script>
+
+
+</body>
+</html>

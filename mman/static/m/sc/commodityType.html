@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>指定销售类型</title>
+    <link rel="shortcut icon" href="/i/css/img/favicon.ico" />
+
+    <link rel="stylesheet" href="/i/css/manage/pure.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/tree.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/table.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/dialog.css" type="text/css"/>
+    <link rel="stylesheet" href="css/promotion.css" type="text/css"/>
+
+</head>
+<body>
+
+<div class="layout-bd em-left main-left">
+    <div id="trees"></div>
+</div>
+<div class="layout-bd middle main-middle">
+    <div id="tbl" class="tbl1-css"></div>
+</div>
+<div class="layout-bd em-right main-right" id="right_div"></div>
+
+<script type="text/javascript" src="/i/js/handlebars.js"></script>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/table.js"></script>
+<script type="text/javascript" src="/i/js/tree.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script type="text/javascript" src="/i/js/dialog.js"></script>
+
+<script>
+
+	function deletGroup(delet){
+        var fd=new FormData(), xhr=new XMLHttpRequest()
+        var fd = new FormData(), xhr = new XMLHttpRequest()
+        console.log(delet.parentNode.parentNode.children[0].innerHTML)
+        fd.append("stockId",delet.parentNode.parentNode.children[0].innerHTML)
+        xhr.open("POST" ,"/sc/groupOrder/deletGroupCom",true)
+        xhr.send(fd)
+        xhr.onreadystatechange=function(){
+            if (xhr.readyState==4 && xhr.status==200){
+                var dat = eval('(' +xhr.responseText+ ');')
+                console.log(dat)
+                _e["msgBox"]({
+                    msg: dat.msg,
+                    className: dat.res==-1 ? "error":"success",
+                    timeout:3000
+                })
+            }
+        }
+        delet.parentNode.parentNode.parentNode.removeChild(delet.parentNode.parentNode);
+    }
+
+    var promotionId=0
+    var goodsId=[]
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/sc/commodity/getext", true);
+    xhr.send();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            others = eval('('+xhr.responseText+');')
+            others.comclass = []// id 和 姓名  对比  商品tbl里面对应的
+            for(var i in others.tree) {
+                if (others.tree[i][8]==1){//只需要叶子节点的,商品只在这个种类下面
+                    others.comclass.push([others.tree[i][1],others.tree[i][2]]);
+                }
+            }
+            trs=[]
+            trs.push([0,"父节点"])
+            for(var i in others.tree) {
+                trs.push([others.tree[i][0],others.tree[i][2],others.tree[i][7],others.tree[i][8],["data-code",others.tree[i][1]]]);
+            }
+            loadtree(trs)
+            loadtbl()
+            t.funcs.loadData.call(t, {
+                qseq: 0, //id
+                qverb: 'g',// >
+                qpt: -1,  //-1
+                oseq: 20, //顺序的下标
+                odir:"a" //升序降序
+            })
+            addOtherTree ()
+        }
+    }
+
+    function loadtree(treedata){
+        var trs=new _e["tree"]()
+        var event=[{e:"click",func:function () { //需要绑定的函数，绑定tbl
+            t.funcs.loadData.call(t,{    //在table.js中的204行显示
+                qseq:17, //数组中下标
+                qverb:'e',// = 条件
+                qpt:this.getAttribute("data-code"), //值
+                oseq: 0, //顺序的下标
+                odir:"a" //升序降序
+            })
+        }, is_leaf:1}]
+        trs.init("#trees",treedata,1,"TR",event)    //创建树
+    }
+
+    function loadtbl(){
+        coldefs = [{ seq:1,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){return "<b>"+item+"</b>"},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable:true, // 可排序 function
+            retrievable: true,
+            visible:true, //是否可见
+             title:"品名",
+        },{ seq:16,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){ return item},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable:true,
+            retrievable: true,
+            title:"流水号",
+            visible:true,
+            checkall:false,
+
+        }, { seq:17,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){return item},
+            title:"种类",
+            visible:true,
+        }, { seq:19,
+            title:"条形码",
+            render:function(item){
+                var codes=item.split(",")
+                var barcode = ''
+                for(var i = 0 ;i < codes.length-1;i++){
+                    barcode+='<i>'+codes[i]+'</i><br>'
+                }
+
+                return "<b>"+barcode+"</b>"
+            },
+            visible:true,
+        },{ seq:15,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){return "<b>"+item+"</b>"},// 这里render是function，它可以组合或变换当前数据行，然后进行显示},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable:true, // 可排序 function
+            retrievable: true,
+            title:"规格", // 列标题
+            visible:true, //是否可见
+        }, { seq:14,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(item){return "<b>"+item+"</b>"},// 这里render是function，它可以组合或变换当前数据行，然后进行显示},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            sortable:true, // 可排序 function
+            retrievable: true, // 可检索 function
+            title:"单位", // 列标题
+            visible:true, //是否可见
+        }, { seq:7,
+            render:function(item){return "<b>"+(item/100).toFixed(2)+"</b>"},
+            sortable:true,
+            title:"零售价",
+            visible:true,
+        }, { seq:2,
+            render:function(item){return "<b>"+item+"</b>"},
+            sortable:true,
+            retrievable: true,
+            title:"库存",
+            visible:true,
+        }, { seq:3,
+            render:function(item){
+                if (item==1) return "<b>在售</b>"
+                return "<b></b>"},
+            title:"销售状态",
+            visible:true,
+        }, { seq:9,
+            render:function(item){
+                if (item==1) return "<b>商城</b>"
+                return "<b></b>"},
+            title:"线上",
+            visible:true,
+        }, { seq:20,
+            render:function(item){
+                if (item==2) return "<b>团购</b>"
+                if (item==8) return "<b>代购</b>"
+                if (item==7) return "<b>预定</b>"
+                if (item==4) return "<b>组合商品</b>"
+                if (item==9) return "<b>特价</b>"
+                return "<b></b>"},
+            title:"类型",
+            visible:true,
+        }
+        ]
+
+        t = new _e["table"]()
+        row_actions =[
+            {cls:"does",func:function(tbl,rows){
+                var name = tbl.data[rows][1]
+                var right_div = document.querySelector("#right_div")
+                right_div.innerHTML = '<h2 id="preorder">'+tbl.data[rows][1]+'</h2><div  style="display: flex"> <a>名称：</a> <input type="text" id="name"> </div> ' +
+                        '<div  style="display: flex">' +
+                        '<a>开始配送时间：</a><input placeholder="请输入数字6-23" type="text" id="delivery_start" >:00 ' +
+                        '</div> <div  style="display: flex"> ' +
+                        '<a>结束配送时间：</a> ' +
+                        '<input type="text" placeholder="请输入数字6-23"　 id="delivery_end" >:00' +
+                        '</div> ' +
+                        '<div  style="display: flex"> ' +
+                        '<span>下单后配送日期：</span><input type="text"  placeholder="请输入数字" id="delivery_interval" > 天' +
+                        '</div> ' +
+                        '<div  style="display: flex"> ' +
+                        '<span>预定价格：</span><input type="text"  placeholder="请输入数字" id="pre_order_price" > ' +
+                        '</div> ' +
+                        '<div> ' +
+                        '<p> 备注：</p> ' +
+                        '<textarea type="text" placeholder="请输入配送说明（50字以内...）" id="delivery_hint"  id="delivery_hint" maxlength="100" style="width: 70%;height: 121px;"></textarea> ' +
+                        '</div></div></div>'
+                        //'<button type="submit" class="pure-button pure-button-primary groupSubmit" id="addsub">新增</button>'
+
+                loadPreOrder()
+                function loadPreOrder() {
+                    var stock=tbl.data[rows][0]
+
+                    var fd = new FormData(), xhr = new XMLHttpRequest()
+                    fd.append("id",stock)
+                    xhr.open("POST" ,"/sc/preorder/getbystock"+_e["jurisdiction"]() , true)
+                    xhr.send(fd)
+                    xhr.onreadystatechange=function(){
+                        if (xhr.readyState==4 && xhr.status==200){
+                            var d = eval('('+xhr.responseText+');')
+                            if(d.res==0 && d.preorder.length>0){
+                                right_div.querySelector("#preorder").value=d.preorder[0]
+                                right_div.querySelector("#name").value=d.preorder[1]
+                                right_div.querySelector("#delivery_start").value=d.preorder[3]
+                                right_div.querySelector("#delivery_end").value=d.preorder[4]
+                                right_div.querySelector("#delivery_interval").value=d.preorder[5]
+                                right_div.querySelector("#pre_order_price").value=(d.preorder[7]/100).toFixed(2)
+                                right_div.querySelector("#delivery_hint").value=d.preorder[6]
+                                right_div.querySelector("#addsub").innerHTML="修改"
+                            }else if(d.res==-1){
+                                _e["msgBox"]({msg: d.msg})
+                            }
+                        }
+                    }
+                }
+                // _e.bind("#addsub","click",setPreorder,right_div)
+                // function setPreorder(){
+                //     var fd = new FormData(), xhr = new XMLHttpRequest()
+                //     var data=right_div.querySelectorAll("input")
+                //     var preorder_id =right_div.querySelector("#preorder").value
+                //     if(preorder_id){
+                //         fd.append("pre_order",preorder_id)
+                //     }
+                //     fd.append("stock",tbl.data[rows][0])
+                //     for(var i=0;i<data.length;i++){
+                //         if(i==1||i==2||i==3){
+                //             if(!isInteger(data[i].value)) {
+                //                 _e.msgBox({msg:"请输入整数!"})
+                //                 return
+                //             }
+                //             if(0>Number(data[i].value)||Number(data[i].value)>23) {
+                //                 _e.msgBox({msg:"数字范围再0~23之内"})
+                //                 return
+                //             }
+                //         }
+                //         if(i==4){
+                //             var pre_order_price= Number( right_div.querySelector("#pre_order_price").value)
+                //             if(isNaN(pre_order_price) ||   right_div.querySelector("#pre_order_price").value<0){
+                //                 _e.msgBox({msg:"请输入正确的价格"})
+                //                 return
+                //             }
+                //             fd.append(data[i].id,(pre_order_price*100) >> 0)
+                //             continue
+                //         }
+                //         fd.append(data[i].id,data[i].value)
+                //     }
+                //     fd.append("delivery_hint",right_div.querySelector("#delivery_hint").value)
+                //     xhr.open("POST" ,"/sc/preorder/setpreorder"+_e["jurisdiction"](),true)
+                //     xhr.send(fd)
+                //     xhr.onreadystatechange=function(){
+                //         if (xhr.readyState==4 && xhr.status==200){
+                //             var dat = eval('(' +xhr.responseText+ ');')
+                //             _e["msgBox"]({
+                //                 msg: dat.msg,
+                //                 className: dat.res==-1 ? "error":"success",
+                //                 timeout:3000
+                //             })
+                //             if(dat.res==0){
+                //               t.funcs.loadData.call(t)
+                //                 loadPreOrder()
+                //             }
+                //         }
+                //     }
+                // }
+            },title:"查看预定"},
+
+
+            {cls:"does",func:function(tbl,rows){
+
+                var fd=new FormData(), xhr=new XMLHttpRequest()
+                fd.append("id",tbl.data[rows][0])
+                xhr.open("POST","/sc/commoditytype/bindbehalf"+_e["jurisdiction"](),true)
+                xhr.send(fd)
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        var d = eval('(' + xhr.responseText + ');')
+                        _e["msgBox"]({
+                            msg: d.msg,
+                            className: d.res==-1 ? "error":"success"
+                        })
+                        if(d.res==0){
+                            t.funcs.loadData.call(t)
+                        }
+                    }
+                }
+            },title:"代购"},
+
+{cls: "does",func: function(tbl, rows) {
+    var right_div=document.querySelector("#right_div")
+    right_div.innerHTML='<h1>团购</h1><h2>  '+ tbl.data[rows][0]+' '+ tbl.data[rows][1]+' </h2><div id="tbl2" class="tbl2-right"></div>'
+    var name=tbl.data[rows][1]
+    var stockId=tbl.data[rows][0]
+    getPromotion()
+    function getPromotion(){
+        coldefs2 = [{ seq:0,
+            render:function(item){ return item},
+            title:"库存id",
+
+        }, { seq:1,
+                render:function(item){return "<b>"+item+"</b>"},
+                sortable:true,
+                retrievable: true,
+                title:"人数",
+                visible:true,
+
+            },
+            { seq:2,
+                render:function(item){return "<b>"+item/86400+" </b>"},
+                sortable:true,
+                retrievable: true,
+                title:"天数",
+                visible:true,
+            },{ seq:3,
+                render:function(item){return "<b>"+(item/100).toFixed(2)+" </b>"},
+                sortable:true,
+                retrievable: true,
+                title:"价格",
+                visible:true,
+            },
+            { seq:4,
+                render:function(item){return "<b>"+item+" </b>"},
+                sortable:true,
+                retrievable: true,
+                title:"说明",
+                visible:true,
+            },
+            { seq:5,
+                title:"id",
+            },
+            { seq:6,
+                render:function(item){return "<b>"+item+" </b>"},
+                sortable:true,
+                retrievable: true,
+                title:"单人购买最大份数",
+                visible:true,
+            }
+        ]
+
+        var t2 = new _e["table"]()
+        var row_actions2 =[{func:function(tbl1,rows1){
+            var fd = new FormData(), xhr = new XMLHttpRequest()
+            fd.append("groupbuy",tbl1.data[rows1][5])
+            xhr.open("POST" ,"/sc/groupOrder/deletGroupCom",true)
+            xhr.send(fd)
+            xhr.onreadystatechange=function(){
+                if (xhr.readyState==4 && xhr.status==200){
+                    var dat = eval('(' +xhr.responseText+ ');')
+                    _e["msgBox"]({
+                        msg: dat.msg,
+                        className: dat.res==-1 ? "error":"success",
+                        timeout:3000
+                    })
+                    if(dat.res!=-1){
+                        t2.funcs.loadData.call(t2, {
+                            qseq: 0, //stock
+                            qverb: 'e',// =
+                            qpt: stockId //
+                        })
+                    }
+                }
+            }
+        },title:"删除团购计划"}]
+        var rows_actions2 = [{
+            func:function(tbl,rows){
+                if (document.querySelector("#dlgData")) document.querySelector("#dlgData").parentNode.removeChild(document.querySelector("#dlgData"));
+                var dlg = _e.dialog({id:"dlgData",width:"500px",
+                    title:"添加团购计划",
+                    mainBody:'<div  style="display: flex"> <a>序号：</a><input type="text" name="name" value='+stockId+' style="border:0">'+'</div> ' +
+                    '<div  style="display: flex"> <a>商品名：</a><input type="text" name="name" value='+name+' style="border:0">'+'</div> ' +
+                    '<div  style="display: flex"> ' +
+                    '<span>人数：</span><input type="number"  placeholder="请输入数字" id="number"> ' +
+                    '</div> ' +
+                    '<div  style="display: flex"> ' +
+                    '<span>天数：</span><input type="number"  placeholder="请输入数字" id="duration">' +
+                    '</div> ' +
+                    '<div  style="display: flex"> ' +
+                    '<span>团购价格：</span><input type="number"  placeholder="请输入数字" id="groupprice"> ' +
+                    '</div> ' +
+                    '<div> ' +
+                    '<div  style="display: flex"> ' +
+                    '<span>单人购买最大份数:</span><input type="number"  placeholder="请输入数字" id="biggestAmount"> ' +
+                    '</div> ' +
+                    '<div> ' +
+                    '<p>团购说明：</p> ' +
+                    '<textarea type="text" placeholder="请输入团购说明（50字以内...）"  id="groupNameInfo" maxlength="100" style="width: 70%;height: 70px;"></textarea> ' +
+                    '</div></div></div>',
+                    actions:[{id:"btn",title:"确定",func:function(){
+                        var fd = new FormData(), xhr = new XMLHttpRequest()
+                        fd.append("groupNameInfo",dlg.querySelector("#groupNameInfo").value)
+                        fd.append("number",dlg.querySelector("#number").value)
+                        fd.append("stockid",stockId)
+                        fd.append("groupprice",Number(dlg.querySelector("#groupprice").value)*100)
+                        fd.append("duration",dlg.querySelector("#duration").value*86400)
+                        fd.append("biggestAmount",dlg.querySelector("#biggestAmount").value)
+                        xhr.open("POST" ,"/sc/groupOrder/addGroupCom",true)
+                        xhr.send(fd)
+                        xhr.onreadystatechange=function(){
+                            if (xhr.readyState==4 && xhr.status==200){
+                                var dat = eval('(' +xhr.responseText+ ');')
+                                if(dat.res==0){
+                                    dlg.parentNode.removeChild(dlg)
+                                    t2.funcs.loadData.call(t2, {
+                                        qseq: 0, //stock
+                                        qverb: 'e',// =
+                                        qpt: stockId,  //
+                                    })
+                                    t.funcs.loadData.call(t)
+                                }
+                                _e["msgBox"]({
+                                    msg: dat.msg,
+                                    className: dat.res==-1 ? "error":"success",
+                                    timeout:3000
+                                })
+                            }
+                        }
+                    }}]})
+                dlg.show()
+            },title:"添加团购计划"}]
+        var ext_row = function(rows,i){
+            return "this is row "+i
+        }
+
+        var afterLoad2 = function(tbl,tblDom){}
+
+        t2.funcs.init.call(t2,"tbl2",
+                coldefs2,row_actions2,rows_actions2,"table2","2__THE__TABLE__",ext_row, "/sc/groupOrder/showGroupCom",
+                afterLoad2)
+        console.log("stockid : "+stockId)
+        t2.funcs.loadData.call(t2, {
+            qseq: 0, //stock
+            qverb: 'e',// =
+            qpt: stockId //
+        })
+
+        var tbl_head = document.querySelector("#tbl2").querySelector("thead")
+        tbl_head.querySelector("#trtime").parentNode.removeChild(tbl_head.querySelector("#trtime"))
+        tbl_head.querySelector("#trunit").parentNode.removeChild(tbl_head.querySelector("#trunit"))
+        tbl_head.querySelector("#trdept").parentNode.removeChild(tbl_head.querySelector("#trdept"))
+    }
+
+
+
+    /*	var cmid=tbl.data[rows][16]
+        var name = tbl.data[rows][1]
+        var stockId = tbl.data[rows][0]
+        var right_div = document.querySelector("#right_div")
+        right_div.innerHTML = '<h2>添加团购计划</h2><div id="tbl2" class="tbl2-right"></div>'+
+            '<div  style="display: flex"> <a>流水号：</a><input type="text" name="name" data-id="'+stockId+'" value=' + cmid + ' style="border:0">' + '</div> ' +
+            '<div  style="display: flex"> <a>商品名：</a><input type="text" name="name" value=' + name + ' style="border:0">' + '</div> ' +
+            '<div  style="display: flex"> ' +
+            '<span>份数：</span><input type="number"  placeholder="请输入数字" id="number"> ' +
+            '</div> ' +
+            '<div  style="display: flex"> ' +
+            '<span>天数：</span><input type="number"  placeholder="请输入数字" id="duration"> ' +
+            '</div> ' +
+            '<div> ' +
+            '<p>团购说明：</p> ' +
+            '<textarea type="text" placeholder="请输入团购说明（50字以内...）"  id="groupNameInfo" maxlength="100" style="width: 50%;height: 70px;"></textarea> ' +
+            '</div></div></div>'+
+            '<button type="submit" class="pure-button pure-button-primary groupSubmit" data-id="">新增</button>'
+
+
+        var fd = new FormData(),xhr = new XMLHttpRequest()
+        fd.append("stock", stockId)
+        xhr.open("POST", "/sc/groupOrder/getbystock", true)
+        xhr.send(fd)
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState == 4 && xhr.status == 200) {
+                var dat = eval('(' + xhr.responseText + ');')
+                console.log(dat)
+                if(dat.res==-1){
+                    _e["msgBox"]({msg: dat.msg,})
+                    return
+                }else{
+                    if(dat.groupbuy.length!=0){
+                    right_div.querySelector("#number").value=dat.groupbuy[0][2]
+                    right_div.querySelector("#duration").value=dat.groupbuy[0][3]/86400
+                    right_div.querySelector("#groupNameInfo").value=dat.groupbuy[0][1]
+                    right_div.querySelector(".groupSubmit").innerHTML="更新"
+                    right_div.querySelector(".groupSubmit").setAttribute("data-id",dat.groupbuy[0][0])
+                    }
+                }
+            }
+        }
+    function group(){
+        var fd = new FormData(),xhr = new XMLHttpRequest()
+        fd.append("groupNameInfo", document.querySelector("#groupNameInfo").value)
+        fd.append("number", document.querySelector("#number").value)
+        fd.append("stockid", stockId)
+        fd.append("groupbuy", this.getAttribute("data-id"))
+        fd.append("duration", document.querySelector("#duration").value * 86400)
+        xhr.open("POST", "/sc/groupOrder/addGroupCom", true)
+        xhr.send(fd)
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState == 4 && xhr.status == 200) {
+                var dat = eval('(' + xhr.responseText + ');')
+                _e["msgBox"]({
+                    msg: dat.msg,
+                    className: dat.res == -1 ? "error" : "success",
+                    timeout: 3000
+                })
+                if(dat.res==-1){
+                      t.funcs.loadData.call(t)
+                }
+            }
+        }
+    }
+    document.querySelector(".groupSubmit").addEventListener("click",group,true)*/
+}, title:"团购"},
+
+
+
+	{cls:"does",func:function(tbl,rows){
+                var fd=new FormData(), xhr=new XMLHttpRequest()
+                fd.append("id",tbl.data[rows][0])
+                xhr.open("POST","/sc/commoditytype/reback"+_e["jurisdiction"](),true)
+                xhr.send(fd)
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        var d = eval('(' + xhr.responseText + ');')
+                        _e["msgBox"]({
+                            msg: d.msg,
+                            className: d.res==-1 ? "error":"success"
+                        })
+                        if(d.res==0){
+                            t.funcs.loadData.call(t)
+                        }
+                    }
+                }
+            },title:"撤销为普通"}
+
+        ]
+
+        rows_actions = [
+        ]
+
+        var ext_row = function(rows,i){
+            return "this is row "+i
+        }
+        var afterLoad = function(tbl,tblDom){}
+
+        t.funcs.init.call(t,"tbl", coldefs,row_actions,rows_actions,"table","1__THE__TABLE__",ext_row, "/sc/preorder/getprecoms", afterLoad)
+        var tbl_head = document.querySelector("#tbl").querySelector("thead")
+        tbl_head.querySelector("#trtime").parentNode.removeChild( tbl_head.querySelector("#trtime"))
+    }
+
+   /* function loadPreOrder(btn) {
+        var stock=btn.parentNode.parentNode.children[11].children[0].innerHTML
+        var stk_name=btn.parentNode.parentNode.children[0].children[0].innerHTML
+        if (document.querySelector("#dlgData")) document.querySelector("#dlgData").parentNode.removeChild(document.querySelector("#dlgData"));
+        var dlg = _e.dialog({id:"dlgData",width:"500px",
+            title:stk_name+" 的预订类型",
+            mainBody: "<table style='width: 100%' class='pure-table pure-table-bordered'>" +
+            "<thead><tr><th>序号</th><th>名称</th><th>开始配送时间</th><th>结束配送时间</th><th>下单后配送日期</th><th>预订价格</th><th>备注</th></tr></thead>" +
+            "<tbody id='old_preorder'></tbody></table>",
+            actions:[{id:"btn",title:"确定",func:function(){
+                dlg.parentNode.removeChild(dlg)
+            }}]})
+        var fd = new FormData(), xhr = new XMLHttpRequest()
+            fd.append("id",stock)
+        xhr.open("POST" ,"/sc/preorder/getbystock"+_e["jurisdiction"]() , true)
+        xhr.send(fd)
+        xhr.onreadystatechange=function(){
+            if (xhr.readyState==4 && xhr.status==200){
+                var d = eval('('+xhr.responseText+');')
+                if(d.res==0){
+                    var tr=document.createElement("tr")
+                    tr.innerHTML='<td>'+ d.preorder[0]+'</td>'+
+                            '<td>'+ d.preorder[1]+'</td>'+
+                            '<td>'+ d.preorder[3]+':00</td>'+
+                            '<td>'+ d.preorder[4]+':00</td>'+
+                            '<td>'+ d.preorder[5]+'天</td>'+
+                            '<td>'+ (d.preorder[7]/100).toFixed(2)+'</td>'
+                            '<td>'+ d.preorder[6]+'</td>'
+                    dlg.querySelector("#old_preorder").appendChild(tr)
+                }else{
+                    _e["msgBox"]({msg: d.msg})
+                }
+            }
+        }
+        dlg.show()
+
+    }*/
+    function addOtherTree (){
+      var tree=document.querySelector("#trees")
+      var ul = document.createElement("ul")
+      ul.setAttribute("id","other_tree")
+      ul.innerHTML='<li data-id="2" class="other task" onclick="taskAll(this)">团购</li>'+
+      '<li data-id="7" class="other task" onclick="taskAll(this)">预定</li>'+
+      '<li data-id="8" class="other task" onclick="taskAll(this)">代购</li>'
+      //'<li data-id="9" class="other task" onclick="taskAll(this)">特价</li>'+
+    //  '<li data-id="4" class="other task" onclick="taskAll(this)">组合套餐</li>'
+      //tree.parentNode.insertBefore(div,tree)
+      tree.insertBefore(ul,tree.children[0])
+      _e.bindAll(".other","click",loadOther,tree.parentNode)
+      function loadOther(){
+            t.funcs.loadData.call(t, {
+                qseq: 19, //id
+                qverb: 'e',// =
+                qpt: this.getAttribute("data-id"),  //-1
+                oseq: 16, //顺序的下标
+                odir:"a" //升序降序
+            })
+        }
+    }
+
+    function isInteger(obj) {
+        if(obj.length==0) return false
+        return obj%1 === 0
+    }
+</script>
+
+</body>
+
+</html>

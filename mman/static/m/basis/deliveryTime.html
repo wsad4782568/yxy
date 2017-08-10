@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>配送时间</title>
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+    <style type="text/css">
+      #tableDiv{
+        overflow: auto;
+        margin-left: 10px;
+      }
+      #tableDiv table{
+        width: 90%;
+        overflow: auto;
+      }
+      #tableDiv table td{
+        text-align: center;
+      }
+      #tableDiv table select{
+        width: 60%;
+      }
+      #buttonDiv{
+        margin: 1% 0 0 80%;
+      }
+    </style>
+</head>
+<body>
+<div id="tableDiv">
+    <select id="deptSelect" onchange="chageDept(this)"></select>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>起始时间</th>
+                <th>结束时间</th>
+                <th>配送间隔</th>
+                <th>限制时间</th>
+                <th>即时</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody id="commodityTbody"></tbody>
+    </table>
+    <div id="buttonDiv"><input type="button" value="添加" onclick="addTbody('请选择时间','请选择时间','请选择时间','请选择时间','请选择时间','请选择时间','请选择类型','请选择类型','请选择是否即时','请选择是否即时')"/><input type="button" value="提交" onclick="submitTbody()"/></div>
+</div>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script type="text/javascript">
+    function addTbody(valueId1,valueName1,valueId2,valueName2,valueId3,valueName3,valueId4,valueName4,valueId5,valueName5){         //增加新的时间段
+        var startTime = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+        var startSelect = '<select class="startSelect"><option value="'+valueId1+'">'+valueName1+'</option>'
+        var endSelect = '<select class="endSelect"><option value="'+valueId2+'">'+valueName2+'</option>'
+        var invalidSelect = '<select class="invalidSelect"><option value="'+valueId3+'">'+valueName3+'</option>'
+        var stepSelect = '<select class="step"><option value="'+valueId4+'">'+valueName4+'</option>'+
+              '<option value="60">60分制</option><option value="30">30分制</option></select>'
+        var immediateSelect = '<select class="immediate"><option value="'+valueId5+'">'+valueName5+'</option>'+
+              '<option value="1">是</option><option value="2">否</option></select>'
+        for(var i = 0;i < startTime.length;i++){
+            startSelect += '<option value="'+startTime[i]+'">'+startTime[i]+':00</option>'
+            endSelect += '<option value="'+startTime[i]+'">'+startTime[i]+':00</option>'
+            invalidSelect += '<option value="'+startTime[i]+'">'+startTime[i]+':00</option>'
+        }
+        startSelect += '</select>'
+        endSelect += '</select>'
+        invalidSelect += '</select>'
+
+        var commodityTbody = document.querySelector("#commodityTbody")
+        var tr = document.createElement("tr")
+        tr.innerHTML = '<td>'+startSelect+'</td>'+
+              '<td>'+endSelect+'</td>'+
+              '<td>'+stepSelect+'</td>'+
+              '<td>'+invalidSelect+'</td>'+
+              '<td>'+immediateSelect+'</td>'+
+              '<td><input type="button" value="删除" onclick="deleteTr(this)"/></td>'
+        commodityTbody.appendChild(tr)
+    }
+
+    function deleteTr(e){   //删除本身
+       e.parentNode.parentNode.parentNode.removeChild(e.parentNode.parentNode)
+    }
+
+    function getDept(){    //获取部门
+      var xhr = new XMLHttpRequest()
+      xhr.open("POST", "/staff/getstaffinfo",true)
+      xhr.onreadystatechange = function(){
+          if (xhr.readyState==4 && xhr.status==200){
+              var da = eval('(' +xhr.responseText+ ');')
+              var deptSelect = document.querySelector("#deptSelect")
+              for(var i = 0;i < da.alldept.length;i++){
+                  var option = document.createElement("option")
+                  option.value = da.alldept[i][0]
+                  option.innerHTML = da.alldept[i][1]
+                  deptSelect.appendChild(option)
+              }
+              firstDept(da.alldept[0][0])
+          }
+      }
+      xhr.send()
+    }
+    getDept()
+
+    function firstDept(e){    //获取第一次的所有时间
+      console.log(e)
+      var fd = new FormData(), xhr = new XMLHttpRequest()
+      fd.append("dept",Number(e))
+      xhr.open("POST", "/basis/deliverytime/get",true)
+      xhr.onreadystatechange = function(){
+          if (xhr.readyState==4 && xhr.status==200){
+              var da = eval('(' +xhr.responseText+ ');')
+              // console.log(da.deliverytime)
+              for(var i = 0;i < da.deliverytime.length;i++){
+                var name = 0
+                if(da.deliverytime[i][4] == 1){
+                  name = "是"
+                }
+                if(da.deliverytime[i][4] == 2){
+                  name = "否"
+                }
+                addTbody(da.deliverytime[i][0],da.deliverytime[i][0]+":00",da.deliverytime[i][1],da.deliverytime[i][1]+":00",da.deliverytime[i][2],da.deliverytime[i][2]+":00",da.deliverytime[i][3],da.deliverytime[i][3]+"分制",da.deliverytime[i][4],name)
+              }
+          }
+      }
+      xhr.send(fd)
+    }
+
+    function chageDept(e){   //切换部门获取所有时间
+      var commodityTbody = document.querySelector("#commodityTbody")
+      commodityTbody.innerHTML = ''
+      var fd = new FormData(), xhr = new XMLHttpRequest()
+      fd.append("dept",Number(e.value))
+      xhr.open("POST", "/basis/deliverytime/get",true)
+      xhr.onreadystatechange = function(){
+          if (xhr.readyState==4 && xhr.status==200){
+              var da = eval('(' +xhr.responseText+ ');')
+              console.log(da.deliverytime)
+              for(var i = 0;i < da.deliverytime.length;i++){
+                var name = 0
+                if(da.deliverytime[i][4] == 1){
+                  name = "是"
+                }
+                if(da.deliverytime[i][4] == 2){
+                  name = "否"
+                }
+                addTbody(da.deliverytime[i][0],da.deliverytime[i][0]+":00",da.deliverytime[i][1],da.deliverytime[i][1]+":00",da.deliverytime[i][2],da.deliverytime[i][2]+":00",da.deliverytime[i][3],da.deliverytime[i][3]+"分制",da.deliverytime[i][4],name)
+              }
+          }
+      }
+      xhr.send(fd)
+    }
+
+    function submitTbody(){           //提交配置时间
+      var commodityTbody = document.querySelector("#commodityTbody")
+      var deptSelect = document.querySelector("#deptSelect")
+      var startSelect = document.querySelectorAll(".startSelect")
+      var endSelect = document.querySelectorAll(".endSelect")
+      var immediateSelect = document.querySelectorAll(".immediate")
+      var analyzingTimeAll = []
+      for(var i = 0;i < commodityTbody.children.length;i++){
+        var analyzingTime = []
+        analyzingTime.push(Number(startSelect[i].value))
+        analyzingTime.push(Number(endSelect[i].value))
+        analyzingTimeAll.push(analyzingTime)
+      }
+      analyzingTimeAll.sort(function(a,b){
+            return a[0]-b[0]})
+      console.log(analyzingTimeAll)
+      for(i = 0,j = 1;i < analyzingTimeAll.length-1;i++,j++){
+        if(Number(analyzingTimeAll[i][1]) > analyzingTimeAll[j][0]){
+          _e["msgBox"]({
+                msg: "请输入正确的时间",
+                timeout:3000
+            })
+          return
+        }
+      }
+
+      var step = document.querySelectorAll(".step")
+      var invalidSelect = document.querySelectorAll(".invalidSelect")
+      var fd = new FormData(), xhr = new XMLHttpRequest()
+      fd.append("dept",Number(deptSelect.value))
+      console.log(Number(deptSelect.value))
+      for(i = 0;i < commodityTbody.children.length;i++){
+        if(startSelect[i].value == "请选择时间"){
+          _e["msgBox"]({
+                msg: "请选择开始时间",
+                timeout:3000
+            })
+          return
+        }
+        if(endSelect[i].value == "请选择时间"){
+          _e["msgBox"]({
+                msg: "请选择结束时间",
+                timeout:3000
+            })
+          return
+        }
+        if(Number(endSelect[i].value) < Number(startSelect[i].value)){
+          _e["msgBox"]({
+                msg: "结束时间不能小于开始时间",
+                timeout:3000
+            })
+          return
+        }
+        if(Number(invalidSelect[i].value) <= Number(startSelect[i].value)){
+          _e["msgBox"]({
+                msg: "限制时间不能小于或等于开始时间",
+                timeout:3000
+            })
+          return
+        }
+        if(Number(endSelect[i].value) < Number(invalidSelect[i].value)){
+          _e["msgBox"]({
+               msg: "截止时间不能大于结束时间",
+                timeout:3000
+            })
+          return
+        }
+        if(step[i].value == "请选择类型"){
+          _e["msgBox"]({
+                msg: "请选择配送间隔",
+                timeout:3000
+            })
+          return
+        }
+        if(invalidSelect[i].value == "请选择时间"){
+          _e["msgBox"]({
+                msg: "请限制时间",
+                timeout:3000
+            })
+          return
+        }
+        if(immediateSelect[i].value == "请选择是否即时"){
+          _e["msgBox"]({
+                msg: "请选择是否即时",
+                timeout:3000
+            })
+          return
+        }
+
+        fd.append("start",Number(startSelect[i].value))
+        fd.append("end",Number(endSelect[i].value))
+        fd.append("step",Number(step[i].value))
+        fd.append("restrict",Number(invalidSelect[i].value))
+        fd.append("intime",Number(immediateSelect[i].value))
+      }
+      xhr.open("POST","/basis/deliverytime/insert",true)
+      xhr.onreadystatechange = function(){
+          if (xhr.readyState==4 && xhr.status==200){
+              var da = eval('(' +xhr.responseText+ ');')
+              _e["msgBox"]({
+                    msg: da.msg,
+                    className: da.res==-1 ? "error":"success",
+                    timeout:3000
+              })
+          }
+      }
+      xhr.send(fd)
+  }
+</script>
+</body>
+</html>

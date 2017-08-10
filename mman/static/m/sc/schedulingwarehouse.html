@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>类别与商品</title>
+    <link rel="shortcut icon" href="/i/css/img/favicon.ico" />
+    <link rel="stylesheet" href="/i/css/manage/pure.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/iconfont/iconfont.css" />
+    <link rel="stylesheet" href="/i/css/manage/dialog.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/formdata.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/table.css" type="text/css"/>
+    <style type="text/css">
+        /*th,td{*/
+            /*text-align: center;*/
+            /*width: 80px;*/
+        /*}*/
+        #comDetail th,#comDetail td{
+          text-align: center;
+        }
+        .orderTable th,.orderTable td{
+          text-align: center;
+        }
+        #main{
+            overflow-y: auto;
+            display: flex;
+            height: 92%;
+        }
+        .mainTree{
+            width: 10%;
+        }
+        .mainTree li{
+            list-style-type:none;
+        }
+        .mainTree li a{
+            text-decoration:none;
+        }
+        .mainTree li a:link{
+            color:#000000;
+        }
+        .mainTree li a:visited {
+            color:#000000;
+        }
+        #main-wrapper{
+            width: 90%;
+        }
+    </style>
+</head>
+
+<body>
+<div style="width: 100%;text-align: center;height: 5%;margin:auto;"><span style="font-size: 15px;" id="features">调度入库管理</span></div>
+<div class="main-wrapper" style="height: 92%;display: flex;overflow-y:auto;background-color: #EEEEEE;">
+    <div id="main1" style="width: 100%;padding-left:10px;overflow-y: auto;display: block;">
+        <div id="main">
+            <div class="mainTree">
+                <ul>
+                    <!-- <li><a href="#" value="1" onclick="becomeTbl(this)">审核中</a></li> -->
+                    <li><a href="#" value="2" onclick="becomeTbl(this)">待入库</a></li>
+                    <li><a href="#" value="3" onclick="becomeTbl(this)">入库成功</a></li>
+                    <li><a href="#" value="4" onclick="becomeTbl(this)">审核不通过</a></li>
+                    <li><a href="#" value="5" onclick="becomeTbl(this)">无效单</a></li>
+                </ul>
+            </div>
+            <div id="main-wrapper">
+                <div id="tbl"></div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/i/js/handlebars.js"></script>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/table.js"></script>
+<script type="text/javascript" src="/i/js/dialog.js"></script>
+<script type="text/javascript" src="/i/js/form.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script type="text/javascript" src="/i/js/xml.js"></script>
+<script type="text/javascript" src="/m/sc/js/schedulingwarehouse.js"></script>
+</body>
+</html>

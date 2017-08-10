@@ -1,0 +1,39 @@
+
+.smallform{
+    width: 50%;
+    margin: 0px auto 0px auto;
+}
+.clear:after{
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+    zoom:1;
+}
+.bigform{
+    width: 80%;
+    margin: 10px auto 0px auto;
+}
+
+.form-input , .form-select{
+    padding: 20px 0px 0px 5px;
+    float: left;
+    width: 45%;
+    height: 30px;
+}
+
+.form-name{
+    float: left;
+    width: 80px;
+}
+.form-data{
+    float: left;
+    padding: auto;
+    width: 45%;
+}
+
+
+
+

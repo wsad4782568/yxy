@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据查询统计</title>
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css" />
+    <style type="text/css">
+        #operatingAll{
+            display: flex;
+            height: 10%;
+        }
+        #operatingDept{
+            margin-left: 20px;
+        }
+        #dataAll{
+            width: 30%;
+        }
+        #dataAll table{
+            width: 95%;
+            overflow-y: auto;
+        }
+        #dataAll table td{
+            text-align: center;
+        }
+    </style>
+</head>
+<body style="overflow-y:auto;">
+<div>
+    <!--上面所有的操作-->
+    <div id="operatingAll">
+        <div id="operatingDate">
+            开始时间:<input id="operatingDateStart" onchange="operatingDateSubmit()" type="date"/>结束时间:<input id="operatingDateEnd"  onchange="operatingDateSubmit()" type="date"/><br/>
+            <input type="button" value="今天" onclick="dateSearch(1)"/>
+            <input type="button" value="近三天" onclick="dateSearch(3)"/>
+            <input type="button" value="近一周" onclick="dateSearch(7)"/>
+            <input type="button" value="近一个月" onclick="dateSearch(30)"/>
+            <input type="button" value="导出" onclick="printAll()"/>
+        </div>
+        <div id="operatingDept">
+            <select id="operatingSelect" onchange="operatingDateSubmit()">
+                <option value="--请选择部门--">--请选择部门--</option>
+            </select>
+        </div>
+    </div>
+
+    <div style="display: flex;">
+        <div id="dataAll">
+            <table border="1">
+                <thead>
+                <tr>
+                    <th>种类</th>
+                    <th>供应商</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td style="width: 150px;"><select id="dataAllClass" onchange="operatingDateSubmit()"></select></td>
+                    <td style="width: 150px;"><input id="supplierName" onchange="operatingDateSubmit()" style="width: 150px;" onkeyup="supplier(this)"/><ul style="width:180px;background-color: rgb(122, 146, 156);margin: 0;padding: 0;position: fixed;overflow-y: auto;"></ul></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="width: 30%;margin-bottom: 10px;">
+            <table border="1"  id="dataAllThead" style="width: 95%;">
+                <thead>
+                <tr>
+                    <th>商品名</th>
+                    <th>规格</th>
+                    <th>单位</th>
+                    <th>数量</th>
+                    <th>进价</th>
+                    <th>总进价</th>
+                </tr>
+                </thead>
+                <tbody id="dataAllTbody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script type="text/javascript" src="/m/delivery/js/supplierStatistics.js"></script>
+</body>
+</html>

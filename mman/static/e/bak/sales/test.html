@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <title>Title</title>
+</head>
+<body>
+    <section>
+        <label>Choose you favorite car(single selection):</label>
+        <input type="radio" name="car" value="BMW" checked>BMW
+        <input type="radio" name="car" value="Chrysler">Chrysler
+        <input type="radio" name="car" value="Rolls-Royce" >Rolls-Royce
+        <input type="radio" name="car" id="car" value="Porsche">Porsche
+        <input type="radio" name="car" value="Maybach">Maybach
+    </section>
+    <section>
+        <label>Choose you favorite Book(Mui-selection):</label>
+        <input type="checkbox" name="Book" value="斯通纳">斯通纳
+        <input type="checkbox" name="Book" value="天鹅绒监狱">天鹅绒监狱
+        <input type="checkbox" name="Book" value="岛上书店">岛上书店
+        <input type="checkbox" name="Book" value="童年">童年
+        <input type="checkbox" name="Book" value="追风筝的人">追风筝的人
+    </section>
+    <input type="text" placeholder="test"/>
+    <button type="button" id="btn">获取选择的值</button>
+    <script type="text/javascript">
+
+       /* var jQuery=(function(document,window,extend){
+            var $={};
+            $.alert=function(y){
+                alert(y)
+            };
+            return $;
+        })(document,window);
+        window.$=jQuery;
+        $.alert(1)
+*/
+       var list=[1,2,43,565,767]
+       var arr2=[3,4,56]
+
+       //arr2.push.apply(arr2,list)
+        function callback(a,b){
+            return function(){
+                alert(a)
+                alert(b)
+                var arr_ = Array.apply(null,document.querySelectorAll("input"));
+                arr_.forEach(function(item){
+                    if(item.checked) alert(item.value)
+                })
+            }
+        }
+       var call_=function(t){
+           console.log(this,t)
+       }
+       const nodelist = document.querySelectorAll('input');
+       const nodelistToArray = Array.apply(null, nodelist);
+
+
+       var unboundForEach = Array.prototype.forEach,
+               forEach = Function.prototype.call.bind(unboundForEach);
+
+       forEach(document.querySelectorAll('input'), function (el) {
+           el.addEventListener('click', call_.bind(this,1232));
+       });
+
+
+       var arr=["https://www.youtube.com/watch?v=LXZoSQDj0pA&index=1&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=VnSPKmURAng&index=2&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=fK8HZXmaDm0&index=3&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=LNqhcunHD4Q&index=4&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=krWVTf2nFdQ&index=5&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=FBGm4hYdXg4&index=6&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=ZahdmSD1wgw&index=7&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=rQ367ofKnBk&index=8&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=ySQAnsZ6T0M&index=9&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=UoNW29x6eBA&index=10&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=thS4LniNs_k&index=11&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=LGxpOr3-g4M&index=12&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=ytWlTEQgOYY&index=13&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=CkFAarTK8h8&index=14&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=JRQ_Frd-zLw&index=15&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=8OTdbTwNMBY&index=16&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=qYd_EUL2z_c&index=17&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=uBmkitPHtfc&index=18&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=2wMhGcaKTzQ&index=19&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=PA9mpze7nkQ&index=20&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=8w7IE6yMo6g&index=21&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=rd7ywXkPmSI&index=22&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=6LOkoq_Ktr0&index=23&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=-8RdSL_hPxY&index=24&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=8naF1J3Z-Bw&index=25&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=xatCJ67E63k&index=26&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=icwVeyZkZqc&index=27&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=Mo5YzjQX468&index=28&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=u9pQQhaBAjk&index=29&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=jh_weyD84Og&index=30&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=s5QIin_m7BU&index=31&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=h_IIJb3t1U8&index=32&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=-dYsCTRL8Tk&index=33&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=Tow2NG1pCvg&index=34&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=BXcBAnndluk&index=35&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=yQ4SafuX3d0&index=36&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=v0tOdMP1K4s&index=37&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=GR4Av3kU2Gc&index=38&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=tnwWwNIapTQ&index=39&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=S-W6-g-FEZ8&index=40&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=7Dqpl4Ji8Dw&index=41&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=FEbnzLYASgM&index=42&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=m3_yxEaa7rc&index=43&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=rgYXeK2Uxm8&index=44&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=DBmCtYpO7qw&index=45&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=g4Y5XQmBCFc&index=46&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=3p2F7y3SIOc&index=47&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=z94vZs66jvc&index=48&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=e7LDPV4uKo4&index=49&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=XIVlBannJjs&index=50&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=tjrUBWgVA9Q&index=51&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=oquj0FSvihA&index=52&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=ua2u-pwl-fQ&index=53&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=bnwmh8QK4u8&index=54&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=Eel7rrCyseg&index=55&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=8Z-ST3-uW0A&index=56&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=UCwVZ-ijfJA&index=57&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=0bhzFjMPF7o&index=58&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=sT3o60nFmRE&index=59&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q", "https://www.youtube.com/watch?v=OkRcDkDZQPI&index=60&list=PLaYqF7AnyNPfOVmMZSw7lfGymb9f2cz5Q"]
+       var str = new String;
+       arr.forEach(function(item){
+         str+=item+","
+       })
+       // document.getElementById("btn").addEventListener("click",callback(44,55))
+    </script>
+</body>
+</html>

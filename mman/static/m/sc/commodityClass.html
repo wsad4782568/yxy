@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>类别与商品</title>
+		<link rel="shortcut icon" href="/i/css/img/favicon.ico" />
+		<link rel="stylesheet" href="/i/css/manage/pure.css" type="text/css"/>
+		<link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" type="text/css"/>
+		<link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+		<link rel="stylesheet" href="/i/css/manage/dialog.css" type="text/css"/>
+		<style type="text/css">
+			.button-success,
+			.button-error,
+			.button-warning,
+			.button-secondary {
+				color: white;
+				border-radius: 4px;
+				text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+			}
+
+			.button-success {
+				background: rgb(28, 184, 65); /* this is a green */
+			}
+
+			.button-error {
+				background: rgb(202, 60, 60); /* this is a maroon */
+			}
+
+			.button-warning {
+				background: rgb(223, 117, 20); /* this is an orange */
+			}
+
+			.button-secondary {
+				background: rgb(66, 184, 221); /* this is a light blue */
+			}		</style>
+	</head>
+	<body>
+		<div class="pure-g">
+			<div class="pure-u-1">
+				<div class="row two column" style="margin-left:10%">
+					<div style="margin-top:7px;" class="pure-u-1-2">
+						<a class="pure-button button-info button-sm&quot;" style="margin-right: 10px;" onclick="makwNewClass()">新增分类</a>
+					</div>
+				</div>
+			</div>
+			<div class="pure-u-1">
+				<div class="sm-table">
+					<div>
+						<table class="pure-table pure-table-horizontal" style="width:80%;margin-left:10%">
+						<thead>
+						<tr>
+							<th class="">
+								编码<i class=" " style="float:right;"></i>
+							</th>
+							<th class="">
+								名称<i class=" " style="float:right;"></i>
+							</th>
+							<th class="">
+								顺序(越小越靠前)<i class=" " style="float:right;"></i>
+							</th>
+
+							<th class="">
+								操作<i class=" " style="float:right;"></i>
+							</th>
+
+							<th class="">
+								是否显示<i class=" " style="float:right;"></i>
+							</th>
+
+							<th class="">
+								门店<select class=" " style="float:right;" id="dept"></select>
+							</th>
+
+						</tr>
+						</thead>
+						<tbody id="bigClassList">
+						</tbody>
+						<tfoot>
+						</tfoot>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="/i/js/handlebars.js"></script>
+		<script type="text/javascript" src="/i/js/_e.js"></script>
+		<script type="text/javascript" src="/i/js/dialog.js"></script>
+	<script type="text/javascript" src="/i/js/msgbox.js"></script>
+		<script>
+	var alldept = JSON.parse(localStorage.getItem("alldept"))
+	function loadDeptClass(){
+		var sedept = document.querySelector("#dept")
+		for(var i=0;i<alldept.length;i++){
+			var option=document.createElement("option")
+			option.value=alldept[i].id
+			option.innerHTML=alldept[i].name
+			sedept.appendChild(option)
+		}
+		sedept.addEventListener("change",function(){
+				console.log("hello")
+				changeDept(this.value)
+		})
+	}
+	loadDeptClass()
+	loadClass()
+
+	function loadClass() {
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", "/sc/commodity/getext", true);
+		xhr.send();
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				others = eval('(' + xhr.responseText + ');')
+				var bigClassList = document.querySelector("#bigClassList")
+				bigClassList.innerHTML = ""
+				var parent_id = _e["getQueryString"]("parent_id")
+				if (parent_id) {
+					var comclass = []// id 和 姓名  对比  商品tbl里面对应的
+					for (var i in others.tree) {
+						if (others.tree[i][8] == 1 && others.tree[i][7] == Number(parent_id)) {//只需要叶子节点的,商品只在这个种类下面
+							comclass.push(others.tree[i]);
+						}
+					}
+					for (var i = 0; i < comclass.length; i++) {
+						var tr = document.createElement("tr")
+						tr.setAttribute("data-id", comclass[i][0])
+						tr.innerHTML = '<td data-table-field="code"> ' +
+								'<span>' + comclass[i][1] + '</span> ' +
+								'</td> ' +
+								'<td data-table-field="name" > ' +
+								'<span>' + comclass[i][2] + '</span> ' +
+								'</td> ' +
+								'<td data-table-field="weight"> ' +
+								'<input min="1" maxlength="2" type="number" class="button-sm" style="text-align: center; width: 50px; margin-right: 10px;" value="' + comclass[i][3] + '"> ' +
+								'<a class="pure-button button-success visibleOnlinecContro showclass" onclick="changeWeight(this)">确定</a>'
+						if (comclass[i][5] == 1) {
+							tr.innerHTML += '<td>'+
+									'<a class="pure-button button-warning imageContro" style="margin-right: 10px;" onclick="changeClass(this)">修改</a>' +
+									'<a class="pure-button button-secondary " style="margin-right: 10px;" onclick="moveClass(this)">移动至其他类</a>'+
+									// '<a class="pure-button button-warning imageContro" style="margin-right: 10px;" onclick="changeImage(this)">图标管理</a>' +
+									'<a class="pure-button button-info " style="margin-right: 10px;" onclick="returnClass()">返回大类</a></td>'
+						} else {
+							tr.innerHTML += '<td>'+
+									'<a class="pure-button button-warning imageContro" style="margin-right: 10px;" onclick="changeClass(this)">修改</a>' +
+									'<a class="pure-button button-secondary " style="margin-right: 10px;" onclick="moveClass(this)">移动至其他类</a>'+
+									// '<a class="pure-button button-warning imageContro" style="margin-right: 10px;" onclick="changeImage(this)">图标管理</a>' +
+									'<a class="pure-button button-info " style="margin-right: 10px;" onclick="returnClass()">返回大类</a></td>'
+						}
+						tr.innerHTML += '</td> ' +
+						'<td data-table-field="flag"> ' +
+						'<span class="label label-info">显示</span> ' +
+						'</td>'+
+						'<td><a disabled="disabled" class="pure-button button-success visibleOnlinecContro showclass" onclick="visibleOnlinecContro(this,1)">显示</a>' +
+								'<a data-code="10" class="pure-button button-warning visibleOnlinecContro hideclass" onclick="visibleOnlinecContro(this,2)">隐藏</a>'+
+						'</td>'
+
+						bigClassList.appendChild(tr)
+					}
+				} else {
+					var trname = []// id 和 姓名  对比
+					for (var i in others.tree) {
+						if (others.tree[i][8] == 0) {//只需要大类,叶子节点不能作为大类
+							trname.push(others.tree[i]);
+						}
+					}
+					for (var i = 0; i < trname.length; i++) {
+						var tr = document.createElement("tr")
+						tr.setAttribute("data-id", trname[i][0])
+						tr.innerHTML = '<td data-table-field="code"> ' +
+								'<span>' + trname[i][1] + '</span> ' +
+								'</td> ' +
+								'<td data-table-field="name" > ' +
+								'<span>' + trname[i][2] + '</span> ' +
+								'</td> ' +
+								'<td data-table-field="weight"> ' +
+								'<input min="1" maxlength="2" type="number" class="button-sm" style="text-align: center; width: 50px; margin-right: 10px;" value="' + trname[i][3] + '"> ' +
+								'<a class="pure-button button-success visibleOnlinecContro showclass" onclick="changeWeight(this)">确定</a>'
+						if (trname[i][5] == 1) {
+							tr.innerHTML += '<td><a class="pure-button button-warning imageContro" style="margin-right: 10px;" onclick="changeClass(this)">修改</a>' +
+									// '<a class="pure-button button-warning imageContro" style="margin-right: 10px;" onclick="changeImage(this)">图标管理</a>' +
+									'<a class="pure-button button-secondary showChildrenClass" style="margin-right: 10px;" onclick="shouChildren(this)">子分类管理</a></td>'
+						} else {
+							tr.innerHTML += '<td><a class="pure-button button-warning imageContro" style="margin-right: 10px;" onclick="changeClass(this)">修改</a>' +
+									// '<a class="pure-button button-warning imageContro" style="margin-right: 10px;" onclick="changeImage(this)">图标管理</a>' +
+									'<a class="pure-button button-secondary showChildrenClass" style="margin-right: 10px;" onclick="shouChildren(this)">子分类管理</a></td>'
+						}
+						tr.innerHTML += '</td> ' +
+							'<td data-table-field="flag"> ' +
+							'<span class="label label-info">显示</span> ' +
+							'</td> '+
+							'<td><a disabled="disabled" class="pure-button button-success visibleOnlinecContro showclass">显示</a>' +
+									'<a data-code="10" class="pure-button button-warning visibleOnlinecContro hideclass">隐藏</a>'+
+							'</td>'
+						bigClassList.appendChild(tr)
+					}
+				}
+				changeDept(document.querySelector("#dept").value)
+			}
+		}
+
+
+	}
+
+	function changeDept(depts) {
+		var fd = new FormData(), xhr = new XMLHttpRequest();
+		fd.append("cdept",depts)
+		var ClassList = document.querySelector("#bigClassList").children
+		for(var x=0;x<ClassList.length;x++){
+			fd.append("idarr",ClassList[x].getAttribute("data-id"))
+		}
+		xhr.open("POST", "/sc/commodity/getclassbydept", true);
+		xhr.send(fd);
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				dpt = eval('(' + xhr.responseText + ');')
+				var visibleonline = ["不显示", "显示", "不显示"]
+					for (var i = 0;i < dpt.commodityClass.length; i++) {
+						for (var j=0;j<ClassList.length;j++) {
+								if(dpt.commodityClass[i][1] == Number(ClassList[j].getAttribute("data-id"))){
+									ClassList[j].children[5].setAttribute("data-deptclassid",dpt.commodityClass[i][0])
+									if(dpt.commodityClass[i][2] == 1){//可见
+											ClassList[j].children[4].children[0].innerHTML="显示"
+											ClassList[j].children[5].innerHTML = '<a disabled="disabled" class="pure-button button-success visibleOnlinecContro hideclass" >显示</a>' +
+													'<a data-code="10" class="pure-button button-warning visibleOnlinecContro showclass" onclick="visibleOnlinecContro(this,2)">隐藏</a>'
+									}else{//隐藏
+										ClassList[j].children[4].children[0].innerHTML="隐藏"
+										ClassList[j].children[5].innerHTML = 	'<a  class="pure-button button-success visibleOnlinecContro showclass" onclick="visibleOnlinecContro(this,1)">显示</a>' +
+												'<a disabled="disabled" data-code="10" class="pure-button button-warning visibleOnlinecContro hideclass">隐藏</a>'
+
+									}
+								}
+						}
+					}
+			}
+		}
+	}
+function visibleOnlinecContro(clickdom,classVisible){
+	var tr=clickdom.parentNode
+	var fd = new FormData(), xhr = new XMLHttpRequest()
+	fd.append("id",tr.getAttribute("data-deptclassid"))
+	fd.append("visibleonline",classVisible)
+	xhr.open("POST" ,"/sc/commodity/updatedeptclass"+_e["jurisdiction"]() , true)
+	xhr.send(fd)
+	xhr.onreadystatechange=function(){
+		if (xhr.readyState==4 && xhr.status==200){
+			var dat = eval('(' +xhr.responseText+ ');')
+			_e["msgBox"]({
+				msg: dat.msg,
+				className: dat.res==-1 ? "error":"success",
+				timeout:3000
+			})
+			if(dat.res==0){
+				loadClass()
+			}
+		}
+	}
+}
+
+function changeWeight(clickdom){
+	var td=clickdom.parentNode
+	var tr=td.parentNode
+	var fd = new FormData(), xhr = new XMLHttpRequest()
+	fd.append("id",tr.getAttribute("data-id"))
+	fd.append("weight",td.children[0].value)
+	xhr.open("POST" ,"/sc/commodity/updatecommodityclass"+_e["jurisdiction"]() , true)
+	xhr.send(fd)
+	xhr.onreadystatechange=function(){
+		if (xhr.readyState==4 && xhr.status==200){
+			var dat = eval('(' +xhr.responseText+ ');')
+			_e["msgBox"]({
+				msg: dat.msg,
+				className: dat.res==-1 ? "error":"success",
+				timeout:3000
+			})
+			if(dat.res==0){
+				loadClass()
+			}
+		}
+	}
+}
+
+function moveClass(clickdom){
+	var id=clickdom.parentNode.parentNode.getAttribute("data-id")
+	dlg  = _e.dialog({id:"dlg",width:"500px",
+		title:clickdom.parentNode.parentNode.children[1].children[0].innerHTML,
+		mainBody:'<h2>上级大类 ：<h2>'+
+		'<select id="sltpid"></select>',
+		actions:[{id:"btn",title:"移动",func:function(){
+			var fd = new FormData(), xhr = new XMLHttpRequest()
+			fd.append("id",id)
+			fd.append("pid",dlg.querySelector("#sltpid").value)
+			xhr.open("POST" ,"/sc/commodity/updatecommodityclass"+_e["jurisdiction"]() , true)
+			xhr.send(fd)
+			xhr.onreadystatechange=function(){
+				if (xhr.readyState==4 && xhr.status==200){
+					var dat = eval('(' +xhr.responseText+ ');')
+					_e["msgBox"]({
+						msg: dat.msg,
+						className: dat.res==-1 ? "error":"success",
+						timeout:3000
+					})
+					if(dat.res==0){
+						dlg.parentNode.removeChild(dlg)
+						loadClass()
+					}
+				}
+			}
+		}},
+		{id:"btn",title:"关闭",func:function(){
+			dlg.parentNode.removeChild(dlg)
+		}}]})
+	var sltpid=dlg.querySelector("#sltpid")
+	for(var i=0;i<others.tree.length;i++){
+			if (others.tree[i][8]==0){
+				var option=document.createElement("option")
+				option.value=others.tree[i][0]
+				option.innerHTML=others.tree[i][2]
+				sltpid.appendChild(option)
+			}
+	}
+
+	dlg.show()
+
+
+
+}
+
+
+function shouChildren(clickdom){
+	var tr=clickdom.parentNode.parentNode
+	var id = tr.getAttribute("data-id")
+	var url1="/m/sc/commodityClass.html?parent_id="+id
+	window.location.href=encodeURI(url1)
+}
+function returnClass(){
+	window.location.href=encodeURI("/m/sc/commodityClass.html")
+}
+
+
+function makwNewClass(){
+	var treedate='<div>' +
+			'<form class="pure-form pure-form-aligned" id="dataform"> ' +
+			'<fieldset> ' +
+
+			'<div class="pure-control-group"> ' +
+			'<label for="code">种类编码</label> ' +
+			'<input name="code" id="code" type="text" class="form-data"> ' +
+			'</div> ' +
+
+			'<div class="pure-control-group"> ' +
+			'<label for="name">种类名称</label> ' +
+			'<input name="name" id="name" type="text" class="form-data"> ' +
+			'</div> ' +
+
+			'<div class="pure-control-group"> ' +
+			'<label for="weight">顺序</label> ' +
+			'<input name="weight" id="weight" type="text" class="form-data" > ' +
+			'</div> ' +
+
+			'</fieldset> ' +
+			'</form></div>'
+	var parent_id = _e["getQueryString"]("parent_id")
+	var dlgtitle="添加大类"
+	var isleaf = 0
+	var pid=0
+	if (parent_id){
+		for (var i in others.tree) {
+			if (others.tree[i][8] == 0 && others.tree[i][0] == Number(parent_id)) {//只需要大类,叶子节点不能作为大类
+				dlgtitle="在"+others.tree[i][2]+"下面添加种类"
+				isleaf=1
+			}
+		}
+	}else{
+		parent_id="0"
+	}
+	var dlg  = _e.dialog({id:"dlg",width:"500px",
+		title:dlgtitle,
+		mainBody:treedate,
+		actions:[{id:"btn",title:"增加",func:function(){
+			var fd = new FormData(), xhr = new XMLHttpRequest()
+			fd.append("pid",parent_id)
+			fd.append("isleaf",isleaf)
+			var datafome=dlg.querySelectorAll(".form-data")
+			for(var j=0;j<datafome.length;j++){
+				if(datafome[j].value.length<0){
+					_e.msgBox({msg:"请填写正确的信息"})
+				}
+			}
+			if(datafome[0].value.length>4){
+				_e.msgBox({msg:"编码长度不能大于4"})
+			}
+			fd.append("code",dlg.querySelector("#code").value)
+			fd.append("name",dlg.querySelector("#name").value)
+			fd.append("weight",dlg.querySelector("#weight").value)
+			xhr.open("POST" ,"/sc/commodity/insertcommodityclass"+_e["jurisdiction"]() , true)
+			xhr.send(fd)
+			xhr.onreadystatechange=function(){
+				if (xhr.readyState==4 && xhr.status==200){
+					var dat = eval('(' +xhr.responseText+ ');')
+					_e["msgBox"]({
+						msg: dat.msg,
+						className: dat.res==-1 ? "error":"success",
+						timeout:3000
+					})
+					if(dat.res==0){
+						loadClass()
+					}
+				}
+			}
+		}}]})
+	dlg.show()
+}
+function changeClass(clickdom){
+	var treedate='<div>' +
+			'<form class="pure-form pure-form-aligned" id="dataform"> ' +
+			'<fieldset> ' +
+
+			'<div class="pure-control-group"> ' +
+			'<label for="code">种类编码</label> ' +
+			'<input name="code" id="code" type="text" class="form-data"> ' +
+			'</div> ' +
+
+			'<div class="pure-control-group"> ' +
+			'<label for="name">种类名称</label> ' +
+			'<input name="name" id="name" type="text" class="form-data"> ' +
+			'</div> ' +
+
+			'</fieldset> ' +
+			'</form></div>'
+	if (document.querySelector("#dlgData")) document.querySelector("#dlgData").parentNode.removeChild(document.querySelector("#dlgData"));
+	var dlg  = _e.dialog({id:"dlgData",width:"500px",
+		title:"种类修改",
+		mainBody:treedate,
+		actions:[{id:"btn",title:"修改",func:function(){
+			var fd = new FormData(), xhr = new XMLHttpRequest()
+			fd.append("id",clickdom.parentNode.parentNode.getAttribute("data-id"))
+			var datafome=dlg.querySelectorAll(".form-data")
+			if(datafome[0].value.length<0 || datafome[0].value.length>4){
+					_e.msgBox({msg:"编码长度应在0-4位"})
+					return
+			}
+			if(datafome[1].value.length<0){
+					_e.msgBox({msg:"请输入种类名称"})
+					return
+			}
+			fd.append("code",datafome[0].value)
+			fd.append("name",datafome[1].value)
+			xhr.open("POST" ,"/sc/commodity/updatecommodityclass"+_e["jurisdiction"]() , true)
+			xhr.send(fd)
+			xhr.onreadystatechange=function(){
+				if (xhr.readyState==4 && xhr.status==200){
+					var dat = eval('(' +xhr.responseText+ ');')
+					_e["msgBox"]({
+						msg: dat.msg,
+						className: dat.res==-1 ? "error":"success",
+						timeout:3000
+					})
+					if(dat.res==0){
+						loadClass()
+					}
+				}
+			}
+		}}]})
+	dlg.querySelector("#code").value = clickdom.parentNode.parentNode.children[0].children[0].innerHTML
+	dlg.querySelector("#name").value = clickdom.parentNode.parentNode.children[1].children[0].innerHTML
+
+	dlg.show()
+}
+
+/* 20160902 种类图标
+function changeImage(clickdom){
+	var tr=clickdom.parentNode.parentNode
+		if (document.querySelector("#dlgData")) document.querySelector("#dlgData").parentNode.removeChild(document.querySelector("#dlgData"));
+		var dlg = _e.dialog({id:"dlgData",width:"500px",
+				title:tr.children[1].children[0].innerHTML+"的图片信息",
+				mainBody:'<div id="imgBody" style="padding-bottom: 5px;overflow: hidden;"></div>',
+				actions:[{id:"btn",title:"提交",func:function(){
+						dlg.parentNode.removeChild(dlg)
+				}},
+				{id:"btn",title:"关闭",func:function(){
+						dlg.parentNode.removeChild(dlg)
+				}}]})
+		dlg.show()
+		var myDate = new Date()//用作随机数刷新七牛缓存
+		var fd = new FormData(),xhr = new XMLHttpRequest()
+		fd.append("id",tr.getAttribute("data-id"))
+		xhr.open("POST","/qn/class/show",true)
+		xhr.send(fd)
+		xhr.onreadystatechange = function(){
+				if(xhr.readyState == 4 && xhr.status == 200){
+						var dateIm = eval('('+xhr.responseText+');')
+						var dateImg = dateIm.keys
+						if(!dateIm.keys){
+							_e.msgBox({msg:"加载图片失败"})
+							return
+						}
+
+						dlg.querySelector(".main").style.paddingLeft = "27%"
+						dlg.querySelector(".main").style.paddingTop = "20px"
+
+						var imgBody = document.querySelector("#imgBody")
+						var batchM = document.createElement("button")     //创建批量删除
+						batchM.setAttribute("id","batchMange")
+						batchM.innerHTML = "删除"
+						batchM.onclick = batch   //为批量删除绑定事件
+						imgBody.parentElement.insertBefore(batchM,imgBody)
+
+						var batchT = document.createElement("button")
+						batchT.setAttribute("id","batch")
+						batchT.innerHTML = "确定"
+						batchT.onclick = deleteImg
+						batchT.style.display = "none"
+						imgBody.parentElement.appendChild(batchT)
+
+						var addInput = document.createElement("input")     //创建上传图片的input
+						addInput.setAttribute("type","file")
+						addInput.setAttribute("id","file")
+						addInput.setAttribute("multiple","multiple")
+						imgBody.parentElement.appendChild(addInput)
+						var addButton = document.createElement("button")    //创建上传图片的确定键
+						addButton.setAttribute("id","upload")
+						addButton.innerHTML = "上传"
+						imgBody.parentElement.appendChild(addButton)
+
+
+								var spanImg = document.createElement("li")
+								spanImg.setAttribute("class","imgDiv")
+								spanImg.setAttribute("data-key",dateImg)
+								spanImg.setAttribute("style","float:left;list-style-type:none;padding-top:10px;padding-bottom:5px;width:100px;")
+								spanImg.style.paddingLeft = "10px"
+								var Img = document.createElement("img")
+						//    Img.setAttribute("src"," http://od35wia0b.bkt.clouddn.com/"+dateImg[i]+"?imageMogr2/thumbnail/120x80!&v="+myDate.getMilliseconds())
+
+								Img.setAttribute("src"," http://od35wia0b.bkt.clouddn.com/"+dateImg+".png?imageMogr2/thumbnail/120x80!")
+								spanImg.appendChild(Img)
+								imgBody.appendChild(spanImg)
+
+						if(document.querySelector("#imgBody").childNodes.length > 4){
+								dlg.querySelector(".main").style.overflow = "auto"
+								dlg.querySelector(".main").style.height = "300px"
+						}
+
+						function batch(){
+								imgBatch(imgBody.querySelectorAll("img"),imgBody.querySelector(".imgDiv").childNodes.length,document.querySelector("#batch"),imgBody.querySelectorAll(".imgDiv"))
+						}
+						function deleteImg(){
+								imgDelete(imgBody.querySelectorAll(".imgDiv"),document.getElementsByName("check"),dateImg,tbl.data[rows][0])
+						}
+						document.querySelector("#upload").onclick = function(){
+								var domimg=document.querySelector("#imgBody")
+								var files= document.querySelector("#file").files
+								if(files.length == 0){
+										alert("上传图片为空!")
+								}else{
+										_e.upload(files,upcb,domimg,tr.getAttribute("data-id"))
+								}
+						}
+				}
+		}
+}
+
+function imgBatch(e1,e2,e3,e4) {
+		if(e2 == 1){
+				e3.style.display = "block"
+				for (var i = 0; i < e1.length; i++) {
+						if (e1[i].parentNode.children.length < 2) {
+								var imgInput = document.createElement("input")
+								imgInput.setAttribute("type", "checkbox")
+								imgInput.setAttribute("name","check")
+								imgInput.setAttribute("value",i)
+								e4[i].appendChild(imgInput)
+						}
+				}
+		}else{
+				e3.style.display = "none"
+				for (var j = 0; j < e1.length; j++) {
+						if(e4[j].childNodes[1]){
+								e4[j].removeChild(e4[j].childNodes[1])
+						}
+				}
+		}
+}
+
+function imgDelete(e1,e2,e3,e4){
+		var arrImg = new Array()
+		for(var i=0; i<e2.length; i++){
+				if(e2[i].checked){
+						arrImg.push(e3[i][0])
+						e1[i].style.display = "none"
+				}
+		}
+		var formD = new FormData(),xhR = new XMLHttpRequest()
+		formD.append("commodityid",e4)
+		for(var j=0; j<arrImg.length; j++){
+				formD.append("filekey",arrImg[j])
+		}
+		xhR.open("POST","/qn/deletemany",true)
+		xhR.send(formD)
+		xhR.onreadystatechange = function(){
+				if(xhR.readyState == 4 && xhR.status == 200){
+						var dat = eval('(' +xhR.responseText+ ');')
+						_e["msgBox"]({
+								msg: dat.msg,
+								className: dat.res==-1 ? "error":"success",
+								timeout:3000
+						})
+						if(dat.res!=-1){
+								t.funcs.loadData.call(t)
+						}
+				}
+		}
+}
+
+function upcb(){
+		var args=arguments[0]
+		console.log(args)
+		var xml =new XMLHttpRequest(),fd = new FormData
+		for(var j=0;j<args[0].length;j++){
+				fd.append("filekey",args[0][j])
+		}
+		fd.append("id",tr.getAttribute("data-id"))
+		xml.open("POST","/qn/insertmanyfile",true)
+		xml.send(fd)
+		xml.onreadystatechange=function(){
+				if(xml.readyState == 4 && xml.status == 200){
+						var dat = eval('(' +xml.responseText+ ');')
+						_e["msgBox"]({
+								msg: dat.msg,
+								className: dat.res==-1 ? "error":"success",
+								timeout:3000
+						})
+						if(dat.res!=-1){
+								t.funcs.loadData.call(t)
+						}
+				}
+		}
+		for(var i=0;i<args[0].length;i++){
+				var spanImg = document.createElement("li")
+				spanImg.setAttribute("class","imgDiv")
+				spanImg.setAttribute("style","float:left;list-style-type:none;padding-top:10px;padding-bottom:5px;")
+				var Img = document.createElement("img")
+				spanImg.style.paddingLeft = "10px"
+			//  Img.setAttribute("src"," http://od35wia0b.bkt.clouddn.com/"+args[0][i]+"?imageMogr2/thumbnail/120x80!&v="+myDate.getMilliseconds())
+				Img.setAttribute("src"," http://od35wia0b.bkt.clouddn.com/"+args[0][i]+"?imageMogr2/thumbnail/120x80!")
+				spanImg.appendChild(Img)
+				args[2].appendChild(spanImg)
+		}
+}
+*/
+    </script>
+	</body>
+
+</html>

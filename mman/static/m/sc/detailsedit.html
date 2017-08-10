@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>10号先生 -商品详情</title>
+    <link rel="shortcut icon" href="http://static-1.shopten.cn/images/favicon.ico" type="image/x-icon" />
+
+    <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link href="//cdn.bootcss.com/summernote/0.8.1/summernote.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/summernote/0.8.1/summernote.js"></script>
+    <script src="//cdn.bootcss.com/summernote/0.8.1/lang/summernote-zh-CN.min.js"></script>
+    <style type="text/css">
+        .e-msg-bar {
+            background-color: #12C994;
+            position: fixed;
+            z-index: 1000000;
+            top: 0;
+            width: 100%;
+            height: auto;
+            line-height: 1.8;
+            padding: 13px 0px;
+            color: #fff;
+            font-size: 15px;
+            text-align: center;
+            transition: all ease-in-out 2s;
+            -webkit-animation-duration: 1s;
+            animation-duration: 1s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+        }
+
+        .alert-error {
+            background-color: #F06962 !important;
+        }
+
+        .alert-info {
+            background-color: #00c0ef !important;
+        }
+
+        .alert-warning {
+            background-color: #f39c12 !important;
+        }
+
+        .alert-success {
+            background-color: #12C994 !important;
+        }
+
+        @-webkit-keyframes fadeInDown {
+            from {
+                -webkit-transform: translate3d(0, -100%, 0);
+                transform: translate3d(0, -100%, 0);
+            }
+            to {
+                -webkit-transform: none;
+                transform: none;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                -webkit-transform: translate3d(0, -100%, 0);
+                transform: translate3d(0, -100%, 0);
+            }
+            to {
+                -webkit-transform: none;
+                transform: none;
+            }
+        }
+
+        .fadeInDown {
+            -webkit-animation-name: fadeInDown;
+            animation-name: fadeInDown;
+        }
+
+        @-webkit-keyframes fadeOutUp {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+                -webkit-transform: translate3d(0, -100%, 0);
+                transform: translate3d(0, -100%, 0);
+            }
+        }
+
+        @keyframes fadeOutUp {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+                -webkit-transform: translate3d(0, -100%, 0);
+                transform: translate3d(0, -100%, 0);
+            }
+        }
+
+        .fadeOutUp {
+            -webkit-animation-name: fadeOutUp;
+            animation-name: fadeOutUp;
+        }
+
+        .animated {
+            -webkit-animation-duration: 0.5s;
+            animation-duration: 0.5s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+        }
+
+        .progress {
+            height: 20px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            background-color: #e5e5e5;
+            border-radius: 4px;
+        }
+
+        .progress-bar {
+            float: left;
+            width: 0;
+            height: 100%;
+            font-size: 12px;
+            color: #fff;
+            text-align: center;
+            background-color: #3280fc;
+            -webkit-transition: width .6s ease;
+            transition: width .6s ease;
+        }
+
+        .progress-striped .progress-bar {
+            background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.25, #3280fc), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, #3280fc), color-stop(.75, #3280fc), color-stop(.75, transparent), to(transparent));
+            background-image: -webkit-linear-gradient(45deg, #3280fc 25%, transparent 25%, transparent 50%, #3280fc 50%, #3280fc 75%, transparent 75%, transparent);
+            background-image: linear-gradient(45deg, #3280fc 25%, transparent 25%, transparent 50%, #3280fc 50%, #3280fc 75%, transparent 75%, transparent);
+            background-size: 40px 40px;
+        }
+
+        .progress.active .progress-bar {
+            -webkit-animation: progress-bar-stripes 2s linear infinite;
+            animation: progress-bar-stripes 2s linear infinite;
+        }
+
+        .progress-bar-info {
+            background-color: #03b8cf;
+        }
+
+        .progress-striped .progress-bar-info {
+            background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(.25, rgba(255, 255, 255, .15)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .15)), color-stop(.75, rgba(255, 255, 255, .15)), color-stop(.75, transparent), to(transparent));
+            background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+            background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="hero-unit">
+        <div class="col-xs-12" style="z-index: 1000;margin-top:50px;">
+            <h4 style="text-align: center">商品详情编辑</h4>
+            <h4>商品名：<span id="commodity_name">五香大米</span></h4>
+        </div>
+
+        <div id="editor">
+
+        </div>
+        <div class=" clearfix" style="margin-top: 10px;">
+            <div class="pull-right">
+                <a style="color: #fff;" href="javascript:;" class="btn btn-info" id="submitBtn">保存</a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript" src="/include/assets/js/utils.js"></script>
+<script type="text/javascript" src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script>
+    $(function() {
+
+        //$('#editor').wysiwyg({ fileUploadError: showErrorAlert} );
+        if(!$.cookie("token")){
+            $.get("/app/file/token/images/get",function(data){
+                if(data.res==0){
+                    $.cookie("token",data.token,{expires:29,path:"/"});
+                    $.cookie("url",data.url,{expires:29,path:"/"})
+                }
+                if(data.res==4000){
+                    _e.MsgBox({
+                        "msg":"请登录",
+                        className:"error"
+                    })
+                }
+
+            },"json")
+        }
+
+
+        var $editor = $('#editor').summernote({
+            height: 400, // set editor height
+            minHeight: null, // set minimum height of editor
+            maxHeight: null, // set maximum height of editor
+            focus: true, // set focus to editable area after initializing summernote
+            lang: 'zh-CN',
+            callbacks: {
+                onImageUpload: function(files, context, welEditable) {
+                    var $note = $(this);
+                    for (var i = 0, len = files.length; i < len; i++) {
+                        var temp_file=files[i]["name"].split(".")
+                        var key=(+new Date())+'.'+temp_file[temp_file.length-1]
+                        _e.uploadFile({
+                            token:$.cookie("token"),
+                            key:key,
+                            file: files[i]
+                        }).then(function(data) {
+                            var data_ = $.cookie("url") + JSON.parse(data).key;
+                            $note.summernote('insertImage', data_)
+                        }).catch(function(error) {
+                            _e.MsgBox({
+                                "msg":"系统错误！",
+                                className:"error"
+                            })
+                            //alert(error) //七牛错误处理
+                        });
+                    }
+                }
+            }
+        });
+        var uid = _e.getQs("commodity_id");
+        $.get("/app/commodity/intro/get", {
+            id: uid
+        }, function(data) {
+            if (data.res == '0') {
+                $('#editor').summernote('code', decodeURIComponent(data.intro))
+
+                $("#commodity_name").html(data.name);
+            } else {
+                _e.MsgBox({
+                    msg: "数据加载失败,请联系开发人员！",
+                    className: "error"
+                });
+                return false;
+            }
+        }, "json");
+
+        $("#submitBtn").click(function() {
+            var html_info = $("#editor").summernote('code');
+            var last_info = encodeURIComponent(html_info);
+            var uid = _e.getQs("commodity_id");
+            if (uid == "" || last_info == "") {
+                _e.MsgBox({
+                    msg: "数据不能为空！",
+                    className: "error"
+                });
+                return false;
+            }
+
+            $.post("/app/commodity/intro/update", {
+                intro: last_info,
+                id: uid
+            }, function(data) {
+
+                if (data.res == '0') {
+                    _e.MsgBox({
+                        msg: "修改成功！",
+                        className: "success"
+                    });
+                } else {
+                    _e.MsgBox({
+                        msg: "修改失败！",
+                        className: "error"
+                    });
+                    return false;
+                }
+            }, 'json');
+        })
+    });
+</script>
+</body>
+
+</html>

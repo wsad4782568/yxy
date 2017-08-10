@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no" />
+    <title>Mr.Ten</title>
+    <link rel="icon" type="image/x-icon" href="../i/css/img/favicon.ico" />
+	<link rel="shortcut icon" type="image/x-icon" href="../i/css/img/favicon.ico" />
+	<link rel="apple-touch-icon-precomposed" href="../i/css/img/favicon.png" />
+
+	<link rel="stylesheet" type="text/css" href="../i/css/sale/loading.css" />
+	<link rel="stylesheet" type="text/css" href="../i/css/iconfont/iconfont.css" />
+	<link rel="stylesheet" type="text/css" href="../i/css/sale/mobile.css" />
+
+</head>
+<body>
+<!--page start-->
+<div class="header bgc-FFF100">
+    <ul class="headerMenu flex">
+        <div><i class="icon iconfont icon-shoptenlogo"></i></div>
+        <h1 class="flex-1">用户中心</h1>
+        <li onclick="location.href='search.html';"><i class="icon iconfont icon-search"></i></li>
+    </ul>
+</div>
+<!--main start-->
+<div class="main scrollable">
+
+    <div class="userCenter">
+
+        <div class="userInfo">
+            <div class="flex">
+                <ul><img src="../i/css/img/usericon.png" /></ul>
+                <li class="flex-1"><h1>JavYeh</h1><h2>13510151010</h2></li>
+                <p><i class="icon iconfont icon-arrowright"></i></p>
+            </div>
+        </div>
+
+        <div class="userList">
+            <ul class="flex" onclick="location.href='address.html';">
+                <h1><i class="icon iconfont icon-location"></i></h1>
+                <h2 class="flex-1">收货地址</h2>
+                <h3>2</h3><p><i class="icon iconfont icon-arrowright"></i></p></ul>
+            <ul class="flex" onclick="location.href='favorite.html';"><h1><i class="icon iconfont icon-star"></i></h1><h2 class="flex-1">我的收藏</h2><h3>58</h3><p><i class="icon iconfont icon-arrowright"></i></p></ul>
+            <h6></h6>
+            <ul class="flex"><h1><i class="icon iconfont icon-mobile"></i></h1><h2 class="flex-1">绑定手机</h2><h3>13510151010</h3><p><i class="icon iconfont icon-arrowright"></i></p></ul>
+            <ul class="flex"><h1><i class="icon iconfont icon-key"></i></h1><h2 class="flex-1">登录密码</h2><p><i class="icon iconfont icon-arrowright"></i></p></ul>
+            <ul class="flex">
+                <h1><i class="icon iconfont icon-notification"></i></h1>
+                <h2 class="flex-1">通知推送</h2>
+                <div class="toggleOn">
+                    <div></div>
+                </div>
+            </ul>
+            <h6></h6>
+            <ul class="flex" onclick="location.href='freeback.html';"><h1><i class="icon iconfont icon-mail"></i></h1><h2 class="flex-1">意见反馈</h2><h3>3</h3><p><i class="icon iconfont icon-arrowright"></i></p></ul>
+            <ul class="flex"><h1><i class="icon iconfont icon-phone"></i></h1><h2 class="flex-1">联系我们</h2><h3>0755 - 26995799</h3><p><i class="icon iconfont icon-arrowright"></i></p></ul>
+        </div>
+
+    </div>
+
+</div>
+<!--main end-->
+<div class="footer bgc-FFFFFF">
+    <ul class="footerMenu flex">
+        <li class="flex-1 border-r-1-s-EEEEEE" onclick="location.href='index.html';">首页</li>
+        <li class="flex-1 border-r-1-s-EEEEEE" onclick="location.href='goods.html';">商品</li>
+        <li class="flex-1 border-r-1-s-EEEEEE" onclick="location.href='cart.html';">购物车<i class="icon iconfont tips icon-circles"></i></li>
+        <li class="flex-1 border-r-1-s-EEEEEE" onclick="location.href='order.html';">订单</li>
+        <li class="flex-1 hover">帐户</li>
+    </ul>
+</div>
+<!--page end-->
+
+<script type="text/javascript">
+    document.querySelector(".toggleOff, .toggleOn").addEventListener("click",function(){
+        if(this.getAttribute("class") == "toggleOff"){
+            this.setAttribute("class","toggleOn")
+        }else{
+            this.setAttribute("class","toggleOff")
+        }
+        return false;
+    },true)
+</script>
+</body>
+</html>

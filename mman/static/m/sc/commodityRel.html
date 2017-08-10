@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>关联商品</title>
+    <link rel="shortcut icon" href="/i/css/img/favicon.ico" />
+    <link rel="stylesheet" href="/i/css/manage/pure.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/tree.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/dialog.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/contextmenu.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/formdata.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/table.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/iconfont/iconfont.css" type="text/css"/>
+</head>
+<body>
+<div class="default-main default-top">
+    <div class="main-wrapper">
+        <div class="layout-bd em-left">
+            <div id="trees"></div>
+        </div>
+        <div class="layout-bd middle">
+            <div id="tbl"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/i/js/handlebars.js"></script>
+<script type="text/javascript" src="/i/js/_e.js"></script>
+<script type="text/javascript" src="/i/js/table.js"></script>
+<script type="text/javascript" src="/i/js/dialog.js"></script>
+<script type="text/javascript" src="/i/js/tree.js"></script>
+<script type="text/javascript" src="/i/js/contextmenu.js"></script>
+<script type="text/javascript" src="/i/js/form.js"></script>
+<script type="text/javascript" src="/i/js/imgup.js"></script>
+<script type="text/javascript" src="/i/js/msgbox.js"></script>
+<script>
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/sc/commodity/getext", true);
+    xhr.send();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            others = eval('('+xhr.responseText+');')
+            others.comclass = []// id 和 姓名  对比  商品tbl里面对应的
+            for(var i in others.tree) {
+                if (others.tree[i][8]==1){//只需要叶子节点的,商品只在这个种类下面
+                    others.comclass.push([others.tree[i][1],others.tree[i][2]]);
+                }
+            }
+            others.trname = []// id 和 姓名  对比
+            others.trname.push([0,"父节点"])
+            for(var i in others.tree) {
+                if (others.tree[i][8]==0){//只需要大类,叶子节点不能作为大类
+                    others.trname.push([others.tree[i][0],others.tree[i][2]]);
+                }
+            }
+            trs=[]
+            trs.push([0,"父节点"])
+            for(var i in others.tree) {
+                trs.push([others.tree[i][0],others.tree[i][2],others.tree[i][7],others.tree[i][8],["data-code",others.tree[i][1]]]);
+            }
+            loadtree(trs)
+            loadtbl()
+            t.funcs.loadData.call(t, {
+                qseq: -1, //id
+                qverb: 'g',// >
+                qpt: -1,  //-1
+                oseq: 0, //顺序的下标
+                odir:"a" //升序降序
+            })        }
+    }
+    function loadtree(treedata){
+        var trs=new _e["tree"]()
+        var event=[{e:"click",func:function () { //需要绑定的函数，绑定tbl
+            t.funcs.loadData.call(t,{    //在table.js中的204行显示
+                qseq:12, //数组中下标
+                qverb:'e',// = 条件
+                qpt:this.getAttribute("data-code") //值
+            })
+        }, is_leaf:1}]
+        trs.init("#trees",treedata,1,"TR",event)    //创建树
+    }
+
+    function loadtbl(){
+        coldefs = [{ seq:1,
+            render:function(item){return "<b>"+item+"</b>"},
+            sortable:true,
+            retrievable: true,
+            title:"商品名",
+            visible:true,
+            name:"name",
+            type:0,
+            data:[]
+        },{ seq:0,//在数据[[],[]]中的位置rows[i][seq] 返回值
+            render:function(v){ return v},// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            visible:true,
+            title:"流水号",
+            name:"id",//和后端对应，FormData里面的key，后端解析时要一致
+            type:-1,
+            data:[]//为select时，这里为需要传入的数据,others里面  如商品，这里应该为商品种类对应的id和name   参考下面种类列
+
+        }, { seq:23,
+            render:function(item){
+                if(item.length>3) return "<img src=' http://od35wia0b.bkt.clouddn.com/"+item+"?imageMogr2/thumbnail/80x80!' />"
+                return "<b>"+item+"</b>"
+            },// 这里render是function，它可以组合或变换当前数据行，然后进行显示
+            title:"图片",
+            sortable:true,
+            retrievable: true,
+            visible:true,
+            // http://od35wia0b.bkt.clouddn.com/153.jpg?imageMogr2/thumbnail/20x20!
+        }, { seq:20,
+            title:"编号",
+            render:function(item){return "<b>"+item+"</b>"},
+            sortable:true,
+            retrievable: true,
+            visible:true,
+        }, { seq:12,
+            render:function(item){
+                for(var i = 0;i<window["others"].comclass.length;i++){
+                    if (others.comclass[i][0]==item) return "<b>"+others.comclass[i][1]+item+"</b>"
+                }
+            },
+            title:"商品种类",
+            visible:true,
+            name:"classid",
+            type:1,
+            data:others.comclass
+        },  { seq:22,
+            title:"条形码",
+            render:function(item){
+                var codes=item.split(",")
+                var barcode = ''
+                for(var i = 0 ;i < codes.length-1;i++){
+                    barcode+='<i>'+codes[i]+'</i><br>'
+                }
+
+                return "<b>"+barcode+"</b>"
+            },
+            sortable:true,
+            retrievable: true,
+            visible:true,
+        }, { seq:7,
+            render:function(item){return "<b>"+item+"</b>"},
+            sortable:true,
+            retrievable: true,
+            title:"规格",
+            visible:true,
+            name:"specification",
+            type:0,
+            data:[]
+        }, { seq:11,
+            render:function(item){return "<b>"+item+"</b>"
+                //return "<input onclick='LoadUnits(this)' type='button' value='"+item+"'>"
+            },
+            title:"单位",
+            visible:true,
+        }, { seq:2,
+                render:function(item){return "<b>"+item+"</b>"},
+                title:"内部编码",
+            },{ seq:4,
+                render:function(item){return "<b>"+(item/100).toFixed(2)+"</b>"},
+                sortable:true,
+                title:"价格",
+                visible:true,
+                name:"price",
+                type:0,
+                data:[]
+            }
+
+        ]
+
+        t = new _e["table"]()
+        row_actions =[
+            {cls:"doerow",func:function(tbl,rows){
+                if (document.querySelector("#dlgData1")) document.querySelector("#dlgData1").parentNode.removeChild(document.querySelector("#dlgData1"));
+                var dlg = _e.dialog({id:"dlgData1",width:"700px",
+                    title:tbl.data[rows][1]+"的关联商品",
+                    mainBody: "<table id='rels' style='width: 100%' class='pure-table pure-table-bordered'><thead><tr><th>流水号</th><th>商品名</th><th>规格</th><th>单位</th><th>单位类型</th><th>关系</th><th>组合中的数量</th>  <th> 操作</th> </tr></thead></table>",
+                    actions:[{id:"btn",title:"确定",func:function(){
+                        dlg.parentNode.removeChild(dlg)
+                    }}]})
+                dlg.show()
+                var selectTbody1=document.createElement("tbody")
+                selectTbody1.setAttribute("id","selectTbody1")
+                dlg.querySelector("#rels").appendChild(selectTbody1)
+                //dlg.querySelector("#chunhuo").appendChild(selectTbody1)
+                var xhr = new XMLHttpRequest()
+                var url="/sc/commodityrel/getbycom?id="+_e["stripscript"](tbl.data[rows][0])
+                xhr.open("POST" ,url , true)
+                xhr.send()
+                xhr.onreadystatechange=function()  {
+                    if (xhr.readyState==4 && xhr.status==200){
+                        var comrel = eval('('+xhr.responseText+');')
+                        var reltype=[[4,"赠送商品"],[5,"组合套餐"],[6,"特价处理商品"],[7,"同类商品"]]
+                        if(comrel.res==-1){
+                            _e["msgBox"]({msg: comrel.msg})
+                            return
+                        }
+                        for (var i =0;i< comrel.commodityrel.length;i++){
+                            var tr = document.createElement("tr")
+                            tr.innerHTML = '<td>'+comrel.commodityrel[i][1]+'</td>'+
+                                    '<td>'+comrel.commodityrel[i][4]+'</td>'+
+                                    '<td>'+comrel.commodityrel[i][5]+'</td>'+
+                                    '<td>'+comrel.commodityrel[i][6]+'</td>'+
+                                    '<td>'+_e.unit[comrel.commodityrel[i][8]]+'</td>'
+                            for(var x1=0;x1<reltype.length;x1++){
+                                if(reltype[x1][0]==comrel.commodityrel[i][2])  tr.innerHTML+='<td>'+reltype[x1][1]+'</td>'
+                            }
+                            tr.innerHTML+=   //'<td>'+comrel.commodityrel[i][3]+'</td>'+
+                                    '<td>'+comrel.commodityrel[i][3]+'</td>'+
+                                    '<td data-id="'+i+'"><i class="icon iconfont edit editrel">&#xe618;</i>' +
+                                    '<i class="icon iconfont delete deleterel">&#xe617;</i></td>'
+                            selectTbody1.appendChild(tr)
+                        }
+                        _e.bindAll(".editrel","click",editrel,dlg)
+                        _e.bindAll(".deleterel","click",deleterel,dlg)
+                        function editrel(){
+                            var amount=prompt("请输入要修改的数量",comrel.commodityrel[Number(this.parentElement.getAttribute("data-id"))][3])
+                            var edbtn=this
+                            if (amount!=null && amount!="") {
+                                var df2 = new FormData,xhr2 = new XMLHttpRequest()
+                                df2.append("id",comrel.commodityrel[Number(this.parentElement.getAttribute("data-id"))][0])
+                                df2.append("amount",_e["stripscript"](amount))
+                                xhr2.open("POST","/sc/commodityrel/updateamount"+_e["jurisdiction"](),true)
+                                xhr2.send(df2)
+                                xhr2.onreadystatechange = function(){
+                                    if(xhr2.readyState == 4 && xhr2.status == 200){
+                                        var dat = eval('(' +xhr2.responseText+ ');')
+                                        _e["msgBox"]({
+                                            msg: dat.msg,
+                                            className: dat.res==-1 ? "error":"success",
+                                            timeout:3000
+                                        })
+                                        if(dat.res==0){
+                                            edbtn.parentNode.parentNode.children[6].innerHTML=amount
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        function deleterel(){
+                            var dlttr=this.parentNode.parentNode
+                            if (confirm("确定要删除吗？")) {
+                                var df2 = new FormData,xhr2 = new XMLHttpRequest()
+                                df2.append("id",comrel.commodityrel[Number(this.parentElement.getAttribute("data-id"))][0])
+                                xhr2.open("POST","/sc/commodityrel/deleterel"+_e["jurisdiction"](),true)
+                                xhr2.send(df2)
+                                xhr2.onreadystatechange = function(){
+                                    if(xhr2.readyState == 4 && xhr2.status == 200){
+                                        var dat = eval('(' +xhr2.responseText+ ');')
+                                        _e["msgBox"]({
+                                            msg: dat.msg,
+                                            className: dat.res==-1 ? "error":"success",
+                                            timeout:3000
+                                        })
+                                        if(dat.res==0){
+                                            dlttr.parentNode.removeChild(dlttr)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },title:"查看关联商品"},
+            {cls:"doerow",func:function(tbl,rows){
+                var tbl_model="<input id='comname' type='text' value=''><button type='button' id='btnSearch' style='margin-top: 16px'>查询</button>"+
+                        "<table style='width:460px' id='rel_tbl' class='pure-table pure-table-bordered'><thead><tr><th>流水号</th><th>品名</th><th>规格</th><th>单位</th><th>单位类型</th><th>编号</th></tr></thead></table>"
+                if (document.querySelector("#dlgRel")) document.querySelector("#dlgRel").parentNode.removeChild(document.querySelector("#dlgRel"));
+                var dlg = _e.dialog({id:"dlgRel",width:"500px",
+                    title:"新增"+tbl.data[rows][1]+"的同类商品",
+                    mainBody:tbl_model,
+                    actions:[{id:"btn",title:"确定",func:function(){
+                        var df1 = new FormData,xhr1 = new XMLHttpRequest()
+                        var  tbody_rel=document.querySelector("#selectRelTbody")
+                        var trs=tbody_rel.querySelectorAll("tr")
+                        var checked_tr = []
+                        for (var i=0;i<trs.length;i++){
+                            if(trs[i].children[0].children[0].checked) {
+                                checked_tr.push(trs[i])
+                            }
+                        }
+                        if(checked_tr.length<1) {
+                            _e["msgBox"]({msg: "请选择商品!"})
+                            return
+                        }
+                        if(checked_tr.length>1) {
+                            _e["msgBox"]({msg: "只能勾选一个商品!"})
+                            return
+                        }
+                        var tds=checked_tr[0].querySelectorAll("td")
+                        df1.append("comma",tbl["data"][rows][0])
+                        df1.append("commb",tds[0].children[1].innerHTML)
+                        df1.append("reltype","7")
+                        df1.append("amount","0")
+                        df1.append("isexclusive","0")
+                        xhr1.open("POST","/sc/commodityrel/insert"+_e["jurisdiction"](),true)
+                        xhr1.send(df1)
+                        xhr1.onreadystatechange = function(){
+                            if(xhr1.readyState == 4 && xhr1.status == 200){
+                                var dat = eval('(' +xhr1.responseText+ ');')
+                                _e["msgBox"]({
+                                    msg: dat.msg,
+                                    className: dat.res==-1 ? "error":"success",
+                                    timeout:3000
+                                })
+                            }
+                        }
+                        //dlg.parentNode.removeChild(dlg)
+                    }}]})
+                dlg.show()
+                function comModify(){
+                    if(document.querySelector("#selectRelTbody")){
+                        document.querySelector("#selectRelTbody").parentNode.removeChild(document.querySelector("#selectRelTbody"))
+                    }
+                    var fd = new FormData();
+                    fd.append("name",_e["stripscript"](dlg.querySelector("#comname").value))
+                    var xhr = new XMLHttpRequest()
+                    xhr.open("POST","/sc/commodity/getcombyname",true)
+                    xhr.send(fd)
+                    xhr.onreadystatechange = function(){
+                        if(xhr.readyState == 4 && xhr.status == 200){
+                            var dat = eval('('+xhr.responseText+');')
+                            var selectTbody=document.createElement("tbody")
+                            selectTbody.setAttribute("id","selectRelTbody")
+                            dlg.querySelector("#rel_tbl").appendChild(selectTbody)
+                            var selectTxt = dlg.querySelector("#selectRelTbody")
+                            if(dat.commodity.length == 0){
+                                _e["msgBox"]({msg: "没有这个商品!"})
+                                return
+                            }
+                            if(dlg.querySelector("#comname").value == ""){
+                                selectTxt.style.background = "transparent"
+                                _e["msgBox"]({msg: "输入不能为空!"})
+                                return
+                            }
+                            for(var i=0; i<dat.commodity.length; i++){
+                                var tr = document.createElement("tr")
+                                tr.innerHTML = '<td>'+'<input type="checkbox" class="checkIpt">'+'<span>'+dat.commodity[i][0]+'</span>'+'</td>'+
+                                        '<td>'+dat.commodity[i][1]+'</td>'+
+                                        '<td>'+dat.commodity[i][7]+'</td>'+
+                                        '<td>'+dat.commodity[i][11]+'</td>'+
+                                        '<td>'+_e.unit[dat.commodity[i][17]]+'</td>'+
+                                        '<td>'+dat.commodity[i][18]+'</td>'
+                                selectTxt.appendChild(tr)
+                            }
+                            if(dat.commodity.length > 9){
+                                dlg.querySelector(".main").style.overflow = "auto"
+                                dlg.querySelector(".main").style.height = "300px"
+                            }
+                        }
+                    }
+                }
+                document.querySelector('#btnSearch').onclick = comModify
+            },title:"新增同类商品"}]
+        rows_actions = []
+
+        ext_row = function(rows,i){
+            return "this is row "+i
+        }
+        t.funcs.init.call(t,"tbl",
+                coldefs,row_actions,rows_actions,"table","__THE__TABLE__",ext_row,"/sc/commodity/getcommoditys")
+        var tbl_head = document.querySelector("#tbl").querySelector("thead")
+        tbl_head.querySelector("#trtime").parentNode.removeChild( tbl_head.querySelector("#trtime"))
+        tbl_head.querySelector("#trdept").parentNode.removeChild( tbl_head.querySelector("#trdept"))
+    }
+</script>
+</body>
+
+</html>

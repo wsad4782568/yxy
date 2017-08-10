@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>供应链管理</title>
+    <link rel="shortcut icon" href="/i/css/img/favicon.ico"/>
+    <link rel="stylesheet" href="/i/css/manage/pure.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/font-awesome.min.css" type="text/css"/>
+    <link rel="stylesheet" href="/i/css/manage/base.css" type="text/css" />
+
+</head>
+<body>
+<!——————————S中间——————————>
+<div class="default-main">
+    <div class="main-wrapper">
+        <div class="layout-bd em-left">
+            <div class="container">
+                <section class="em-container">
+                    <div class="em_">
+                        <input id="em-1" name="accordion" type="checkbox" />
+                        <label for="em-1">商品信息</label>
+                        <article class="em-small" >
+                            <ul>
+                                <li><a href="#" id="commodity" class="anchorPage"><p>类别</p></a></li>
+                                <li><a href="#" id="commodityRel" class="anchorPage"><p>新增关联商品</p></a></li>
+                                <li><a href="#" id="freeGift" class="anchorPage"><p>赠送商品管理</p></a></li>
+                                <li><a href="#" id="comPackage" class="anchorPage"><p>组合套餐管理</p></a></li>
+                                <li><a href="#" id="newPackage" class="anchorPage"><p>新增组合商品</p></a></li>
+                            </ul>
+                        </article>
+                    </div>
+                    <div class="em_">
+                        <input id="em-2" name="accordion" type="checkbox" />
+                        <label for="em-2">售卖方式</label>
+                        <article class="em-small">
+                        	<ul>
+	                            <li><a href="#" id="saletype" class="anchorPage"><p>售卖方式</p></a></li>
+                            </ul>
+                        </article>
+                    </div>
+                    <div class="em_">
+                        <input id="em-3" name="accordion" type="checkbox" />
+                        <label for="em-3">库存管理</label>
+                        <article class="em-small">
+                        	<ul>
+                        		<li><a href="#" id="stock" class="anchorPage"><p>查询</p></a></li>
+                                <li><a href="#" id="lowerPrice" class="anchorPage"><p>特价商品管理</p></a></li>
+                                <li><a href="#" id="checkLowerPrice" class="anchorPage"><p>特价商品审核</p></a></li>
+                        		<li><a href="#" id="leastUnit" class="anchorPage"><p>报损</p></a></li>
+                        	</ul>
+                        </article>
+                    </div>
+                    <div class="em_">
+                        <input id="em-4" name="accordion-1" type="checkbox" />
+                        <label for="em-4">采购管理</label>
+                        <article class="em-small">
+                            <ul>
+                                <li><a href="#" id="stockingplan" class="anchorPage"><p>新建采购计划</p></a></li>
+                                <li><a href="#" id="stockingcheck" class="anchorPage"><p>审核</p></a></li>
+                                <li><a href="#" id="enterstocking" class="anchorPage"><p>入库</p></a></li>
+                                <li><a href="#" id="stocking" class="anchorPage"><p>查询</p></a></li>
+                            </ul>
+                        </article>
+                    </div>
+                    <div class="em_">
+                        <input id="em-5" name="accordion-1" type="checkbox" />
+                        <label for="em-5">调度管理</label>
+                        <article class="em-small">
+                            <ul>
+                                <li><a href="#" id="stocktransferplan" class="anchorPage"><p>新建调度计划</p></a></li>
+                                <li><a href="#" id="stocktransfer" class="anchorPage"><p>调度计划管理</p></a></li>
+                            </ul>
+                        </article>
+                    </div>
+                    <div class="em_">
+                        <input id="em-6" name="accordion-1" type="checkbox" />
+                        <label for="em-6">特权操作</label>
+                        <article class="em-small">
+                            <ul>
+                                <li><a href="#" id="privilegedoperation" class="anchorPage"><p>特权出库</p></a></li>
+                                <li><a href="#" id="checktransferout" class="anchorPage"><p>特权出库审核</p></a></li>
+                                <li><a href="#" id="storageprivilege" class="anchorPage"><p>特权入库</p></a></li>
+                            </ul>
+                        </article>
+                    </div>
+                    <div class="em_">
+                        <input id="em-7" name="accordion-1" type="checkbox" />
+                        <label for="em-7">促销方式管理</label>
+                        <article class="em-small">
+                            <ul>
+                                <li><a href="#" id="goodspromotion" class="anchorPage"><p>商品促销方式绑定</p></a></li>
+                                <li><a href="#" id="promotiondetailed" class="anchorPage"><p>促销详情</p></a></li>
+                                <li><a href="#" id="createpromotion" class="anchorPage"><p>新增促销方式</p></a></li>
+                                <li><a href="#" id="creategiftpackage" class="anchorPage"><p>新增买送方式</p></a></li>
+                                <li><a href="#" id="createcoupon" class="anchorPage"><p>新增优惠券</p></a></li>
+                            </ul>
+                        </article>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="layout-bd middle">
+            <iframe id="frm" class="frm" src=""></iframe>
+        </div>
+    </div>
+</div>
+<!——————————E中间——————————>
+<!——————————S头部——————————>
+<div class="layout-hd">
+    <div class="header_log">
+        <a href="/m/index.html"><img src="/i/css/img/favicon.ico" /></a>
+    </div>
+    <div class="header_link">
+        <ul>
+            <li><a href="/m/basis/frm.html">基本信息管理</a></li>
+            <li><a>供应链管理</a></li>
+            <li><a href="/m/order/frm.html">订单管理</a></li>
+            <li><a href="/m/delivery/frm.html">数据统计</a></li>
+            <!-- <li><a href="/m/interface/frm.html">接口管理</a></li> -->
+        </ul>
+    </div>
+    <div class="header_info header_link" style="float: left;padding-right: 5%;height: 50px;width: 30%">
+        <ul>
+            <li><select id="current_dept" onchange="change_show_dept(this)"></select></li>
+
+            <li><a href="#" id="staff_id" style="padding-left: 100px"></a></li>
+            <li><a href="#" id="staff_dept"></a></li>
+        </ul>
+    </div>
+</div>
+<!——————————E头部——————————>
+<!——————————S底部——————————>
+<div class="layout-ft minwidth"> </div>
+<!——————————E底部——————————>
+</body>
+<script type="text/javascript" src="/i/js/frame.js"></script>
+</html>

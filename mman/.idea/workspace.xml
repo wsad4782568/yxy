@@ -1,0 +1,947 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="b63929e8-1bc6-4ed9-86b3-b0bb47cc4003" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/m/sc/ProductCarousel.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/m/sc/js/ProductCarousel.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/m/sc/combinationCom.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/m/sc/js/combinationCom.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/m/sc/commodityRel.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/controllers/sc/comstock.go" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/m/damaged.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/m/frm.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/m/sc/newPackage.html" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/controllers/util/file/file.go" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/main" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/static/m/sc/库存.zip" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/i/js/_e.js" afterPath="$PROJECT_DIR$/static/i/js/_e.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/e/bak/sales/mui/examples/actionsheet-plus.html" afterPath="$PROJECT_DIR$/static/e/bak/sales/mui/examples/actionsheet-plus.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/e/bak/sales/mui/examples/ad.html" afterPath="$PROJECT_DIR$/static/e/bak/sales/mui/examples/ad.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/basis/address.go" afterPath="$PROJECT_DIR$/controllers/basis/address.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/basis/js/address.js" afterPath="$PROJECT_DIR$/static/m/basis/js/address.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/i/css/sale/autoTextarea.css" afterPath="$PROJECT_DIR$/static/i/css/sale/autoTextarea.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/i/css/manage/base.css" afterPath="$PROJECT_DIR$/static/i/css/manage/base.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/s/cart.html" afterPath="$PROJECT_DIR$/static/s/cart.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/checkLowerPrice.html" afterPath="$PROJECT_DIR$/static/m/sc/checkLowerPrice.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/sc/checkstocking.go" afterPath="$PROJECT_DIR$/controllers/sc/checkstocking.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/checktransferout.html" afterPath="$PROJECT_DIR$/static/m/sc/checktransferout.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/comPackage.html" afterPath="$PROJECT_DIR$/static/m/sc/comPackage.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/sc/commodity.go" afterPath="$PROJECT_DIR$/controllers/sc/commodity.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/commodity.html" afterPath="$PROJECT_DIR$/static/m/sc/commodity.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/js/commodity.js" afterPath="$PROJECT_DIR$/static/m/sc/js/commodity.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/sc/commodityrel.go" afterPath="$PROJECT_DIR$/controllers/sc/commodityrel.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/sc/compackage.go" afterPath="$PROJECT_DIR$/controllers/sc/compackage.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/js/createcoupon.js" afterPath="$PROJECT_DIR$/static/m/sc/js/createcoupon.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/creategiftpackage.html" afterPath="$PROJECT_DIR$/static/m/sc/creategiftpackage.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/js/creategiftpackage.js" afterPath="$PROJECT_DIR$/static/m/sc/js/creategiftpackage.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/js/createpreorder.js" afterPath="$PROJECT_DIR$/static/m/sc/js/createpreorder.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/createpromotion.html" afterPath="$PROJECT_DIR$/static/m/sc/createpromotion.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/js/createpromotion.js" afterPath="$PROJECT_DIR$/static/m/sc/js/createpromotion.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/damaged.html" afterPath="$PROJECT_DIR$/static/m/sc/damaged.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/js/damaged.js" afterPath="$PROJECT_DIR$/static/m/sc/js/damaged.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/js/damagedreview.js" afterPath="$PROJECT_DIR$/static/m/sc/js/damagedreview.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/sc/default.go" afterPath="$PROJECT_DIR$/controllers/sc/default.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/basis/deliveryType.go" afterPath="$PROJECT_DIR$/controllers/basis/deliveryType.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/basis/deliverytype.html" afterPath="$PROJECT_DIR$/static/m/basis/deliverytype.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/basis/department.go" afterPath="$PROJECT_DIR$/controllers/basis/department.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/basis/js/department.js" afterPath="$PROJECT_DIR$/static/m/basis/js/department.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/i/js/dialog.js" afterPath="$PROJECT_DIR$/static/i/js/dialog.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/basis/district.go" afterPath="$PROJECT_DIR$/controllers/basis/district.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/i/js/district.js" afterPath="$PROJECT_DIR$/static/i/js/district.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/basis/js/district.js" afterPath="$PROJECT_DIR$/static/m/basis/js/district.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/enterstocking.html" afterPath="$PROJECT_DIR$/static/m/sc/enterstocking.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/js/enterstocking.js" afterPath="$PROJECT_DIR$/static/m/sc/js/enterstocking.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/sc/expressstock.go" afterPath="$PROJECT_DIR$/controllers/sc/expressstock.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/util/file.go" afterPath="$PROJECT_DIR$/controllers/util/file.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/i/js/form.js" afterPath="$PROJECT_DIR$/static/i/js/form.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/i/css/manage/formdata.css" afterPath="$PROJECT_DIR$/static/i/css/manage/formdata.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/i/js/frame.js" afterPath="$PROJECT_DIR$/static/i/js/frame.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/freeGift.html" afterPath="$PROJECT_DIR$/static/m/sc/freeGift.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/sc/freegift.go" afterPath="$PROJECT_DIR$/controllers/sc/freegift.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/basis/frm.html" afterPath="$PROJECT_DIR$/static/m/basis/frm.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/delivery/frm.html" afterPath="$PROJECT_DIR$/static/m/delivery/frm.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/interface/frm.html" afterPath="$PROJECT_DIR$/static/m/interface/frm.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/order/frm.html" afterPath="$PROJECT_DIR$/static/m/order/frm.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/frm.html" afterPath="$PROJECT_DIR$/static/m/sc/frm.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/s/goods.html" afterPath="$PROJECT_DIR$/static/s/goods.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/js/goodspreorder.js" afterPath="$PROJECT_DIR$/static/m/sc/js/goodspreorder.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/goodspromotion.html" afterPath="$PROJECT_DIR$/static/m/sc/goodspromotion.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/js/goodspromotion.js" afterPath="$PROJECT_DIR$/static/m/sc/js/goodspromotion.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/login.html" afterPath="$PROJECT_DIR$/static/m/login.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/lowerPrice.html" afterPath="$PROJECT_DIR$/static/m/sc/lowerPrice.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/sc/lowerprice.go" afterPath="$PROJECT_DIR$/controllers/sc/lowerprice.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.go" afterPath="$PROJECT_DIR$/main.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/e/bak/sales/mui/examples/media-list.html" afterPath="$PROJECT_DIR$/static/e/bak/sales/mui/examples/media-list.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/e/bak/sales/mui/css/mui.dtpicker.css" afterPath="$PROJECT_DIR$/static/e/bak/sales/mui/css/mui.dtpicker.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/e/bak/sales/mui/css/mui.picker.all.css" afterPath="$PROJECT_DIR$/static/e/bak/sales/mui/css/mui.picker.all.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/e/bak/sales/mui/css/mui.poppicker.css" afterPath="$PROJECT_DIR$/static/e/bak/sales/mui/css/mui.poppicker.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/e/bak/sales/mui/examples/offcanvas-drag-left-plus-main.html" afterPath="$PROJECT_DIR$/static/e/bak/sales/mui/examples/offcanvas-drag-left-plus-main.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/util/pay.wx.go" afterPath="$PROJECT_DIR$/controllers/util/pay.wx.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/e/bak/sales/mui/examples/picker.html" afterPath="$PROJECT_DIR$/static/e/bak/sales/mui/examples/picker.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/e/bak/sales/mui/examples/popovers.html" afterPath="$PROJECT_DIR$/static/e/bak/sales/mui/examples/popovers.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/sc/preorder.go" afterPath="$PROJECT_DIR$/controllers/sc/preorder.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/privilegedoperation.html" afterPath="$PROJECT_DIR$/static/m/sc/privilegedoperation.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/js/privilegedoperation.js" afterPath="$PROJECT_DIR$/static/m/sc/js/privilegedoperation.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/sc/promotion.go" afterPath="$PROJECT_DIR$/controllers/sc/promotion.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/promotiondetailed.html" afterPath="$PROJECT_DIR$/static/m/sc/promotiondetailed.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/js/promotiondetailed.js" afterPath="$PROJECT_DIR$/static/m/sc/js/promotiondetailed.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/js/saletype.js" afterPath="$PROJECT_DIR$/static/m/sc/js/saletype.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/schedulingwarehouse.html" afterPath="$PROJECT_DIR$/static/m/sc/schedulingwarehouse.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/js/schedulingwarehouse.js" afterPath="$PROJECT_DIR$/static/m/sc/js/schedulingwarehouse.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/i/js/scrollfix.js" afterPath="$PROJECT_DIR$/static/i/js/scrollfix.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/s/shop.html" afterPath="$PROJECT_DIR$/static/s/shop.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/e/bak/sales/mui/examples/slider-default.html" afterPath="$PROJECT_DIR$/static/e/bak/sales/mui/examples/slider-default.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/basis/staff.go" afterPath="$PROJECT_DIR$/controllers/basis/staff.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/basis/js/staff.js" afterPath="$PROJECT_DIR$/static/m/basis/js/staff.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/sc/stock.go" afterPath="$PROJECT_DIR$/controllers/sc/stock.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/stock.html" afterPath="$PROJECT_DIR$/static/m/sc/stock.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/js/stock.js" afterPath="$PROJECT_DIR$/static/m/sc/js/stock.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/stocking.html" afterPath="$PROJECT_DIR$/static/m/sc/stocking.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/sc/stockingPlan.go" afterPath="$PROJECT_DIR$/controllers/sc/stockingPlan.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/stockingcheck.html" afterPath="$PROJECT_DIR$/static/m/sc/stockingcheck.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/js/stockingcheck.js" afterPath="$PROJECT_DIR$/static/m/sc/js/stockingcheck.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/stockingplan.html" afterPath="$PROJECT_DIR$/static/m/sc/stockingplan.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/js/stockingplan.js" afterPath="$PROJECT_DIR$/static/m/sc/js/stockingplan.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/sc/stockingtransfer.go" afterPath="$PROJECT_DIR$/controllers/sc/stockingtransfer.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/sc/stockloss.go" afterPath="$PROJECT_DIR$/controllers/sc/stockloss.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/js/stocktransfer.js" afterPath="$PROJECT_DIR$/static/m/sc/js/stocktransfer.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/stocktransferplan.html" afterPath="$PROJECT_DIR$/static/m/sc/stocktransferplan.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/js/stocktransferplan.js" afterPath="$PROJECT_DIR$/static/m/sc/js/stocktransferplan.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/storageprivilege.html" afterPath="$PROJECT_DIR$/static/m/sc/storageprivilege.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/sc/js/storageprivilege.js" afterPath="$PROJECT_DIR$/static/m/sc/js/storageprivilege.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/basis/subdistrict.go" afterPath="$PROJECT_DIR$/controllers/basis/subdistrict.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/basis/subdistrict.html" afterPath="$PROJECT_DIR$/static/m/basis/subdistrict.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/basis/js/subdistrict.js" afterPath="$PROJECT_DIR$/static/m/basis/js/subdistrict.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/e/bak/sales/mui/examples/tab-webview-subpage-setting.html" afterPath="$PROJECT_DIR$/static/e/bak/sales/mui/examples/tab-webview-subpage-setting.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/i/js/table-old.js" afterPath="$PROJECT_DIR$/static/i/js/table-old.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/i/css/manage/table.css" afterPath="$PROJECT_DIR$/static/i/css/manage/table.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/i/js/table.js" afterPath="$PROJECT_DIR$/static/i/js/table.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/e/bak/sales/mui/examples/template.html" afterPath="$PROJECT_DIR$/static/e/bak/sales/mui/examples/template.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/basis/userinfo.go" afterPath="$PROJECT_DIR$/controllers/basis/userinfo.go" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/m/basis/js/userinfo.js" afterPath="$PROJECT_DIR$/static/m/basis/js/userinfo.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/util/wechat.go" afterPath="$PROJECT_DIR$/controllers/util/wechat.go" />
+    </list>
+    <ignored path="mman.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="mman" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="commodity.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/static/m/sc/js/commodity.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.14469454">
+              <caret line="298" column="16" selection-start-line="298" selection-start-column="16" selection-end-line="298" selection-end-column="16" />
+              <folding>
+                <marker date="1471369140489" expanded="true" signature="9840:9858" placeholder="..." />
+                <marker date="1471369140489" expanded="true" signature="10057:10082" placeholder="..." />
+                <marker date="1471369140489" expanded="true" signature="12481:12492" placeholder="..." />
+                <marker date="1471369140489" expanded="true" signature="12655:12671" placeholder="..." />
+                <marker date="1471369140489" expanded="true" signature="15839:15853" placeholder="..." />
+                <marker date="1471369140489" expanded="true" signature="16358:16372" placeholder="..." />
+                <marker date="1471369140489" expanded="true" signature="16893:16930" placeholder="..." />
+                <marker date="1471369140489" expanded="true" signature="24983:25001" placeholder="..." />
+                <marker date="1471369140489" expanded="true" signature="25532:25545" placeholder="..." />
+                <marker date="1471369140489" expanded="true" signature="25691:25716" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Html5" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/static/m/basis/js/department.js" />
+        <option value="$PROJECT_DIR$/static/m/basis/js/district.js" />
+        <option value="$PROJECT_DIR$/static/m/basis/js/staff.js" />
+        <option value="$PROJECT_DIR$/static/m/basis/js/subdistrict.js" />
+        <option value="$PROJECT_DIR$/static/m/basis/js/address.js" />
+        <option value="$PROJECT_DIR$/static/i/js/msgbox.js" />
+        <option value="$PROJECT_DIR$/static/m/basis/deliverytype.html" />
+        <option value="$PROJECT_DIR$/static/m/sc/commodityRel.html" />
+        <option value="$PROJECT_DIR$/static/m/sc/js/asd.html" />
+        <option value="$PROJECT_DIR$/static/m/sc/js/createpromotion.js" />
+        <option value="$PROJECT_DIR$/static/m/sc/newFreeGift.html" />
+        <option value="$PROJECT_DIR$/static/m/sc/freeGift.html" />
+        <option value="$PROJECT_DIR$/static/m/sc/newPackage.html" />
+        <option value="$PROJECT_DIR$/static/m/sc/comPackage.html" />
+        <option value="$PROJECT_DIR$/static/m/sc/lowerPrice.html" />
+        <option value="$PROJECT_DIR$/static/m/sc/storageprivilege.html" />
+        <option value="$PROJECT_DIR$/static/m/sc/privilegedoperation.html" />
+        <option value="$PROJECT_DIR$/static/m/sc/js/stock.js" />
+        <option value="$PROJECT_DIR$/static/m/basis/js/userinfo.js" />
+        <option value="$PROJECT_DIR$/static/m/sc/commodityType.html" />
+        <option value="$PROJECT_DIR$/static/i/js/table.js" />
+        <option value="$PROJECT_DIR$/static/i/js/frame.js" />
+        <option value="$PROJECT_DIR$/static/m/sc/js/privilegedoperation.js" />
+        <option value="$PROJECT_DIR$/static/m/sc/supplier.html" />
+        <option value="$PROJECT_DIR$/static/m/sc/detailsedit.html" />
+        <option value="$PROJECT_DIR$/static/i/js/_e.js" />
+        <option value="$PROJECT_DIR$/static/m/sc/editor/index.html" />
+        <option value="$PROJECT_DIR$/static/m/sc/js/storageprivilege.js" />
+        <option value="$PROJECT_DIR$/static/m/sc/js/commodity.js" />
+        <option value="$PROJECT_DIR$/static/i/css/manage/base.css" />
+        <option value="$PROJECT_DIR$/static/m/sc/frm.html" />
+        <option value="$PROJECT_DIR$/static/m/order/frm.html" />
+        <option value="$PROJECT_DIR$/static/m/interface/frm.html" />
+        <option value="$PROJECT_DIR$/static/m/delivery/frm.html" />
+        <option value="$PROJECT_DIR$/static/m/basis/frm.html" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+  </component>
+  <component name="NamedScopeManager">
+    <order />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="65" />
+    <option name="y" value="24" />
+    <option name="width" value="1301" />
+    <option name="height" value="744" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="Scratches" />
+      <pane id="Scope">
+        <subPane subId="Project Files" />
+      </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mman" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mman" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mman" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mman" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mman" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mman" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mman" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="m" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mman" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mman" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="m" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="basis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mman" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mman" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="i" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mman" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mman" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="i" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mman" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mman" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="static" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="i" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="manage" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../html" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="HbShouldOpenHtmlAsHb" value="" />
+    <property name="FullScreen" value="false" />
+    <property name="DefaultHtmlFileTemplate" value="Html5" />
+    <property name="recentsLimit" value="5" />
+  </component>
+  <component name="RunManager" selected="Node.js.storageprivilege.js">
+    <configuration default="false" name="storageprivilege.js" type="NodeJSConfigurationType" factoryName="Node.js" temporary="true" path-to-js-file="storageprivilege.js" working-dir="$PROJECT_DIR$/static/m/sc/js">
+      <method />
+    </configuration>
+    <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
+      <method />
+    </configuration>
+    <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" config-file="">
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="JsTestDriver-test-runner" factoryName="JsTestDriver">
+      <setting name="configLocationType" value="CONFIG_FILE" />
+      <setting name="settingsFile" value="" />
+      <setting name="serverType" value="INTERNAL" />
+      <setting name="preferredDebugBrowser" value="Chrome" />
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" working-dir="">
+      <method />
+    </configuration>
+    <configuration default="true" type="cucumber.js" factoryName="Cucumber.js">
+      <option name="cucumberJsArguments" value="" />
+      <option name="executablePath" />
+      <option name="filePath" />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <pass-parent-envs>true</pass-parent-envs>
+      <envs />
+      <method />
+    </configuration>
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="Node.js.storageprivilege.js" />
+    </list>
+    <recent_temporary>
+      <list size="1">
+        <item index="0" class="java.lang.String" itemvalue="Node.js.storageprivilege.js" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b63929e8-1bc6-4ed9-86b3-b0bb47cc4003" name="Default" comment="" />
+      <created>1469851087536</created>
+      <option name="number" value="Default" />
+      <updated>1469851087536</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="65" y="24" width="1301" height="744" extended-state="7" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2795699" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/static/m/basis/js/userinfo.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="153" column="40" selection-start-line="153" selection-start-column="40" selection-end-line="153" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/sc/js/commodity.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="537" column="31" selection-start-line="537" selection-start-column="31" selection-end-line="537" selection-end-column="44" />
+          <folding>
+            <marker date="1471369140489" expanded="true" signature="9840:9858" placeholder="..." />
+            <marker date="1471369140489" expanded="true" signature="10057:10082" placeholder="..." />
+            <marker date="1471369140489" expanded="true" signature="12481:12492" placeholder="..." />
+            <marker date="1471369140489" expanded="true" signature="12655:12671" placeholder="..." />
+            <marker date="1471369140489" expanded="true" signature="15839:15853" placeholder="..." />
+            <marker date="1471369140489" expanded="true" signature="16358:16372" placeholder="..." />
+            <marker date="1471369140489" expanded="true" signature="16893:16930" placeholder="..." />
+            <marker date="1471369140489" expanded="true" signature="24983:25001" placeholder="..." />
+            <marker date="1471369140489" expanded="true" signature="25532:25545" placeholder="..." />
+            <marker date="1471369140489" expanded="true" signature="25691:25716" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/basis/userinfo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="23" column="48" selection-start-line="23" selection-start-column="48" selection-end-line="23" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/i/js/_e.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="89" column="0" selection-start-line="89" selection-start-column="0" selection-end-line="89" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/basis/js/address.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="81" column="25" selection-start-line="81" selection-start-column="25" selection-end-line="81" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/basis/userinfo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/basis/js/subdistrict.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="203" column="98" selection-start-line="203" selection-start-column="98" selection-end-line="203" selection-end-column="98" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/basis/js/userinfo.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/i/js/dialog.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="72" column="61" selection-start-line="72" selection-start-column="61" selection-end-line="72" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readme">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.0">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/damaged.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.36666667">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/basis/js/department.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="264" column="118" selection-start-line="264" selection-start-column="118" selection-end-line="264" selection-end-column="118" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/basis/js/district.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="180" column="116" selection-start-line="180" selection-start-column="116" selection-end-line="180" selection-end-column="116" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/basis/js/staff.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="155" column="113" selection-start-line="155" selection-start-column="113" selection-end-line="155" selection-end-column="113" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/basis/js/subdistrict.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="84" column="81" selection-start-line="84" selection-start-column="81" selection-end-line="84" selection-end-column="81" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/basis/js/address.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7886364">
+          <caret line="91" column="94" selection-start-line="91" selection-start-column="94" selection-end-line="91" selection-end-column="115" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/i/js/msgbox.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.71590906">
+          <caret line="21" column="58" selection-start-line="21" selection-start-column="58" selection-end-line="21" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/basis/userinfo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="23" column="48" selection-start-line="23" selection-start-column="48" selection-end-line="23" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.90301">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/basis/deliverytype.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5234114">
+          <caret line="250" column="35" selection-start-line="0" selection-start-column="0" selection-end-line="263" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/sc/js/createpromotion.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="225" column="0" selection-start-line="225" selection-start-column="0" selection-end-line="225" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/sc/newPackage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="39.041668">
+          <caret line="160" column="18" selection-start-line="160" selection-start-column="18" selection-end-line="160" selection-end-column="18" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <marker date="1471069158663" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1471069158663" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/sc/comPackage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.6666667">
+          <caret line="177" column="9" selection-start-line="177" selection-start-column="9" selection-end-line="191" selection-end-column="9" />
+          <folding>
+            <marker date="1471069288886" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1471069288886" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1471069288886" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/sc/freeGift.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.5">
+          <caret line="183" column="32" selection-start-line="183" selection-start-column="32" selection-end-line="183" selection-end-column="32" />
+          <folding>
+            <marker date="1471068721771" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1471068721771" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1471068721771" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/sc/lowerPrice.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-18.125">
+          <caret line="89" column="62" selection-start-line="89" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/sc/privilegedoperation.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.1666665">
+          <caret line="48" column="34" selection-start-line="48" selection-start-column="34" selection-end-line="48" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/sc/commodity.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.625">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="26" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/basis/js/userinfo.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="143" column="25" selection-start-line="143" selection-start-column="25" selection-end-line="143" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/sc/storageprivilege.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-20.541666">
+          <caret line="73" column="0" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/i/js/table.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.27652735">
+          <caret line="303" column="48" selection-start-line="303" selection-start-column="48" selection-end-line="303" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/sc/commodityType.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.18485916">
+          <caret line="7" column="74" selection-start-line="7" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding>
+            <marker date="1471236947510" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1471236947510" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1471236947510" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1471236947510" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1471236947510" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1471236947510" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1471236947510" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1471236947510" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1471236947510" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1471236947510" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1471236947510" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1471236947510" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1471236947510" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/sc/js/stock.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.085209">
+          <caret line="30" column="20" selection-start-line="30" selection-start-column="19" selection-end-line="30" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/sc/commodityRel.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.991639">
+          <caret line="178" column="240" selection-start-line="178" selection-start-column="29" selection-end-line="178" selection-end-column="240" />
+          <folding>
+            <marker date="1470988969728" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1470988969728" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1470988969728" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/sc/js/privilegedoperation.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="299" column="64" selection-start-line="299" selection-start-column="64" selection-end-line="299" selection-end-column="64" />
+          <folding>
+            <marker date="1471321970462" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1471321970462" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1471321970462" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1471321970462" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/sc/js/storageprivilege.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9276527">
+          <caret line="226" column="31" selection-start-line="226" selection-start-column="31" selection-end-line="226" selection-end-column="31" />
+          <folding>
+            <marker date="1470385846000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1470385846000" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/i/js/_e.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.40996784">
+          <caret line="70" column="18" selection-start-line="70" selection-start-column="18" selection-end-line="70" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/i/js/frame.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7106109">
+          <caret line="68" column="27" selection-start-line="68" selection-start-column="27" selection-end-line="68" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/basis/frm.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3729097">
+          <caret line="83" column="38" selection-start-line="83" selection-start-column="38" selection-end-line="83" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/delivery/frm.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5518395">
+          <caret line="82" column="12" selection-start-line="82" selection-start-column="12" selection-end-line="82" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/interface/frm.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.17224081">
+          <caret line="48" column="12" selection-start-line="48" selection-start-column="12" selection-end-line="48" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/order/frm.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.37625417">
+          <caret line="69" column="12" selection-start-line="69" selection-start-column="12" selection-end-line="69" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/sc/frm.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.35117057">
+          <caret line="121" column="117" selection-start-line="121" selection-start-column="117" selection-end-line="121" selection-end-column="117" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/i/css/manage/base.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4847973">
+          <caret line="230" column="12" selection-start-line="230" selection-start-column="12" selection-end-line="230" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/m/sc/js/commodity.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14469454">
+          <caret line="298" column="16" selection-start-line="298" selection-start-column="16" selection-end-line="298" selection-end-column="16" />
+          <folding>
+            <marker date="1471369140489" expanded="true" signature="9840:9858" placeholder="..." />
+            <marker date="1471369140489" expanded="true" signature="10057:10082" placeholder="..." />
+            <marker date="1471369140489" expanded="true" signature="12481:12492" placeholder="..." />
+            <marker date="1471369140489" expanded="true" signature="12655:12671" placeholder="..." />
+            <marker date="1471369140489" expanded="true" signature="15839:15853" placeholder="..." />
+            <marker date="1471369140489" expanded="true" signature="16358:16372" placeholder="..." />
+            <marker date="1471369140489" expanded="true" signature="16893:16930" placeholder="..." />
+            <marker date="1471369140489" expanded="true" signature="24983:25001" placeholder="..." />
+            <marker date="1471369140489" expanded="true" signature="25532:25545" placeholder="..." />
+            <marker date="1471369140489" expanded="true" signature="25691:25716" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
