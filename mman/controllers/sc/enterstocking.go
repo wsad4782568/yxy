@@ -1,4 +1,0 @@
-package sc
-
-func EnterStockingHandlers() {
-}
